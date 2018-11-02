@@ -24,6 +24,7 @@
     "no-consecutive-blank-lines": false,
     "max-classes-per-file": false,
     "member-ordering": false,
+    "arrow-parens": false,
     "trailing-comma": [
       true,
       {
