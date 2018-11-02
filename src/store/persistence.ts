@@ -10,7 +10,6 @@ const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
 interface SerializationState {
   city: CityState;
   toolbarState: string;
-  dots: DotState[];
 }
 
 function cleanUpState() {
@@ -26,7 +25,6 @@ function serializeState(state: RootState): string {
   const serializationState: SerializationState = {
     city: state.city,
     toolbarState: state.toolbarState,
-    dots: state.dots,
   };
 
   return JSON.stringify(state);
@@ -38,7 +36,6 @@ function deserializeState(rawState: string): RootState {
   return {
     city: new City(state.city),
     toolbarState: state.toolbarState as ButtonType,
-    dots: Dot.restoreArray(state.dots),
   };
 }
 
@@ -46,7 +43,6 @@ function initState(): RootState {
   return {
     city: new City({name: 'Test City'}),
     toolbarState: ButtonType.SelectRoad,
-    dots: Dot.buildArray(),
   };
 }
 

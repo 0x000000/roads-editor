@@ -6,6 +6,7 @@ export interface DotState {
   selected: boolean;
   gridPosition: Point;
   mapPosition: Point;
+  index: number;
 }
 
 export class Dot implements DotState {
@@ -13,9 +14,11 @@ export class Dot implements DotState {
   public selected: boolean;
   public gridPosition: Point;
   public mapPosition: Point;
+  public index: number;
 
   public static buildArray(): Dot[] {
     const dots: Dot[] = [];
+    let index: number = 0;
 
     for (let y = 0; y < FIELD_HEIGHT; y++) {
       for (let x = 0; x < FIELD_WIDTH; x++) {
@@ -30,6 +33,7 @@ export class Dot implements DotState {
           mapPosition,
           shown: true,
           selected: false,
+          index: index++,
         }));
       }
     }
@@ -37,15 +41,12 @@ export class Dot implements DotState {
     return dots;
   }
 
-  public static restoreArray(states: DotState[]): Dot[] {
-    return states.map(state => new Dot(state));
-  }
-
   constructor(state: DotState) {
     this.shown = state.shown;
     this.selected = state.selected;
     this.gridPosition = state.gridPosition;
     this.mapPosition = state.mapPosition;
+    this.index = state.index;
   }
 
   public valueOf(): number {
