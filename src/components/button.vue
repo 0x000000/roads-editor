@@ -7,8 +7,8 @@
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator';
   import {ButtonType} from '@/models/inputs';
-  import {RootState} from '../store';
-  import {MutationName} from '../mutations';
+  import {RootState} from '../store/store';
+  import {MutationName} from '../mutations/mutations';
 
   type IconMap = {[key in ButtonType]: string};
 

@@ -3,7 +3,7 @@ import Vuex, {StoreOptions} from 'vuex';
 import City from '@/models/city';
 import {loadState} from '@/store/persistence';
 import {ButtonType} from '@/models/inputs';
-import {mutations} from '@/mutations';
+import {mutations} from '@/mutations/mutations';
 
 Vue.use(Vuex);
 

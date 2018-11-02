@@ -25,10 +25,10 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import {DOT_RADIUS, FIELD_HEIGHT, FIELD_WIDTH, POINT_DISTANCE, ROAD_WIDTH} from '../config';
-  import {RootState} from '../store';
+  import {RootState} from '../store/store';
   import {Dot} from '../models/dot';
   import {Rect} from '../models/geometry';
-  import {MutationName} from '../mutations';
+  import {MutationName} from '../mutations/mutations';
 
   @Component
   export default class Map extends Vue {
@@ -73,6 +73,7 @@
         });
       } else if (this.selectedDot) { // pick second point
         if (this.selectedDot !== nextDot) { // do not reset selection
+          this.$store.commit({})
         }
 
         this.dots.forEach((dot: Dot) => dot.shown = true);

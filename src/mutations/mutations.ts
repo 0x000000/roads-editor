@@ -1,4 +1,4 @@
-import {RootState} from '@/store';
+import {RootState} from '@/store/store';
 import {MutationTree} from 'vuex';
 import {ButtonType} from '@/models/inputs';
 import {saveState} from '@/store/persistence';

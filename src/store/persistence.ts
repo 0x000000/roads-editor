@@ -1,4 +1,4 @@
-import {RootState} from '@/store/index';
+import {RootState} from '@/store/store';
 import {BUILD_VERSION} from '@/config';
 import City, {CityState} from '@/models/city';
 import {ButtonType} from '@/models/inputs';
