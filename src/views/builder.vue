@@ -15,3 +15,9 @@ import Toolbar from '@/components/toolbar.vue';
 })
 export default class Home extends Vue {}
 </script>
+
+<style scoped lang="scss">
+  .builder {
+    text-align: left;
+  }
+</style>

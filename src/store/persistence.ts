@@ -1,6 +1,7 @@
 import {RootState} from '@/store/index';
 import {BUILD_VERSION} from '@/config';
 import City, {CityState} from '@/models/city';
+import {ButtonType} from '@/models/inputs';
 
 const PREFIX = 'RDE_';
 const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
@@ -11,7 +12,8 @@ export interface Persistent<State> {
 }
 
 interface SerializationState {
-  city: CityState,
+  city: CityState;
+  toolbarState: string;
 }
 
 function cleanUpState() {
@@ -26,6 +28,7 @@ function cleanUpState() {
 function serializeState(state: RootState): string {
   const serializationState: SerializationState = {
     city: state.city.save(),
+    toolbarState: state.toolbarState,
   };
 
   return JSON.stringify(serializationState);
@@ -36,12 +39,14 @@ function deserializeState(rawState: string): RootState {
 
   return {
     city: new City(state.city),
+    toolbarState: state.toolbarState as ButtonType,
   };
 }
 
 function initState(): RootState {
   return {
     city: new City({name: 'Test City'}),
+    toolbarState: ButtonType.SelectRoad,
   };
 }
 

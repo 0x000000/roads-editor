@@ -11,11 +11,11 @@ export default class City implements Persistent<CityState> {
     this.load(state);
   }
 
-  load(rawState: CityState): void {
+  public load(rawState: CityState): void {
     this.name = rawState.name;
   }
 
-  save(): CityState {
+  public save(): CityState {
     return {name: this.name};
   }
 }

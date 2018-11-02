@@ -10,6 +10,9 @@
 </template>
 
 <style lang="scss">
+  $mdi-font-path: '~@mdi/font/fonts/';
+  @import '~@mdi/font/scss/materialdesignicons';
+
   #app {
     font-family: 'PT Sans';
     -webkit-font-smoothing: antialiased;
