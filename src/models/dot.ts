@@ -5,7 +5,6 @@ export interface DotState {
   shown: boolean;
   selected: boolean;
   gridPosition: Point;
-  mapPosition: Point;
   index: number;
 }
 
@@ -22,15 +21,8 @@ export class Dot implements DotState {
 
     for (let y = 0; y < FIELD_HEIGHT; y++) {
       for (let x = 0; x < FIELD_WIDTH; x++) {
-        const gridPosition: Point = {x, y};
-        const mapPosition: Point = {
-          x: (x + 1) * POINT_DISTANCE,
-          y: (y + 1) * POINT_DISTANCE,
-        };
-
         dots.push(new Dot({
-          gridPosition,
-          mapPosition,
+          gridPosition: {x, y},
           shown: true,
           selected: false,
           index: index++,
@@ -45,12 +37,12 @@ export class Dot implements DotState {
     this.shown = state.shown;
     this.selected = state.selected;
     this.gridPosition = state.gridPosition;
-    this.mapPosition = state.mapPosition;
     this.index = state.index;
-  }
 
-  public valueOf(): number {
-    return (this.gridPosition.y * FIELD_WIDTH) + this.gridPosition.x;
+    this.mapPosition = {
+      x: (this.gridPosition.x + 1) * POINT_DISTANCE,
+      y: (this.gridPosition.y + 1) * POINT_DISTANCE,
+    };
   }
 }
 

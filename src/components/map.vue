@@ -1,12 +1,12 @@
 <template>
   <div class="map">
     <svg id="canvas" :width="mapSize.width" :height="mapSize.height">
-      <!--<path v-for="road in roads"-->
-      <!--:d="road.d"-->
-      <!--:class="road.classes"-->
-      <!--:stroke-width="ROAD_WIDTH"-->
-      <!--@click="selectRoad(road)"-->
-      <!--/>-->
+      <path v-for="road in roads"
+            :d="road.d"
+            :class="road.classes"
+            :stroke-width="ROAD_WIDTH"
+            @click="selectRoad(road)">
+      </path>
 
       <g>
         <circle v-for="dot in dots"
@@ -29,10 +29,13 @@
   import {Dot} from '../models/dot';
   import {Rect} from '../models/geometry';
   import {MutationName} from '../mutations/mutations';
+  import Road, {RoadType} from '../models/road';
 
   @Component
   export default class Map extends Vue {
     private dots: Dot[] = Dot.buildArray();
+    private selectedDot: Dot | undefined;
+    private selectedRoad: Road | undefined;
 
     private data() {
       return {
@@ -52,7 +55,9 @@
       };
     }
 
-    private selectedDot: Dot | undefined;
+    get roads(): Road[] {
+      return this.state.roads;
+    }
 
     private selectDot(nextDot: Dot) {
       if (this.selectedDot === undefined) { // pick first point
@@ -73,12 +78,29 @@
         });
       } else if (this.selectedDot) { // pick second point
         if (this.selectedDot !== nextDot) { // do not reset selection
-          this.$store.commit({})
+          this.selectedRoad = undefined;
+          this.$store.commit(
+            MutationName.BuildRoad,
+            {start: nextDot.gridPosition, end: this.selectedDot.gridPosition}
+          );
         }
 
         this.dots.forEach((dot: Dot) => dot.shown = true);
         this.selectedDot.selected = false;
         this.selectedDot = undefined;
+      }
+    }
+
+    private selectRoad(nextRoad: Road) {
+      if (this.selectedRoad) {
+        this.selectedRoad.deselect();
+      }
+
+      if (this.selectedRoad !== nextRoad) {
+        this.selectedRoad = nextRoad;
+        this.selectedRoad.select();
+      } else {
+        this.selectedRoad = undefined;
       }
     }
   }
@@ -109,7 +131,7 @@
       stroke: white;
 
       &.type-border {
-        stroke: gray;
+        stroke: #bcbcbc;
       }
 
       &.type-highway {
@@ -117,7 +139,7 @@
       }
 
       &.type-street {
-        stroke: lightgray;
+        stroke: gray;
       }
 
       &.error {
@@ -131,13 +153,11 @@
       &:hover, &.selected:hover {
         fill: black;
         stroke: black;
-        stroke-width: 5px;
+        stroke-width: 10px;
       }
 
       &.selected {
-        fill: darkred;
-        stroke: darkred;
-        stroke-width: 5px;
+        stroke-width: 10px;
       }
     }
   }
