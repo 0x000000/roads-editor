@@ -16,7 +16,11 @@ import Map from '@/components/map.vue';
     Map,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  mounted() {
+    new Audio('tick.mp3').play();
+  }
+}
 </script>
 
 <style scoped lang="scss">
