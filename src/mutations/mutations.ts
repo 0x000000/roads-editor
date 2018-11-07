@@ -8,6 +8,7 @@ import Road from '@/models/road';
 export enum MutationName {
   ChangeToolbarState = 'ChangeToolbarState',
   BuildRoad = 'BuildRoad',
+  DeleteRoad = 'DeleteRoad',
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -17,6 +18,10 @@ export const mutations: MutationTree<RootState> = {
   },
   [MutationName.BuildRoad]: (state, path: Path) => {
     state.roads = Road.recalculateNetwork(path, state.roads);
+    saveState(state);
+  },
+  [MutationName.DeleteRoad]: (state, road: Road) => {
+    state.roads = Road.deleteRoad(road, state.roads);
     saveState(state);
   },
 };

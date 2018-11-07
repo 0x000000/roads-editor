@@ -104,6 +104,11 @@ export default class Road implements RoadState {
     return oldRoads;
   }
 
+  public static deleteRoad(road: Road, roads: Road[]): Road[] {
+    roads.splice(roads.indexOf(road), 1);
+    return this.rejoinLines(roads);
+  }
+
   constructor(state: RoadState) {
     this.name = state.name;
     this.type = state.type;

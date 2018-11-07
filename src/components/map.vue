@@ -1,5 +1,10 @@
+import {RoadType} from '../models/road';
 <template>
   <div class="map">
+    <div>
+      Roads: {{roadsCount}}
+    </div>
+
     <svg id="canvas" :width="mapSize.width" :height="mapSize.height">
       <path v-for="road in roads"
             :d="road.d"
@@ -30,6 +35,7 @@
   import {Rect} from '../models/geometry';
   import {MutationName} from '../mutations/mutations';
   import Road, {RoadType} from '../models/road';
+  import hotkeys from 'hotkeys-js';
 
   @Component
   export default class Map extends Vue {
@@ -42,6 +48,15 @@
         DOT_RADIUS,
         ROAD_WIDTH,
       };
+    }
+
+    private mounted() {
+      hotkeys('delete, backspace', () => {
+        if (this.selectedRoad) {
+          this.$store.commit(MutationName.DeleteRoad, this.selectedRoad);
+          this.selectedRoad = undefined;
+        }
+      });
     }
 
     get state(): RootState {
@@ -57,6 +72,10 @@
 
     get roads(): Road[] {
       return this.state.roads;
+    }
+
+    get roadsCount(): number {
+      return this.roads.filter(road => road.type !== RoadType.Border).length;
     }
 
     private selectDot(nextDot: Dot) {
