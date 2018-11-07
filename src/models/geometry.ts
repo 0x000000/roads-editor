@@ -15,7 +15,7 @@ export interface Path {
   readonly end: Point;
 }
 
-function pointWeight(point: Point): number {
+export function pointWeight(point: Point): number {
   return (point.y * FIELD_WIDTH) + point.x;
 }
 
@@ -50,9 +50,26 @@ export function belongsTo(point: Point, path: Path): boolean {
   }
 
   const squaredLen = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
-  if (dotProduct > squaredLen) {
-    return false;
-  }
+  return dotProduct <= squaredLen;
+}
 
-  return true;
+export function intersectionPoint(path1: Path, path2: Path): Point {
+  const [x1, y1, x2, y2] = [path1.start.x, path1.start.y, path1.end.x, path1.end.y];
+  const [x3, y3, x4, y4] = [path2.start.x, path2.start.y, path2.end.x, path2.end.y];
+
+  const sub = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+  const x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / sub;
+  const y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / sub;
+
+  return {x, y};
+}
+
+export function mergePaths(path1: Path, path2: Path): Path {
+  path1 = normalizePath(path1);
+  path2 = normalizePath(path2);
+
+  const start = pointWeight(path1.start) <= pointWeight(path2.start) ? path1.start : path2.start;
+  const end = pointWeight(path1.end) >= pointWeight(path2.end) ? path1.end : path2.end;
+
+  return {start, end};
 }
