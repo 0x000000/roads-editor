@@ -17,7 +17,7 @@ import Map from '@/components/map.vue';
   },
 })
 export default class Home extends Vue {
-  mounted() {
+  private mounted() {
     new Audio('tick.mp3').play();
   }
 }

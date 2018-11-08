@@ -64,7 +64,7 @@ function initState(): RootState {
 
   return {
     city: new City({name: 'Test City'}),
-    toolbarState: ButtonType.SelectRoad,
+    toolbarState: ButtonType.BuildRoad,
     roads,
   };
 }

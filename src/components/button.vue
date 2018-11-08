@@ -13,8 +13,8 @@
   type IconMap = {[key in ButtonType]: string};
 
   const Icons: IconMap = {
-    [ButtonType.SelectRoad]: 'mdi-cursor-default',
     [ButtonType.BuildRoad]: 'mdi-road',
+    [ButtonType.MarkDistrict]: 'mdi-home',
   };
 
   @Component

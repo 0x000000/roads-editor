@@ -1,4 +1,3 @@
-import {RoadType} from '../models/road';
 <template>
   <div class="map">
     <div>
@@ -33,9 +32,9 @@ import {RoadType} from '../models/road';
   import {RootState} from '../store/store';
   import {Dot} from '../models/dot';
   import {Rect} from '../models/geometry';
-  import {MutationName} from '../mutations/mutations';
   import Road, {RoadType} from '../models/road';
   import hotkeys from 'hotkeys-js';
+  import {Mode} from './modes';
 
   @Component
   export default class Map extends Vue {
@@ -51,11 +50,18 @@ import {RoadType} from '../models/road';
     }
 
     private mounted() {
+      Mode.setup({
+        dots: this.dots,
+        selectedDot: this.selectedDot,
+        selectedRoad: this.selectedRoad,
+      });
+
+      hotkeys('esc', () => {
+        Mode.getMode(this.state.toolbarState).onEscKey();
+      });
+
       hotkeys('delete, backspace', () => {
-        if (this.selectedRoad) {
-          this.$store.commit(MutationName.DeleteRoad, this.selectedRoad);
-          this.selectedRoad = undefined;
-        }
+        Mode.getMode(this.state.toolbarState).onDeleteKey();
       });
     }
 
@@ -79,48 +85,11 @@ import {RoadType} from '../models/road';
     }
 
     private selectDot(nextDot: Dot) {
-      if (this.selectedDot === undefined) { // pick first point
-        this.selectedDot = nextDot;
-        this.selectedDot.selected = true;
-
-        this.dots.forEach((currentDot: Dot) => {
-          if (
-            nextDot.gridPosition.x === currentDot.gridPosition.x ||
-            nextDot.gridPosition.y === currentDot.gridPosition.y ||
-            Math.abs(nextDot.gridPosition.x - currentDot.gridPosition.x) ===
-            Math.abs(nextDot.gridPosition.y - currentDot.gridPosition.y)
-          ) {
-            currentDot.shown = true;
-          } else {
-            currentDot.shown = false;
-          }
-        });
-      } else if (this.selectedDot) { // pick second point
-        if (this.selectedDot !== nextDot) { // do not reset selection
-          this.selectedRoad = undefined;
-          this.$store.commit(
-            MutationName.BuildRoad,
-            {start: nextDot.gridPosition, end: this.selectedDot.gridPosition}
-          );
-        }
-
-        this.dots.forEach((dot: Dot) => dot.shown = true);
-        this.selectedDot.selected = false;
-        this.selectedDot = undefined;
-      }
+      Mode.getMode(this.state.toolbarState).selectDot(nextDot);
     }
 
     private selectRoad(nextRoad: Road) {
-      if (this.selectedRoad) {
-        this.selectedRoad.deselect();
-      }
-
-      if (this.selectedRoad !== nextRoad) {
-        this.selectedRoad = nextRoad;
-        this.selectedRoad.select();
-      } else {
-        this.selectedRoad = undefined;
-      }
+      Mode.getMode(this.state.toolbarState).selectRoad(nextRoad);
     }
   }
 </script>

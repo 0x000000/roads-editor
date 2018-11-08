@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
-    <Button :type="ButtonType.SelectRoad"></Button>
     <Button :type="ButtonType.BuildRoad"></Button>
+    <Button :type="ButtonType.MarkDistrict"></Button>
   </div>
 </template>
 
