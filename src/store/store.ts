@@ -5,6 +5,7 @@ import {loadState} from '@/store/persistence';
 import {ButtonType} from '@/models/inputs';
 import {mutations} from '@/mutations/mutations';
 import Road from '@/models/road';
+import Settings from '@/models/settings';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export interface RootState {
   city: City;
   toolbarState: ButtonType;
   roads: Road[];
+  settings: Settings;
 }
 
 const store: StoreOptions<RootState> = {

@@ -1,6 +1,7 @@
 import {belongsTo, comparePoints, normalizePath, Path, Point} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import {intersectionPoint, mergePaths, pointWeight} from './geometry';
+import Settings from '@/models/settings';
 
 export enum RoadType {
   Border = 'Border',
@@ -9,8 +10,8 @@ export enum RoadType {
 }
 
 export interface RoadState {
+  id: number;
   type: RoadType;
-  name: string;
   path: Path;
 }
 
@@ -29,8 +30,8 @@ interface Intersection {
 const EMPTY_POINT: Point = {x: Infinity, y: Infinity};
 
 export default class Road implements RoadState {
+  public id: number;
   public type: RoadType;
-  public name: string;
   public path: Path;
   private selected: boolean = false;
 
@@ -65,7 +66,7 @@ export default class Road implements RoadState {
 
     const points = [...intersectionPoints.values()].sort(comparePoints);
     for (let step = 0; step < points.length - 1; step++) {
-      newRoads.push(new Road({path: {start: points[step], end: points[step + 1]}, name: '', type: RoadType.Street}));
+      newRoads.push(Road.build({start: points[step], end: points[step + 1]}, RoadType.Street));
     }
 
     return this.rejoinLines(newRoads);
@@ -109,8 +110,13 @@ export default class Road implements RoadState {
     return this.rejoinLines(roads);
   }
 
+  public static build(path: Path, type: RoadType): Road {
+    const id = Settings.getInstance().nextRoadId;
+    return  new Road({path, type, id});
+  }
+
   constructor(state: RoadState) {
-    this.name = state.name;
+    this.id = state.id;
     this.type = state.type;
     this.path = normalizePath(state.path);
   }
@@ -141,13 +147,13 @@ export default class Road implements RoadState {
 
   private splitBy(point: Point): Road[] {
     return [
-      new Road({path: {start: this.path.start, end: point}, name: this.name, type: this.type}),
-      new Road({path: {start: point, end: this.path.end}, name: this.name, type: this.type}),
+      Road.build({start: this.path.start, end: point}, this.type),
+      Road.build({start: point, end: this.path.end}, this.type),
     ];
   }
 
   private mergeWith(road: Road): Road {
-    return new Road({path: mergePaths(this.path, road.path), name: this.name, type: this.type});
+    return Road.build(mergePaths(this.path, road.path), this.type);
   }
 
   private intersectWith(otherPath: Path): Intersection {
