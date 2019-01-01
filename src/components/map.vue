@@ -1,10 +1,10 @@
 <template>
   <div class="map">
-    <div>
-      Roads: {{roadsCount}}
-    </div>
+    <svg id="canvas"
+         :width="mapSize.width"
+         :height="mapSize.height"
+         :class="mapClasses">
 
-    <svg id="canvas" :width="mapSize.width" :height="mapSize.height">
       <polygon v-for="district in districts"
                :points="district.svgPoints"
                :class="district.classes">
@@ -17,7 +17,7 @@
             @click="selectRoad(road)">
       </path>
 
-      <g>
+      <g v-show="showDots">
         <circle v-for="dot in dots"
                 v-show="dot.shown"
                 :r="DOT_RADIUS"
@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Vue, Watch} from 'vue-property-decorator';
   import {DOT_RADIUS, FIELD_HEIGHT, FIELD_WIDTH, POINT_DISTANCE, ROAD_WIDTH} from '../config';
   import {RootState} from '../store/store';
   import {Dot} from '../models/dot';
@@ -41,12 +41,11 @@
   import hotkeys from 'hotkeys-js';
   import {Mode} from './modes';
   import District from '@/models/district';
+  import {ButtonType} from '@/models/inputs';
 
   @Component
   export default class Map extends Vue {
     private dots: Dot[] = Dot.buildArray();
-    private selectedDot: Dot | undefined;
-    private selectedRoad: Road | undefined;
 
     private data() {
       return {
@@ -92,82 +91,118 @@
       return this.state.districts;
     }
 
-    get roadsCount(): number {
-      return this.roads.filter(road => road.type !== RoadType.Border).length;
+    get toolbarState(): ButtonType {
+      return this.state.toolbarState;
+    }
+
+    @Watch('toolbarState')
+    private onToolbarStateChanged(newVal: ButtonType, oldVal: ButtonType) {
+      Mode.getMode(oldVal).onEscKey();
+    }
+
+    get showDots(): boolean {
+      return this.toolbarState === ButtonType.BuildRoad;
+    }
+
+    get mapClasses(): string[] {
+      return [`map-${this.toolbarState.toString().toLowerCase()}`];
+    }
+
+    get mode(): Mode {
+      return Mode.getMode(this.toolbarState);
     }
 
     private selectDot(nextDot: Dot) {
-      Mode.getMode(this.state.toolbarState).selectDot(nextDot);
+      this.mode.selectDot(nextDot);
     }
 
     private selectRoad(nextRoad: Road) {
-      Mode.getMode(this.state.toolbarState).selectRoad(nextRoad);
+      this.mode.selectRoad(nextRoad);
+    }
+
+    private selectDistrict(nextDistrict: District) {
+      this.mode.selectDistrict(nextDistrict);
     }
   }
 </script>
 
 <style scoped lang="scss">
   #canvas {
-    background-color: lightgray;
+    background-color: #fbfbfb;
+    cursor: default;
+  }
 
-    circle {
-      fill: white;
-      cursor: pointer;
+  circle {
+    fill: darkgray;
+    cursor: pointer;
 
-      &:hover, &.selected:hover {
-        fill: black;
-        stroke: black;
-        stroke-width: 5px;
-      }
-
-      &.selected {
-        fill: darkred;
-        stroke: darkred;
-        stroke-width: 5px;
-      }
+    &:hover, &.selected:hover {
+      fill: black;
+      stroke: black;
+      stroke-width: 5px;
     }
 
+    &.selected {
+      fill: darkred;
+      stroke: darkred;
+      stroke-width: 5px;
+    }
+  }
+
+  path {
+    stroke: white;
+
+    &.selected:hover {
+      fill: black;
+      stroke: black;
+      stroke-width: 10px;
+    }
+
+    &.type-border {
+      stroke: lightgray;
+    }
+
+    &.type-highway {
+      stroke: black;
+    }
+
+    &.type-street {
+      stroke: darkgray;
+    }
+
+    &.selected {
+      stroke-width: 10px;
+      stroke: #2181A1;
+    }
+  }
+
+  polygon {
+    &.district-wasteland {
+      fill: #e0e2e5;
+    }
+
+    &.district-water {
+      fill: lightblue;
+    }
+  }
+
+  .map-buildroad,
+  .map-markdistrict {
     path {
-      stroke: white;
-
-      &.type-border {
-        stroke: #bcbcbc;
-      }
-
-      &.type-highway {
-        stroke: black;
-      }
-
-      &.type-street {
-        stroke: gray;
-      }
-
-      &.error {
-        stroke: red;
-      }
-
-      &.warning {
-        stroke: orange;
-      }
-
-      &:hover, &.selected:hover {
+      &:hover {
         fill: black;
         stroke: black;
         stroke-width: 10px;
       }
-
-      &.selected {
-        stroke-width: 10px;
-      }
     }
+  }
 
+  .map-editdistrict {
     polygon {
-      &.district-wasteland {
-        fill: #e0e2e5;
-      }
-
-      &.district-water {
-        fill: lightblue;
+      &:hover {
+        fill: black;
+        stroke: black;
+        stroke-width: 10px;
       }
     }
   }

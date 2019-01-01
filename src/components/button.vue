@@ -14,7 +14,8 @@
 
   const Icons: IconMap = {
     [ButtonType.BuildRoad]: 'mdi-road',
-    [ButtonType.MarkDistrict]: 'mdi-home',
+    [ButtonType.MarkDistrict]: 'mdi-home-plus',
+    [ButtonType.EditDistrict]: 'mdi-home-city',
   };
 
   @Component

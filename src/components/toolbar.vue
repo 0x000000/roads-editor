@@ -2,6 +2,7 @@
   <div class="toolbar">
     <Button :type="ButtonType.BuildRoad"></Button>
     <Button :type="ButtonType.MarkDistrict"></Button>
+    <Button :type="ButtonType.EditDistrict"></Button>
   </div>
 </template>
 
@@ -26,6 +27,6 @@
 
 <style scoped lang="scss">
   .toolbar {
-    margin-bottom: 10px;
+    margin: 20px 0 10px 19px;
   }
 </style>

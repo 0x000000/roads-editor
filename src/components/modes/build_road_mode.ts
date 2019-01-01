@@ -71,6 +71,4 @@ export class BuildRoadMode extends Mode {
       this.selectedRoad = undefined;
     }
   }
-
-  public onEnterKey() {}
 }

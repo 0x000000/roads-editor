@@ -1,15 +1,11 @@
 import {Mode} from '@/components/modes';
-import {Dot} from '@/models/dot';
 import Road from '@/models/road';
-import store, {RootState} from '@/store/store';
+import store from '@/store/store';
 import District from '@/models/district';
 import {MutationName} from '@/mutations/mutations';
 
 export class MarkDistrictMode extends Mode {
   private selectedRoads: Road[] = [];
-
-  public selectDot(nextDot: Dot): void {
-  }
 
   public selectRoad(nextRoad: Road): void {
     if (!this.selectedRoads.includes(nextRoad)) {
@@ -19,9 +15,6 @@ export class MarkDistrictMode extends Mode {
       this.selectedRoads.splice(this.selectedRoads.indexOf(nextRoad), 1);
       nextRoad.deselect();
     }
-  }
-
-  public onDeleteKey(): void {
   }
 
   public onEscKey(): void {
@@ -35,9 +28,5 @@ export class MarkDistrictMode extends Mode {
       store.commit(MutationName.BuildDistrict, newDistrict);
       this.onEscKey();
     }
-  }
-
-  private get state(): RootState {
-    return store.state as RootState;
   }
 }
