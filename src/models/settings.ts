@@ -3,9 +3,8 @@ export interface SettingsState {
 }
 
 export default class Settings implements SettingsState {
-  public roadId!: number;
-
   private static instance: Settings | undefined;
+
   public static getInstance(): Settings {
     if (!this.instance) {
       this.instance = new Settings();
@@ -14,10 +13,12 @@ export default class Settings implements SettingsState {
     return this.instance;
   }
 
+  public roadId!: number;
+
   private constructor() {
   }
 
-  public update(state: SettingsState): Settings {
+  public initialize(state: SettingsState): Settings {
     this.roadId = state.roadId;
     return this;
   }

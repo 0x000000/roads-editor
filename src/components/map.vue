@@ -5,6 +5,11 @@
     </div>
 
     <svg id="canvas" :width="mapSize.width" :height="mapSize.height">
+      <polygon v-for="district in districts"
+               :points="district.svgPoints"
+               :class="district.classes">
+      </polygon>
+
       <path v-for="road in roads"
             :d="road.d"
             :class="road.classes"
@@ -35,6 +40,7 @@
   import Road, {RoadType} from '../models/road';
   import hotkeys from 'hotkeys-js';
   import {Mode} from './modes';
+  import District from '@/models/district';
 
   @Component
   export default class Map extends Vue {
@@ -52,8 +58,6 @@
     private mounted() {
       Mode.setup({
         dots: this.dots,
-        selectedDot: this.selectedDot,
-        selectedRoad: this.selectedRoad,
       });
 
       hotkeys('esc', () => {
@@ -62,6 +66,10 @@
 
       hotkeys('delete, backspace', () => {
         Mode.getMode(this.state.toolbarState).onDeleteKey();
+      });
+
+      hotkeys('enter', () => {
+        Mode.getMode(this.state.toolbarState).onEnterKey();
       });
     }
 
@@ -78,6 +86,10 @@
 
     get roads(): Road[] {
       return this.state.roads;
+    }
+
+    get districts(): District[] {
+      return this.state.districts;
     }
 
     get roadsCount(): number {
@@ -146,6 +158,16 @@
 
       &.selected {
         stroke-width: 10px;
+      }
+    }
+
+    polygon {
+      &.district-wasteland {
+        fill: #e0e2e5;
+      }
+
+      &.district-water {
+        fill: lightblue;
       }
     }
   }

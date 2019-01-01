@@ -4,6 +4,7 @@ import City, {CityState} from '@/models/city';
 import {ButtonType} from '@/models/inputs';
 import Road, {RoadState, RoadType} from '@/models/road';
 import Settings, {SettingsState} from '@/models/settings';
+import District, {DistrictState} from '@/models/district';
 
 const PREFIX = 'RDE_';
 const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
@@ -13,6 +14,7 @@ interface SerializationState {
   toolbarState: string;
   roads: RoadState[];
   settings: SettingsState;
+  districts: District[];
 }
 
 function cleanUpState() {
@@ -30,6 +32,7 @@ function serializeState(state: RootState): string {
     toolbarState: state.toolbarState,
     roads: state.roads,
     settings: state.settings,
+    districts: state.districts,
   };
 
   return JSON.stringify(state);
@@ -42,12 +45,13 @@ function deserializeState(rawState: string): RootState {
     city: new City(state.city),
     toolbarState: state.toolbarState as ButtonType,
     roads: (state.roads as RoadState[]).map(s => new Road(s)),
-    settings: Settings.getInstance().update(state.settings),
+    settings: Settings.getInstance().initialize(state.settings),
+    districts: (state.districts as DistrictState[]).map(d => new District(d)),
   };
 }
 
 function initState(): RootState {
-  const settings: Settings = Settings.getInstance().update({
+  const settings: Settings = Settings.getInstance().initialize({
     roadId: 0,
   });
 
@@ -58,11 +62,14 @@ function initState(): RootState {
     Road.build({start: {x: 0, y: FIELD_HEIGHT - 1}, end: {x: FIELD_WIDTH - 1, y: FIELD_HEIGHT - 1}}, RoadType.Border),
   ];
 
+  const districts: District[] = [];
+
   return {
     city: new City({name: 'Test City'}),
     toolbarState: ButtonType.BuildRoad,
     roads,
     settings,
+    districts,
   };
 }
 

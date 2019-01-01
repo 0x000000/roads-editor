@@ -7,8 +7,6 @@ type ModeMap = { [key in ButtonType]: Mode };
 
 export interface MapResources {
   dots: Dot[];
-  selectedDot: Dot | undefined;
-  selectedRoad: Road | undefined;
 }
 
 export abstract class Mode {
@@ -32,17 +30,9 @@ export abstract class Mode {
 
   public abstract selectRoad(nextRoad: Road): void;
 
+  public abstract onEnterKey(): void;
+
   public abstract onDeleteKey(): void;
 
-  public onEscKey() {
-    if (this.map.selectedDot) {
-      this.map.selectedDot.selected = false;
-      this.map.selectedDot = undefined;
-    }
-
-    if (this.map.selectedRoad) {
-      this.map.selectedRoad.deselect();
-      this.map.selectedRoad = undefined;
-    }
-  }
+  public abstract onEscKey(): void;
 }

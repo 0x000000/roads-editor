@@ -5,11 +5,13 @@ import {MutationName} from '@/mutations/mutations';
 import store from '@/store/store';
 
 export class BuildRoadMode extends Mode {
+  private selectedDot: Dot | undefined;
+  private selectedRoad: Road | undefined;
 
   public selectDot(nextDot: Dot): void {
-    if (this.map.selectedDot === undefined) { // pick first point
-      this.map.selectedDot = nextDot;
-      this.map.selectedDot.selected = true;
+    if (this.selectedDot === undefined) { // pick first point
+      this.selectedDot = nextDot;
+      this.selectedDot.selected = true;
 
       this.map.dots.forEach((currentDot: Dot) => {
         if (
@@ -23,38 +25,52 @@ export class BuildRoadMode extends Mode {
           currentDot.shown = false;
         }
       });
-    } else if (this.map.selectedDot) { // pick second point
-      if (this.map.selectedDot !== nextDot) { // do not reset selection
-        this.map.selectedRoad = undefined;
+    } else if (this.selectedDot) { // pick second point
+      if (this.selectedDot !== nextDot) { // do not reset selection
+        this.selectedRoad = undefined;
         store.commit(
           MutationName.BuildRoad,
-          {start: nextDot.gridPosition, end: this.map.selectedDot.gridPosition}
+          {start: nextDot.gridPosition, end: this.selectedDot.gridPosition}
         );
       }
 
       this.map.dots.forEach((dot: Dot) => dot.shown = true);
-      this.map.selectedDot.selected = false;
-      this.map.selectedDot = undefined;
+      this.selectedDot.selected = false;
+      this.selectedDot = undefined;
     }
   }
 
   public selectRoad(nextRoad: Road): void {
-    if (this.map.selectedRoad) {
-      this.map.selectedRoad.deselect();
+    if (this.selectedRoad) {
+      this.selectedRoad.deselect();
     }
 
-    if (this.map.selectedRoad !== nextRoad) {
-      this.map.selectedRoad = nextRoad;
-      this.map.selectedRoad.select();
+    if (this.selectedRoad !== nextRoad) {
+      this.selectedRoad = nextRoad;
+      this.selectedRoad.select();
     } else {
-      this.map.selectedRoad = undefined;
+      this.selectedRoad = undefined;
     }
   }
 
   public onDeleteKey(): void {
-    if (this.map.selectedRoad) {
-      store.commit(MutationName.DeleteRoad, this.map.selectedRoad);
-      this.map.selectedRoad = undefined;
+    if (this.selectedRoad) {
+      store.commit(MutationName.DeleteRoad, this.selectedRoad);
+      this.selectedRoad = undefined;
     }
   }
+
+  public onEscKey() {
+    if (this.selectedDot) {
+      this.selectedDot.selected = false;
+      this.selectedDot = undefined;
+    }
+
+    if (this.selectedRoad) {
+      this.selectedRoad.deselect();
+      this.selectedRoad = undefined;
+    }
+  }
+
+  public onEnterKey() {}
 }

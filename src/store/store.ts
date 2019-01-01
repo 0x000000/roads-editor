@@ -6,6 +6,7 @@ import {ButtonType} from '@/models/inputs';
 import {mutations} from '@/mutations/mutations';
 import Road from '@/models/road';
 import Settings from '@/models/settings';
+import District from '@/models/district';
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export interface RootState {
   toolbarState: ButtonType;
   roads: Road[];
   settings: Settings;
+  districts: District[];
 }
 
 const store: StoreOptions<RootState> = {
