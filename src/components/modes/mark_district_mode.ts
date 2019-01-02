@@ -10,15 +10,15 @@ export class MarkDistrictMode extends Mode {
   public selectRoad(nextRoad: Road): void {
     if (!this.selectedRoads.includes(nextRoad)) {
       this.selectedRoads.push(nextRoad);
-      nextRoad.select();
+      nextRoad.selected = true;
     } else {
       this.selectedRoads.splice(this.selectedRoads.indexOf(nextRoad), 1);
-      nextRoad.deselect();
+      nextRoad.selected = false;
     }
   }
 
   public onEscKey(): void {
-    this.selectedRoads.forEach(road => road.deselect());
+    this.selectedRoads.forEach(road => road.selected = false);
     this.selectedRoads = [];
   }
 

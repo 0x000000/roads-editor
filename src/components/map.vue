@@ -172,7 +172,7 @@
 
     &.selected {
       stroke-width: 10px;
-      stroke: #2181A1;
+      stroke: #8A3324;
     }
   }
 

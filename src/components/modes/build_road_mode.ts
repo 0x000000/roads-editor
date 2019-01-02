@@ -42,12 +42,12 @@ export class BuildRoadMode extends Mode {
 
   public selectRoad(nextRoad: Road): void {
     if (this.selectedRoad) {
-      this.selectedRoad.deselect();
+      this.selectedRoad.selected = false;
     }
 
     if (this.selectedRoad !== nextRoad) {
       this.selectedRoad = nextRoad;
-      this.selectedRoad.select();
+      this.selectedRoad.selected = true;
     } else {
       this.selectedRoad = undefined;
     }
@@ -67,7 +67,7 @@ export class BuildRoadMode extends Mode {
     }
 
     if (this.selectedRoad) {
-      this.selectedRoad.deselect();
+      this.selectedRoad.selected = false;
       this.selectedRoad = undefined;
     }
   }

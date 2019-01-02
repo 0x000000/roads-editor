@@ -33,7 +33,7 @@ export default class Road implements RoadState {
   public id: number;
   public type: RoadType;
   public path: Path;
-  private selected: boolean = false;
+  public selected: boolean = false;
 
   public static recalculateNetwork(newPath: Path, oldRoads: Road[]): Road[] {
     newPath = normalizePath(newPath);
@@ -135,14 +135,6 @@ export default class Road implements RoadState {
     const toY: number = (this.path.end.y + 1) * POINT_DISTANCE;
 
     return `M ${fromX} ${fromY} L ${toX} ${toY}`;
-  }
-
-  public select() {
-    this.selected = true;
-  }
-
-  public deselect() {
-    this.selected = false;
   }
 
   private splitBy(point: Point): Road[] {
