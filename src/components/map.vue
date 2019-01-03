@@ -7,7 +7,8 @@
 
       <polygon v-for="district in districts"
                :points="district.svgPoints"
-               :class="district.classes">
+               :class="district.classes"
+               @click="selectDistrict(district)">
       </polygon>
 
       <path v-for="road in roads"
@@ -127,6 +128,9 @@
 </script>
 
 <style scoped lang="scss">
+  $selectedColor: #FD783F;
+  $hoverColor: #FF4D00;
+
   #canvas {
     background-color: #fbfbfb;
     cursor: default;
@@ -137,14 +141,14 @@
     cursor: pointer;
 
     &:hover, &.selected:hover {
-      fill: black;
-      stroke: black;
+      fill: $hoverColor;
+      stroke: $hoverColor;
       stroke-width: 5px;
     }
 
     &.selected {
-      fill: darkred;
-      stroke: darkred;
+      fill: $selectedColor;
+      stroke: $selectedColor;
       stroke-width: 5px;
     }
   }
@@ -153,8 +157,8 @@
     stroke: white;
 
     &.selected:hover {
-      fill: black;
-      stroke: black;
+      fill: $hoverColor;
+      stroke: $hoverColor;
       stroke-width: 10px;
     }
 
@@ -172,7 +176,7 @@
 
     &.selected {
       stroke-width: 10px;
-      stroke: #8A3324;
+      stroke: $selectedColor;
     }
   }
 
@@ -181,8 +185,29 @@
       fill: #e0e2e5;
     }
 
+    &.district-industrial {
+      fill: #FA4C4A;
+    }
+
+    &.district-residential {
+      fill: #FCC038;
+    }
+
+    &.district-commercial {
+      fill: #9F89CF;
+    }
+
+    &.district-forest {
+      fill: #22B860;
+    }
+
     &.district-water {
-      fill: lightblue;
+      fill: #5ACAEE;
+    }
+
+    &.selected {
+      stroke: $selectedColor;
+      stroke-width: 5px;
     }
   }
 
@@ -190,8 +215,8 @@
   .map-markdistrict {
     path {
       &:hover {
-        fill: black;
-        stroke: black;
+        fill: $hoverColor;
+        stroke: $hoverColor;
         stroke-width: 10px;
       }
     }
@@ -200,9 +225,8 @@
   .map-editdistrict {
     polygon {
       &:hover {
-        fill: black;
-        stroke: black;
-        stroke-width: 10px;
+        stroke: $hoverColor;
+        stroke-width: 5px;
       }
     }
   }

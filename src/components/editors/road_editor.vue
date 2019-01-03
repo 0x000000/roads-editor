@@ -14,12 +14,19 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from 'vue-property-decorator';
+  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
   import Road, {RoadType} from '@/models/road';
+  import store from '@/store/store';
+  import {MutationName} from '@/mutations/mutations';
 
   @Component
   export default class RoadEditor extends Vue {
     @Prop() private road!: Road;
+
+    @Watch('road', {deep: true})
+    private onRoadChanged() {
+      store.commit(MutationName.SaveState);
+    }
 
     private data() {
       return {

@@ -43,6 +43,7 @@ export default class District implements DistrictState {
   public roads: Road[];
   public points: Point[];
   public type: DistrictType;
+  public selected: boolean = false;
 
   constructor(state: DistrictState) {
     this.roads = state.roads;
@@ -67,8 +68,11 @@ export default class District implements DistrictState {
     return pointsCoordinates.join(' ');
   }
 
-  public get classes() {
-    return [`district-${this.type.toLowerCase()}`];
+  public get classes(): string {
+    return [
+      `district-${this.type.toLowerCase()}`,
+      this.selected ? 'selected' : '',
+    ].join(' ');
   }
 
   private orderedPoints(roads: Road[]): Point[] {
@@ -78,10 +82,12 @@ export default class District implements DistrictState {
 
     const points: Point[] = [nextPoint];
 
-    while (comparePoints(nextPoint,  lastPoint) !== 0) {
+    while (comparePoints(nextPoint, lastPoint) !== 0) {
       let nextRoad: Road | undefined;
       roads.forEach(r => {
-        if (sortedRoads.includes(r)) { return; }
+        if (sortedRoads.includes(r)) {
+          return;
+        }
 
         if (comparePoints(r.path.start, nextPoint) === 0) {
           nextPoint = r.path.end;

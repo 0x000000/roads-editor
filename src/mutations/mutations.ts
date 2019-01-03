@@ -11,6 +11,7 @@ export enum MutationName {
   BuildRoad = 'BuildRoad',
   DeleteRoad = 'DeleteRoad',
   BuildDistrict = 'BuildDistrict',
+  SaveState = 'SaveState',
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -28,6 +29,9 @@ export const mutations: MutationTree<RootState> = {
   },
   [MutationName.BuildDistrict]: (state, district: District) => {
     state.districts.push(district);
+    saveState(state);
+  },
+  [MutationName.SaveState]: (state) => {
     saveState(state);
   },
 };
