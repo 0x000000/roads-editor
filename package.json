@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@mdi/font": "^3.3.92",
+    "@types/lodash": "^4.14.119",
     "hotkeys-js": "^3.4.1",
+    "lodash": "^4.17.11",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.21",
     "vue-class-component": "^6.0.0",
