@@ -72,10 +72,10 @@ import {DistrictType} from '../models/district';
 
     get districtsDetailedCount(): string {
       const counter = {
-        [DistrictType.Residential]: 10,
-        [DistrictType.Commercial]: 10,
-        [DistrictType.Industrial]: 10,
-        [DistrictType.Forest]: 10,
+        [DistrictType.Residential]: 0,
+        [DistrictType.Commercial]: 0,
+        [DistrictType.Industrial]: 0,
+        [DistrictType.Forest]: 0,
         [DistrictType.Wasteland]: 0,
         [DistrictType.Water]: 0,
       };
@@ -87,7 +87,7 @@ import {DistrictType} from '../models/district';
         counter[DistrictType.Commercial],
         counter[DistrictType.Industrial],
         counter[DistrictType.Forest],
-      ].join(',')
+      ].join(',');
     }
 
     private selectButton() {
