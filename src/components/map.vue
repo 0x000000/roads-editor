@@ -129,7 +129,7 @@
 
 <style scoped lang="scss">
   $selectedColor: #FD783F;
-  $hoverColor: #FF4D00;
+  $hoverColor: black;
 
   #canvas {
     background-color: #fbfbfb;
