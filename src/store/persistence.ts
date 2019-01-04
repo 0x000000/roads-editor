@@ -40,13 +40,15 @@ function serializeState(state: RootState): string {
 
 function deserializeState(rawState: string): RootState {
   const state: SerializationState = JSON.parse(rawState);
+  const roads = (state.roads as RoadState[]).map(s => new Road(s));
+  const districts = District.restoreLinks(state.districts as DistrictState[], roads);
 
   return {
     city: new City(state.city),
     toolbarState: state.toolbarState as ButtonType,
-    roads: (state.roads as RoadState[]).map(s => new Road(s)),
+    roads,
     settings: Settings.getInstance().initialize(state.settings),
-    districts: (state.districts as DistrictState[]).map(d => new District(d)),
+    districts,
   };
 }
 

@@ -40,6 +40,26 @@ export default class District implements DistrictState {
     }
   }
 
+  public static restoreLinks(districtsState: DistrictState[], roads: Road[]): District[] {
+    return districtsState.map(state => {
+      state.roads = state.roads.map(sr => {
+        return roads.find(r => r.id === sr.id) as Road;
+      });
+
+      return new District(state);
+    });
+  }
+
+  public static detectMissingRoads(districts: District[], missingRoads: Road[]): District[] {
+    const affectedDistricts = new Set<District>();
+
+    missingRoads.forEach(r => {
+      districts.filter(d => d.hasRoad(r)).forEach(d => affectedDistricts.add(d));
+    });
+
+    return [...affectedDistricts.values()];
+  }
+
   public roads: Road[];
   public points: Point[];
   public type: DistrictType;

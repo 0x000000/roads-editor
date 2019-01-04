@@ -5,6 +5,7 @@ import {saveState} from '@/store/persistence';
 import {Path} from '@/models/geometry';
 import Road from '@/models/road';
 import District from '@/models/district';
+import difference from 'lodash/difference';
 
 export enum MutationName {
   ChangeToolbarState = 'ChangeToolbarState',
@@ -14,17 +15,36 @@ export enum MutationName {
   SaveState = 'SaveState',
 }
 
+function filterDistricts(districts: District[], newRoads: Road[], oldRoads: Road[]): District[] {
+  const districtToDelete = District.detectMissingRoads(
+    districts,
+    difference(oldRoads, newRoads)
+  );
+
+  return districts.filter(d => !districtToDelete.includes(d));
+}
+
 export const mutations: MutationTree<RootState> = {
   [MutationName.ChangeToolbarState]: (state, type: ButtonType) => {
     state.toolbarState = type;
     saveState(state);
   },
   [MutationName.BuildRoad]: (state, path: Path) => {
-    state.roads = Road.recalculateNetwork(path, state.roads);
+    const oldRoads = state.roads;
+    const newRoads = Road.recalculateNetwork(path, [...state.roads]);
+
+    state.districts = filterDistricts(state.districts, newRoads, oldRoads);
+    state.roads = newRoads;
+
     saveState(state);
   },
   [MutationName.DeleteRoad]: (state, road: Road) => {
-    state.roads = Road.deleteRoad(road, state.roads);
+    const oldRoads = state.roads;
+    const newRoads = Road.deleteRoad(road, [...state.roads]);
+
+    state.districts = filterDistricts(state.districts, newRoads, oldRoads);
+    state.roads = newRoads;
+
     saveState(state);
   },
   [MutationName.BuildDistrict]: (state, district: District) => {

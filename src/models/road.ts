@@ -43,7 +43,9 @@ export default class Road implements RoadState {
       return oldRoads; // crossing outside of the dot position
     }
 
-    const newRoads: Road[] = [];
+    const newRoads = new Set<Road>();
+    const touchedRoads = new Set<Road>();
+
     const intersectionPoints: Map<number, Point> = new Map();
     intersections.forEach(i => {
       if (i.result === IntersectionResult.Intersected) {
@@ -51,13 +53,15 @@ export default class Road implements RoadState {
           comparePoints(i.point, i.road.path.start) === 0 ||
           comparePoints(i.point, i.road.path.end) === 0
         ) {
-          newRoads.push(i.road);
+          newRoads.add(i.road);
+          touchedRoads.add(i.road); // this road doesn't directly modified but needs to be changed anyway
         } else {
-          newRoads.push(...i.road.splitBy(i.point));
-          intersectionPoints.set(pointWeight(i.point), i.point);
+          i.road.splitBy(i.point).forEach(r => newRoads.add(r));
         }
+
+        intersectionPoints.set(pointWeight(i.point), i.point);
       } else {
-        newRoads.push(i.road);
+        newRoads.add(i.road);
       }
     });
 
@@ -66,10 +70,18 @@ export default class Road implements RoadState {
 
     const points = [...intersectionPoints.values()].sort(comparePoints);
     for (let step = 0; step < points.length - 1; step++) {
-      newRoads.push(Road.build({start: points[step], end: points[step + 1]}, RoadType.Street));
+      newRoads.add(Road.build({start: points[step], end: points[step + 1]}, RoadType.Street));
     }
 
-    return this.rejoinLines(newRoads);
+    const completedRoads: Road[] = [...newRoads.values()].map(road => {
+      if (touchedRoads.has(road)) { // change id to refresh all refs for this road
+        return road.clone();
+      } else {
+        return road;
+      }
+    });
+
+    return this.rejoinLines(completedRoads);
   }
 
   public static rejoinLines(oldRoads: Road[]): Road[] {
@@ -112,7 +124,7 @@ export default class Road implements RoadState {
 
   public static build(path: Path, type: RoadType): Road {
     const id = Settings.getInstance().nextRoadId;
-    return  new Road({path, type, id});
+    return new Road({path, type, id});
   }
 
   constructor(state: RoadState) {
@@ -164,5 +176,9 @@ export default class Road implements RoadState {
     } else {
       return {road: this, point: EMPTY_POINT, result: IntersectionResult.None};
     }
+  }
+
+  private clone() {
+    return Road.build(this.path, this.type);
   }
 }
