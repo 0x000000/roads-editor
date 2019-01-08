@@ -2,9 +2,29 @@ import Road from '@/models/road';
 import {comparePoints, Path, Point, pointWeight} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 
+export const RecommendedPopulationByDensity = {
+  1: 5,
+  2: 10,
+  3: 20,
+  4: 30,
+  5: 40,
+};
+
+export type Density = 1 | 2 | 3 | 4 | 5;
+export type Wealth  = 1 | 2 | 3 | 4 | 5;
+
+export interface DistrictTier {
+  density: Density;
+  wealth: Wealth;
+  maxPopulation: number;
+}
+
 export interface DistrictState {
   roads: Road[];
   type: DistrictType;
+  t1: DistrictTier;
+  t2: DistrictTier;
+  t3: DistrictTier;
 }
 
 export enum DistrictType {
@@ -34,7 +54,13 @@ export default class District implements DistrictState {
     const eachPointHasPair = [...pointsPairs.values()].every(v => v === 2);
 
     if (pointsEqualsRoads && eachPointHasPair) {
-      return new District({roads, type: DistrictType.Wasteland});
+      return new District({
+        roads,
+        type: DistrictType.Wasteland,
+        t1: {density: 1, wealth: 1, maxPopulation: 5},
+        t2: {density: 1, wealth: 1, maxPopulation: 5},
+        t3: {density: 1, wealth: 1, maxPopulation: 5},
+      });
     } else {
       return undefined;
     }
@@ -63,12 +89,18 @@ export default class District implements DistrictState {
   public roads: Road[];
   public points: Point[];
   public type: DistrictType;
+  public t1: DistrictTier;
+  public t2: DistrictTier;
+  public t3: DistrictTier;
   public selected: boolean = false;
 
   constructor(state: DistrictState) {
     this.roads = state.roads;
     this.type = state.type || DistrictType.Wasteland;
     this.points = this.orderedPoints(this.roads);
+    this.t1 = state.t1;
+    this.t2 = state.t2;
+    this.t3 = state.t3;
   }
 
   public hasRoad(road: Road): boolean {

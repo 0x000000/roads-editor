@@ -1,4 +1,4 @@
-export const BUILD_VERSION: number = 25;
+export const BUILD_VERSION: number = 28;
 export const POINT_DISTANCE = 20;
 export const FIELD_WIDTH = 30;
 export const FIELD_HEIGHT = 30;

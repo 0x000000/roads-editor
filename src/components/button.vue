@@ -1,6 +1,3 @@
-import {DistrictType} from '../models/district';
-import {DistrictType} from '../models/district';
-import {DistrictType} from '../models/district';
 <template>
   <span class="button">
     <button class="mdi"
@@ -13,7 +10,7 @@ import {DistrictType} from '../models/district';
       <span v-show="type === ButtonType.MarkDistrict">Waste: <b>{{wasteDistsCount}}</b></span>
 
       <span v-show="type === ButtonType.EditDistrict"><b>{{districtsDetailedCount}}</b></span>
-      <span v-show="type === ButtonType.EditDistrict">Pop: <b>{{0}}</b></span>
+      <span v-show="type === ButtonType.EditDistrict">P: <b>{{districtsDetailedPops}}</b></span>
     </button>
   </span>
 </template>
@@ -21,8 +18,8 @@ import {DistrictType} from '../models/district';
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator';
   import {ButtonType} from '@/models/inputs';
-  import {RootState} from '../store/store';
-  import {MutationName} from '../mutations/mutations';
+  import {RootState} from '@/store/store';
+  import {MutationName} from '@/mutations/mutations';
   import {RoadType} from '@/models/road';
   import {DistrictType} from '@/models/district';
 
@@ -88,6 +85,23 @@ import {DistrictType} from '../models/district';
         counter[DistrictType.Industrial],
         counter[DistrictType.Forest],
       ].join(',');
+    }
+
+    get districtsDetailedPops(): string {
+      let maxPop = 0;
+      let maxWork = 0;
+
+      this.state.districts.forEach(d => {
+        if (d.type === DistrictType.Residential) {
+          maxPop += d.t3.maxPopulation;
+        } else {
+          maxWork += d.t3.maxPopulation;
+        }
+      });
+
+      return [
+        maxPop, maxWork,
+      ].join('/');
     }
 
     private selectButton() {

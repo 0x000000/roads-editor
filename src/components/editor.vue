@@ -1,4 +1,3 @@
-import {ButtonType} from '../models/inputs';
 <template>
   <div class="editor">
     <div class="editor-content">
@@ -56,11 +55,29 @@ import {ButtonType} from '../models/inputs';
     margin-left: 15px;
   }
 
-  .editor-content {
-    position: fixed;
+  /deep/ label {
+    font-size: 15px;
   }
 
-  input {
+
+  /deep/ label,
+  /deep/ input,
+  /deep/ select {
     display: block;
   }
+
+  /deep/ input,
+  /deep/ select {
+    margin-bottom: 14px;
+    font-size: 16px;
+    padding: 3px 5px;
+    min-width: 200px;
+  }
+
+  /deep/ select {
+    height: 30px;
+    min-width: 215px;
+  }
+
+
 </style>
