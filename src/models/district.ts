@@ -109,7 +109,7 @@ export default class District implements DistrictState {
     this.t2 = state.t2;
     this.t3 = state.t3;
 
-    this.id = this.roads.map(r => r.id).sort().join(",");
+    this.id = this.roads.map(r => r.id).sort().join(',');
   }
 
   public hasRoad(road: Road): boolean {

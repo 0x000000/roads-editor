@@ -62,15 +62,19 @@
       });
 
       hotkeys('esc', () => {
-        Mode.getMode(this.state.toolbarState).onEscKey();
+        this.mode.onEscKey();
       });
 
       hotkeys('delete, backspace', () => {
-        Mode.getMode(this.state.toolbarState).onDeleteKey();
+        this.mode.onDeleteKey();
       });
 
       hotkeys('enter', () => {
-        Mode.getMode(this.state.toolbarState).onEnterKey();
+        this.mode.onEnterKey();
+      });
+
+      hotkeys('shift+r,shift+c,shift+i,shift+f,shift+w', (_, handler) => {
+        this.mode.onKey(handler.key);
       });
     }
 

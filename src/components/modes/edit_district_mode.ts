@@ -1,5 +1,5 @@
 import {Mode} from '@/components/modes';
-import District from '@/models/district';
+import District, {DistrictType} from '@/models/district';
 import store from '@/store/store';
 import {MutationName} from '@/mutations/mutations';
 
@@ -23,6 +23,18 @@ export class EditDistrictMode extends Mode {
   public onDeleteKey(): void {
     if (this.selectedDistrict) {
       store.commit(MutationName.DeleteDistrict, this.selectedDistrict);
+    }
+  }
+
+  public onKey(key: string) {
+    if (!this.selectedDistrict) { return; }
+
+    switch (key) {
+      case 'shift+r': this.selectedDistrict.type = DistrictType.Residential; break;
+      case 'shift+c': this.selectedDistrict.type = DistrictType.Commercial; break;
+      case 'shift+i': this.selectedDistrict.type = DistrictType.Industrial; break;
+      case 'shift+f': this.selectedDistrict.type = DistrictType.Forest; break;
+      case 'shift+w': this.selectedDistrict.type = DistrictType.Water; break;
     }
   }
 
