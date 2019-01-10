@@ -15,7 +15,8 @@
             :d="road.d"
             :class="road.classes"
             :stroke-width="ROAD_WIDTH"
-            @click="selectRoad(road)">
+            @click="selectRoad(road)"
+            @mouseover.alt="onRoadMouseover(road)">
       </path>
 
       <g v-show="showDots">
@@ -123,6 +124,10 @@
 
     private selectDistrict(nextDistrict: District) {
       this.mode.selectDistrict(nextDistrict);
+    }
+
+    private onRoadMouseover(road: Road) {
+      this.mode.onRoadMouseover(road);
     }
   }
 </script>

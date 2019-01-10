@@ -23,10 +23,18 @@ export class MarkDistrictMode extends Mode {
   }
 
   public onEnterKey(): void {
+    if (District.districtExists(this.selectedRoads, this.state.districts)) {
+      return;
+    }
+
     const newDistrict: District | undefined = District.detectNewDistrict(this.selectedRoads);
     if (newDistrict) {
       store.commit(MutationName.BuildDistrict, newDistrict);
       this.onEscKey();
     }
+  }
+
+  public onRoadMouseover(road: Road): void {
+    this.selectRoad(road);
   }
 }

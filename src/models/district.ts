@@ -66,6 +66,11 @@ export default class District implements DistrictState {
     }
   }
 
+  public static districtExists(roads: Road[], districts: District[]): boolean {
+    const districtId = roads.map(r => r.id).sort().join(',');
+    return districts.some(d => d.id === districtId);
+  }
+
   public static restoreLinks(districtsState: DistrictState[], roads: Road[]): District[] {
     return districtsState.map(state => {
       state.roads = state.roads.map(sr => {
@@ -92,7 +97,9 @@ export default class District implements DistrictState {
   public t1: DistrictTier;
   public t2: DistrictTier;
   public t3: DistrictTier;
+
   public selected: boolean = false;
+  public id: string;
 
   constructor(state: DistrictState) {
     this.roads = state.roads;
@@ -101,6 +108,8 @@ export default class District implements DistrictState {
     this.t1 = state.t1;
     this.t2 = state.t2;
     this.t3 = state.t3;
+
+    this.id = this.roads.map(r => r.id).sort().join(",");
   }
 
   public hasRoad(road: Road): boolean {
