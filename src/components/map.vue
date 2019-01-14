@@ -183,6 +183,10 @@
       stroke: darkgray;
     }
 
+    &.type-water {
+      stroke: #0c88ee;
+    }
+
     &.selected {
       stroke-width: 10px;
       stroke: $selectedColor;

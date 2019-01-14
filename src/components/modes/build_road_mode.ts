@@ -61,6 +61,10 @@ export class BuildRoadMode extends Mode {
     }
   }
 
+  public onRoadMouseover(road: Road) {
+    this.selectRoad(road);
+  }
+
   public onEscKey() {
     if (this.selectedDot) {
       this.selectedDot.selected = false;

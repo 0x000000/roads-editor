@@ -8,6 +8,7 @@
         <option :value="RoadType.Street">Street</option>
         <option :value="RoadType.Highway">Highway</option>
         <option :value="RoadType.Border">Border</option>
+        <option :value="RoadType.Water">Water</option>
       </select>
     </label>
   </div>
