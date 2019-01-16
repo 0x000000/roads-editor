@@ -29,13 +29,30 @@
                 @click="selectDot(dot)">
         </circle>
       </g>
+
+      <g v-show="showCrossroads">
+        <circle v-for="crossroad in crossroads"
+                :r="CROSSROAD_DOT_RADIUS"
+                :cx="crossroad.dot.mapPosition.x"
+                :cy="crossroad.dot.mapPosition.y"
+                >
+        </circle>
+      </g>
+
     </svg>
   </div>
 </template>
 
 <script lang="ts">
   import {Component, Vue, Watch} from 'vue-property-decorator';
-  import {DOT_RADIUS, FIELD_HEIGHT, FIELD_WIDTH, POINT_DISTANCE, ROAD_WIDTH} from '../config';
+  import {
+    CROSSROAD_DOT_RADIUS,
+    DOT_RADIUS,
+    FIELD_HEIGHT,
+    FIELD_WIDTH,
+    POINT_DISTANCE,
+    ROAD_WIDTH
+  } from '../config';
   import {RootState} from '../store/store';
   import {Dot} from '../models/dot';
   import {Rect} from '../models/geometry';
@@ -44,6 +61,7 @@
   import {Mode} from './modes';
   import District from '@/models/district';
   import {ButtonType} from '@/models/inputs';
+  import Crossroad from '@/models/crossroad';
 
   @Component
   export default class Map extends Vue {
@@ -53,6 +71,7 @@
       return {
         DOT_RADIUS,
         ROAD_WIDTH,
+        CROSSROAD_DOT_RADIUS,
       };
     }
 
@@ -93,6 +112,10 @@
       return this.state.roads;
     }
 
+    get crossroads(): Crossroad[] {
+      return this.state.crossroads;
+    }
+
     get districts(): District[] {
       return this.state.districts;
     }
@@ -108,6 +131,10 @@
 
     get showDots(): boolean {
       return this.toolbarState === ButtonType.BuildRoad;
+    }
+
+    get showCrossroads(): boolean {
+      return true;
     }
 
     get mapClasses(): string[] {

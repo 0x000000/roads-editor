@@ -7,6 +7,7 @@ import {mutations} from '@/mutations/mutations';
 import Road from '@/models/road';
 import Settings from '@/models/settings';
 import District from '@/models/district';
+import Crossroad from '@/models/crossroad';
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ export interface RootState {
   roads: Road[];
   settings: Settings;
   districts: District[];
+  crossroads: Crossroad[];
 }
 
 const store: StoreOptions<RootState> = {

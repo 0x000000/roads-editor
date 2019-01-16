@@ -6,6 +6,7 @@ import {Path} from '@/models/geometry';
 import Road from '@/models/road';
 import District from '@/models/district';
 import difference from 'lodash/difference';
+import Crossroad, {CrossroadState} from '@/models/crossroad';
 
 export enum MutationName {
   ChangeToolbarState = 'ChangeToolbarState',
@@ -36,6 +37,7 @@ export const mutations: MutationTree<RootState> = {
 
     state.districts = filterDistricts(state.districts, newRoads, oldRoads);
     state.roads = newRoads;
+    state.crossroads = Crossroad.recalculateCrossroads(newRoads, state.crossroads);
 
     saveState(state);
   },
@@ -45,6 +47,7 @@ export const mutations: MutationTree<RootState> = {
 
     state.districts = filterDistricts(state.districts, newRoads, oldRoads);
     state.roads = newRoads;
+    state.crossroads = Crossroad.recalculateCrossroads(newRoads, state.crossroads);
 
     saveState(state);
   },

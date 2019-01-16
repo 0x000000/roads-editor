@@ -31,11 +31,9 @@
       <label>
         Wealth
         <select v-model="district[tier].wealth">
-          <option :value="1">1 - Poor</option>
-          <option :value="2">2 - Working class</option>
-          <option :value="3">3 - Middle class</option>
-          <option :value="4">4 - Upper middle class</option>
-          <option :value="5">5 - Upper class</option>
+          <option :value="1">1 - Working class</option>
+          <option :value="2">2 - Middle class</option>
+          <option :value="3">3 - Upper class</option>
         </select>
       </label>
 

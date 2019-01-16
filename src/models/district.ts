@@ -11,7 +11,7 @@ export const RecommendedPopulationByDensity = {
 };
 
 export type Density = 1 | 2 | 3 | 4 | 5;
-export type Wealth  = 1 | 2 | 3 | 4 | 5;
+export type Wealth  = 1 | 2 | 3;
 
 export interface DistrictTier {
   density: Density;
