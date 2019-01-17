@@ -96,17 +96,8 @@
       let maxWork = 0;
 
       this.state.districts.forEach(d => {
-        switch (d.type) {
-          case DistrictType.Residential:
-            maxPop += d.t3.maxPopulation;
-            break;
-
-          case DistrictType.Commercial:
-          case DistrictType.Industrial:
-          case DistrictType.Forest:
-            maxWork += d.t3.maxPopulation;
-            break;
-        }
+        maxPop += d.t3.maxPopulation;
+        maxWork += d.t3.maxWorkspace;
       });
 
       return [

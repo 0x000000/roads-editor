@@ -17,6 +17,7 @@ export interface DistrictTier {
   density: Density;
   wealth: Wealth;
   maxPopulation: number;
+  maxWorkspace: number;
 }
 
 export interface DistrictState {
@@ -57,9 +58,9 @@ export default class District implements DistrictState {
       return new District({
         roads,
         type: DistrictType.Wasteland,
-        t1: {density: 1, wealth: 1, maxPopulation: 5},
-        t2: {density: 1, wealth: 1, maxPopulation: 5},
-        t3: {density: 1, wealth: 1, maxPopulation: 5},
+        t1: {density: 1, wealth: 1, maxPopulation: 5, maxWorkspace: 0},
+        t2: {density: 1, wealth: 1, maxPopulation: 5, maxWorkspace: 0},
+        t3: {density: 1, wealth: 1, maxPopulation: 5, maxWorkspace: 0},
       });
     } else {
       return undefined;

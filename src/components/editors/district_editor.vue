@@ -37,9 +37,16 @@
         </select>
       </label>
 
+      <br/>
+
       <label>
         Max Population ~{{RecommendedPopulationByDensity[district[tier].density]}}
-        <input v-model.number="district[tier].maxPopulation" type="number" />
+        <input class="population" v-model.number="district[tier].maxPopulation" type="number"/>
+      </label>
+
+      <label>
+        Max Workspace
+        <input class="population" v-model.number="district[tier].maxWorkspace" type="number"/>
       </label>
     </div>
   </div>
