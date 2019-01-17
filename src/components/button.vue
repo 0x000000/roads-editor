@@ -6,6 +6,9 @@
       <span v-show="type === ButtonType.BuildRoad">Roads: <b>{{roadsCount}}</b></span>
       <span v-show="type === ButtonType.BuildRoad">&nbsp;</span>
 
+      <span v-show="type === ButtonType.EditCrossroad">&nbsp;</span>
+      <span v-show="type === ButtonType.EditCrossroad">&nbsp;</span>
+
       <span v-show="type === ButtonType.MarkDistrict">Dists: <b>{{districtsCount}}</b></span>
       <span v-show="type === ButtonType.MarkDistrict">Waste: <b>{{wasteDistsCount}}</b></span>
 
@@ -29,6 +32,7 @@
     [ButtonType.BuildRoad]: 'mdi-road',
     [ButtonType.MarkDistrict]: 'mdi-home-plus',
     [ButtonType.EditDistrict]: 'mdi-home-city',
+    [ButtonType.EditCrossroad]: 'mdi-transit-connection-variant',
   };
 
   @Component

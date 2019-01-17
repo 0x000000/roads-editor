@@ -1,10 +1,16 @@
 import {ButtonType} from '@/models/inputs';
-import {BuildRoadMode, EditDistrictMode, MarkDistrictMode} from '@/components/modes';
+import {
+  BuildCrossroadMode,
+  BuildRoadMode,
+  EditDistrictMode,
+  MarkDistrictMode
+} from '@/components/modes';
 import {Dot} from '@/models/dot';
 import Road from '@/models/road';
 import District from '@/models/district';
 import {RootState} from '@/store/store';
 import store from '@/store/store';
+import Crossroad from '@/models/crossroad';
 
 type ModeMap = { [key in ButtonType]: Mode };
 
@@ -20,6 +26,7 @@ export abstract class Mode {
       [ButtonType.BuildRoad]: new BuildRoadMode(map),
       [ButtonType.MarkDistrict]: new MarkDistrictMode(map),
       [ButtonType.EditDistrict]: new EditDistrictMode(map),
+      [ButtonType.EditCrossroad]: new BuildCrossroadMode(map),
     };
   }
 
@@ -37,6 +44,10 @@ export abstract class Mode {
   }
 
   public selectDistrict(nextDistrict: District): void {
+  }
+
+  public selectCrossroad(nextCrossroad: Crossroad) {
+
   }
 
   public onEnterKey(): void {

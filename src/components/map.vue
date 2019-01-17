@@ -35,7 +35,8 @@
                 :r="CROSSROAD_DOT_RADIUS"
                 :cx="crossroad.dot.mapPosition.x"
                 :cy="crossroad.dot.mapPosition.y"
-                >
+                :class="{'selected': crossroad.selected}"
+                @click="selectCrossroad(crossroad)">
         </circle>
       </g>
 
@@ -134,7 +135,7 @@
     }
 
     get showCrossroads(): boolean {
-      return true;
+      return this.toolbarState === ButtonType.EditCrossroad;
     }
 
     get mapClasses(): string[] {
@@ -155,6 +156,10 @@
 
     private selectDistrict(nextDistrict: District) {
       this.mode.selectDistrict(nextDistrict);
+    }
+
+    private selectCrossroad(nextCrossroad: Crossroad) {
+      this.mode.selectCrossroad(nextCrossroad);
     }
 
     private onRoadMouseover(road: Road) {

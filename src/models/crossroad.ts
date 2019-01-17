@@ -1,4 +1,4 @@
-import {Point, pointWeight} from '@/models/geometry';
+import {comparePoints, Point, pointWeight} from '@/models/geometry';
 import Road from '@/models/road';
 import {Dot} from '@/models/dot';
 import {DistrictState} from '@/models/district';
@@ -53,9 +53,6 @@ export default class Crossroad implements CrossroadState {
       });
     });
 
-    console.log(newCrossroads);
-    console.log(crossroadsHash);
-
     // filter only crossroads with 2+ connected roads
     return newCrossroads.map(key => {
       const cross = crossroadsHash.get(key) as Crossroad;
@@ -85,6 +82,7 @@ export default class Crossroad implements CrossroadState {
   public connections: Connection[];
   public position: Point;
   public dot: Dot;
+  public selected: boolean = false;
 
   constructor(state: CrossroadState) {
     this.connections = state.connections;
@@ -93,7 +91,39 @@ export default class Crossroad implements CrossroadState {
   }
 
   public addConnection(road: Road) {
-    this.connections.push({road, direction: 'N'});
+    let otherEnd: Point;
+    if (comparePoints(road.path.start, this.position) === 0) {
+      otherEnd = road.path.end;
+    } else {
+      otherEnd = road.path.start;
+    }
+
+    let direction: Directions;
+    if (road.path.start.x === road.path.end.x) {
+      if (this.position.y < otherEnd.y) {
+        direction = 'S';
+      } else {
+        direction = 'N';
+      }
+    } else if (road.path.start.y === road.path.end.y) {
+      if (this.position.x < otherEnd.x) {
+        direction = 'E';
+      } else {
+        direction = 'W';
+      }
+    } else {
+      if (this.position.x > otherEnd.x && this.position.y > otherEnd.y) {
+        direction = 'NW';
+      } else if (this.position.x < otherEnd.x && this.position.y < otherEnd.y) {
+        direction = 'SE';
+      } else if (this.position.x > otherEnd.x && this.position.y < otherEnd.y) {
+        direction = 'SW';
+      } else {
+        direction = 'NE';
+      }
+    }
+
+    this.connections.push({road, direction});
   }
 
   public hasRoad(road: Road): boolean {

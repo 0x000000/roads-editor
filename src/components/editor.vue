@@ -1,8 +1,10 @@
+import {ButtonType} from '../models/inputs';
 <template>
   <div class="editor">
     <div class="editor-content">
       <RoadEditor v-if="showRoadEditor" :road="selectedRoad" />
       <DistrictEditor v-if="showDistrictEditor" :district="selectedDistrict" />
+      <CrossroadEditor v-if="showCrossroadEditor" :crossroad="selectedCrossroad" />
     </div>
   </div>
 </template>
@@ -15,12 +17,15 @@
   import Road from '@/models/road';
   import DistrictEditor from '@/components/editors/district_editor.vue';
   import District from '@/models/district';
+  import CrossroadEditor from '@/components/editors/crossroad_editor.vue';
+  import Crossroad from '@/models/crossroad';
 
 
   @Component({
     components: {
       RoadEditor,
       DistrictEditor,
+      CrossroadEditor,
     },
   })
   export default class Editor extends Vue {
@@ -36,6 +41,10 @@
       return this.state.roads.find(r => r.selected);
     }
 
+    get selectedCrossroad(): Crossroad | undefined {
+      return this.state.crossroads.find(c => c.selected);
+    }
+
     get showRoadEditor(): boolean {
       return this.toolbarState === ButtonType.BuildRoad && this.selectedRoad !== undefined;
     }
@@ -46,6 +55,10 @@
 
     get showDistrictEditor(): boolean {
       return this.toolbarState === ButtonType.EditDistrict && this.selectedDistrict !== undefined;
+    }
+
+    get showCrossroadEditor(): boolean {
+      return this.toolbarState === ButtonType.EditCrossroad && this.selectedCrossroad !== undefined;
     }
   }
 </script>
