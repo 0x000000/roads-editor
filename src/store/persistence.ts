@@ -11,6 +11,8 @@ const PREFIX = 'RDE_';
 const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
 
 interface SerializationState {
+  buildVersion: number,
+  field: {width: number, height: number},
   city: CityState;
   toolbarState: string;
   roads: RoadState[];
@@ -30,6 +32,8 @@ function cleanUpState() {
 
 function serializeState(state: RootState): string {
   const serializationState: SerializationState = {
+    buildVersion: BUILD_VERSION,
+    field: {width: FIELD_WIDTH, height: FIELD_HEIGHT},
     city: state.city,
     toolbarState: state.toolbarState,
     roads: state.roads,
@@ -38,11 +42,17 @@ function serializeState(state: RootState): string {
     crossroads: state.crossroads,
   };
 
-  return JSON.stringify(state);
+  return JSON.stringify(serializationState);
 }
 
 function deserializeState(rawState: string): RootState {
   const state: SerializationState = JSON.parse(rawState);
+
+  if (state.buildVersion !== BUILD_VERSION) {
+    console.error(`Current BV is ${BUILD_VERSION}, but file BV is ${state.buildVersion}`);
+    return initState();
+  }
+
   const roads = (state.roads as RoadState[]).map(s => new Road(s));
   const districts = District.restoreLinks(state.districts as DistrictState[], roads);
   const crossroads = Crossroad.restoreLinks(state.crossroads as CrossroadState[], roads);

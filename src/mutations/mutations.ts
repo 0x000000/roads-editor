@@ -1,7 +1,7 @@
 import {RootState} from '@/store/store';
 import {MutationTree} from 'vuex';
 import {ButtonType} from '@/models/inputs';
-import {saveState} from '@/store/persistence';
+import {loadState, saveState} from '@/store/persistence';
 import {Path} from '@/models/geometry';
 import Road from '@/models/road';
 import District from '@/models/district';
