@@ -212,7 +212,7 @@
     }
 
     &.type-street {
-      stroke: darkgray;
+      stroke: black;
     }
 
     &.type-water {
