@@ -215,7 +215,7 @@
       stroke: black;
     }
 
-    &.type-water {
+    &.type-waterway {
       stroke: #0c88ee;
     }
 

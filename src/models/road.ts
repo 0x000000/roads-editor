@@ -7,7 +7,7 @@ export enum RoadType {
   Border = 'Border',
   Highway = 'Highway',
   Street = 'Street',
-  Water = 'Water',
+  WaterWay = 'WaterWay',
 }
 
 export interface RoadState {
