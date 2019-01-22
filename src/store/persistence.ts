@@ -11,8 +11,8 @@ const PREFIX = 'RDE_';
 const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
 
 interface SerializationState {
-  buildVersion: number,
-  field: {width: number, height: number},
+  buildVersion: number;
+  field: {width: number, height: number};
   city: CityState;
   toolbarState: string;
   roads: RoadState[];
@@ -49,7 +49,7 @@ function deserializeState(rawState: string): RootState {
   const state: SerializationState = JSON.parse(rawState);
 
   if (state.buildVersion !== BUILD_VERSION) {
-    console.error(`Current BV is ${BUILD_VERSION}, but file BV is ${state.buildVersion}`);
+    alert(`Current BV is ${BUILD_VERSION}, but file BV is ${state.buildVersion}`);
     return initState();
   }
 
