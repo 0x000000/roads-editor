@@ -570,7 +570,7 @@
   },
   "districts": [
     {
-      "selected": false,
+      "selected": true,
       "roads": [
         {
           "selected": false,
@@ -655,19 +655,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "62,65,66,80"
@@ -736,7 +736,7 @@
           }
         }
       ],
-      "type": "Forest",
+      "type": "Wasteland",
       "points": [
         {
           "x": 18,
@@ -758,19 +758,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "78,79,80,81"
@@ -839,7 +839,7 @@
           }
         }
       ],
-      "type": "Forest",
+      "type": "Wasteland",
       "points": [
         {
           "x": 14,
@@ -861,19 +861,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "68,70,71,73"
@@ -942,7 +942,7 @@
           }
         }
       ],
-      "type": "Commercial",
+      "type": "Wasteland",
       "points": [
         {
           "x": 16,
@@ -964,25 +964,25 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "25,29,52,71"
     },
     {
-      "selected": true,
+      "selected": false,
       "roads": [
         {
           "selected": false,
@@ -1086,19 +1086,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "16,17,18,67,68"
@@ -1167,7 +1167,7 @@
           }
         }
       ],
-      "type": "Residential",
+      "type": "Wasteland",
       "points": [
         {
           "x": 12,
@@ -1189,19 +1189,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "10,17,25,28"
@@ -1270,7 +1270,7 @@
           }
         }
       ],
-      "type": "Forest",
+      "type": "Wasteland",
       "points": [
         {
           "x": 14,
@@ -1292,19 +1292,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "54,55,57,58"
@@ -1414,19 +1414,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "44,46,48,50,54"
@@ -1536,19 +1536,19 @@
       "t1": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t2": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "t3": {
         "density": 1,
         "wealth": 1,
-        "maxPopulation": 5,
+        "maxPopulation": 0,
         "maxWorkspace": 0
       },
       "id": "39,41,42,48,57"
