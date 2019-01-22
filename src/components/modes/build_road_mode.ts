@@ -69,6 +69,7 @@ export class BuildRoadMode extends Mode {
     if (this.selectedDot) {
       this.selectedDot.selected = false;
       this.selectedDot = undefined;
+      this.map.dots.forEach((dot: Dot) => dot.shown = true);
     }
 
     if (this.selectedRoad) {
