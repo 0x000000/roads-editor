@@ -6,7 +6,7 @@ import store from '@/store/store';
 
 export class BuildRoadMode extends Mode {
   private selectedDot: Dot | undefined;
-  private selectedRoad: Road | undefined;
+  private selectedRoads: Road[] = [];
 
   public selectDot(nextDot: Dot): void {
     if (this.selectedDot === undefined) { // pick first point
@@ -27,7 +27,9 @@ export class BuildRoadMode extends Mode {
       });
     } else if (this.selectedDot) { // pick second point
       if (this.selectedDot !== nextDot) { // do not reset selection
-        this.selectedRoad = undefined;
+
+        this.resetSelectedRoads();
+
         store.commit(
           MutationName.BuildRoad,
           {start: nextDot.gridPosition, end: this.selectedDot.gridPosition}
@@ -41,23 +43,21 @@ export class BuildRoadMode extends Mode {
   }
 
   public selectRoad(nextRoad: Road): void {
-    if (this.selectedRoad) {
-      this.selectedRoad.selected = false;
-    }
+    const selectedIndex = this.selectedRoads.indexOf(nextRoad);
 
-    if (this.selectedRoad !== nextRoad) {
-      this.selectedRoad = nextRoad;
-      this.selectedRoad.selected = true;
+    if (selectedIndex > -1 && nextRoad.selected === true) {
+      this.selectedRoads[selectedIndex].selected = false;
+      this.selectedRoads.splice(selectedIndex, 0);
     } else {
-      this.selectedRoad.selected = false;
-      this.selectedRoad = undefined;
+      nextRoad.selected = true;
+      this.selectedRoads.push(nextRoad);
     }
   }
 
   public onDeleteKey(): void {
-    if (this.selectedRoad) {
-      store.commit(MutationName.DeleteRoad, this.selectedRoad);
-      this.selectedRoad = undefined;
+    if (this.selectedRoads.length === 1) {
+      store.commit(MutationName.DeleteRoad, this.selectedRoads[0]);
+      this.selectedRoads = [];
     }
   }
 
@@ -72,9 +72,11 @@ export class BuildRoadMode extends Mode {
       this.map.dots.forEach((dot: Dot) => dot.shown = true);
     }
 
-    if (this.selectedRoad) {
-      this.selectedRoad.selected = false;
-      this.selectedRoad = undefined;
-    }
+    this.resetSelectedRoads();
+  }
+
+  private resetSelectedRoads() {
+    this.selectedRoads.forEach(r => r.selected = false);
+    this.selectedRoads = [];
   }
 }

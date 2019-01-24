@@ -4,7 +4,7 @@
 
     <label>
       Type
-      <select v-model="road.type">
+      <select v-model="roads[0].type">
         <option :value="RoadType.Street">Street</option>
         <option :value="RoadType.Highway">Highway</option>
         <option :value="RoadType.Border">Border</option>
@@ -22,10 +22,16 @@
 
   @Component
   export default class RoadEditor extends Vue {
-    @Prop() private road!: Road;
+    @Prop() private roads!: Road[];
 
-    @Watch('road', {deep: true})
-    private onRoadChanged() {
+    @Watch('roads', {deep: true})
+    private onRoadsChanged() {
+      const refType = this.roads[0].type;
+
+      this.roads.forEach(r => {
+        r.type = refType;
+      });
+
       store.commit(MutationName.SaveState);
     }
 

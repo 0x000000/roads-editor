@@ -2,7 +2,7 @@ import {ButtonType} from '../models/inputs';
 <template>
   <div class="editor">
     <div class="editor-content">
-      <RoadEditor v-if="showRoadEditor" :road="selectedRoad" />
+      <RoadEditor v-if="showRoadEditor" :roads="selectedRoads" />
       <DistrictEditor v-if="showDistrictEditor" :district="selectedDistrict" />
       <CrossroadEditor v-if="showCrossroadEditor" :crossroad="selectedCrossroad" />
     </div>
@@ -37,8 +37,8 @@ import {ButtonType} from '../models/inputs';
       return this.state.toolbarState;
     }
 
-    get selectedRoad(): Road | undefined {
-      return this.state.roads.find(r => r.selected);
+    get selectedRoads(): Road[] {
+      return this.state.roads.filter(r => r.selected);
     }
 
     get selectedCrossroad(): Crossroad | undefined {
@@ -46,7 +46,7 @@ import {ButtonType} from '../models/inputs';
     }
 
     get showRoadEditor(): boolean {
-      return this.toolbarState === ButtonType.BuildRoad && this.selectedRoad !== undefined;
+      return this.toolbarState === ButtonType.BuildRoad && this.selectedRoads.length > 1;
     }
 
     get selectedDistrict(): District | undefined {

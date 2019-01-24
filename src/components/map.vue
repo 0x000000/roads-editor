@@ -53,11 +53,11 @@
     FIELD_WIDTH,
     POINT_DISTANCE,
     ROAD_WIDTH
-  } from '../config';
-  import {RootState} from '../store/store';
-  import {Dot} from '../models/dot';
-  import {Rect} from '../models/geometry';
-  import Road, {RoadType} from '../models/road';
+  } from '@/config';
+  import {RootState} from '@/store/store';
+  import {Dot} from '@/models/dot';
+  import {Rect} from '@/models/geometry';
+  import Road, {RoadType} from '@/models/road';
   import hotkeys from 'hotkeys-js';
   import {Mode} from './modes';
   import District from '@/models/district';
@@ -93,7 +93,7 @@
         this.mode.onEnterKey();
       });
 
-      hotkeys('shift+r,shift+c,shift+i,shift+f,shift+w', (_, handler) => {
+      hotkeys('shift+r, shift+c, shift+i, shift+f, shift+w', (_, handler) => {
         this.mode.onKey(handler.key);
       });
     }
