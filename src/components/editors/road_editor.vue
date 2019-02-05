@@ -7,7 +7,6 @@
       <select v-model="roads[0].type">
         <option :value="RoadType.Street">Street</option>
         <option :value="RoadType.Highway">Highway</option>
-        <option :value="RoadType.Border">Border</option>
         <option :value="RoadType.WaterWay">Water Way</option>
       </select>
     </label>

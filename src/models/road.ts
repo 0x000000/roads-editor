@@ -4,7 +4,6 @@ import {intersectionPoint, mergePaths, pointWeight} from './geometry';
 import Settings from '@/models/settings';
 
 export enum RoadType {
-  Border = 'Border',
   Highway = 'Highway',
   Street = 'Street',
   WaterWay = 'WaterWay',

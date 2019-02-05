@@ -58,7 +58,7 @@
     }
 
     get roadsCount(): number {
-      return this.state.roads.filter(r => r.type !== RoadType.Border).length;
+      return this.state.roads.length;
     }
 
     get districtsCount(): number {

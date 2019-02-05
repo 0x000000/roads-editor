@@ -203,10 +203,6 @@
       stroke-width: 10px;
     }
 
-    &.type-border {
-      stroke: lightgray;
-    }
-
     &.type-highway {
       stroke: black;
     }

@@ -72,15 +72,9 @@ function initState(): RootState {
     roadId: 0,
   });
 
-  const roads: Road[] = [
-    Road.build({start: {x: 0, y: 0}, end: {x: FIELD_WIDTH - 1, y: 0}}, RoadType.Border),
-    Road.build({start: {x: 0, y: 0}, end: {x: 0, y: FIELD_HEIGHT - 1}}, RoadType.Border),
-    Road.build({start: {x: FIELD_WIDTH - 1, y: 0}, end: {x: FIELD_WIDTH - 1, y: FIELD_HEIGHT - 1}}, RoadType.Border),
-    Road.build({start: {x: 0, y: FIELD_HEIGHT - 1}, end: {x: FIELD_WIDTH - 1, y: FIELD_HEIGHT - 1}}, RoadType.Border),
-  ];
-
+  const roads: Road[] = [];
   const districts: District[] = [];
-  const crossroads = Crossroad.recalculateCrossroads(roads, []);
+  const crossroads: Crossroad[] = [];
 
   return {
     city: new City({name: 'Test City'}),
