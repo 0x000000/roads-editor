@@ -4,8 +4,8 @@ import City, {CityState} from '@/models/city';
 import {ButtonType} from '@/models/inputs';
 import Road, {RoadState, RoadType} from '@/models/road';
 import Settings, {SettingsState} from '@/models/settings';
-import District, {DistrictState} from '@/models/district';
-import Crossroad, {CrossroadState} from '@/models/crossroad';
+import District, {NormalizedDistrictState} from '@/models/district';
+import Crossroad, {NormalizedCrossroadState} from '@/models/crossroad';
 
 const PREFIX = 'RDE_';
 const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
@@ -17,8 +17,8 @@ interface SerializationState {
   toolbarState: string;
   roads: RoadState[];
   settings: SettingsState;
-  districts: DistrictState[];
-  crossroads: CrossroadState[];
+  districts: NormalizedDistrictState[];
+  crossroads: NormalizedCrossroadState[];
 }
 
 function cleanUpState() {
@@ -38,8 +38,8 @@ function serializeState(state: RootState): string {
     toolbarState: state.toolbarState,
     roads: state.roads,
     settings: state.settings,
-    districts: state.districts,
-    crossroads: state.crossroads,
+    districts: District.normalizeLinks(state.districts),
+    crossroads: Crossroad.normalizeLinks(state.crossroads),
   };
 
   return JSON.stringify(serializationState);
@@ -54,8 +54,8 @@ function deserializeState(rawState: string): RootState {
   }
 
   const roads = (state.roads as RoadState[]).map(s => new Road(s));
-  const districts = District.restoreLinks(state.districts as DistrictState[], roads);
-  const crossroads = Crossroad.restoreLinks(state.crossroads as CrossroadState[], roads);
+  const districts = District.restoreLinks(state.districts as NormalizedDistrictState[], roads);
+  const crossroads = Crossroad.restoreLinks(state.crossroads as NormalizedCrossroadState[], roads);
 
   return {
     city: new City(state.city),

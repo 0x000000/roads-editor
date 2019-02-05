@@ -1,7 +1,6 @@
 import {comparePoints, Point, pointWeight} from '@/models/geometry';
 import Road from '@/models/road';
 import {Dot} from '@/models/dot';
-import {DistrictState} from '@/models/district';
 
 // NW N NE
 // W  +  E
@@ -13,9 +12,19 @@ export interface Connection {
   direction: Directions;
 }
 
+export interface NormalizedConnection {
+  roadId: number;
+  direction: Directions;
+}
+
 export interface CrossroadState {
   position: Point;
   connections: Connection[];
+}
+
+export interface NormalizedCrossroadState {
+  position: Point;
+  connections: NormalizedConnection[];
 }
 
 export default class Crossroad implements CrossroadState {
@@ -64,18 +73,33 @@ export default class Crossroad implements CrossroadState {
     }).filter(c => c !== undefined) as Crossroad[];
   }
 
+  public static normalizeLinks(crossroads: CrossroadState[]): NormalizedCrossroadState[] {
+    return crossroads.map(crossroad => {
+      return {
+        position: crossroad.position,
+        connections: crossroad.connections.map(connection => {
+          return {
+            roadId: connection.road.id,
+            direction: connection.direction,
+          };
+        }),
+      };
+    });
+  }
 
-  public static restoreLinks(crossroadsState: CrossroadState[], roads: Road[]): Crossroad[] {
+  public static restoreLinks(crossroadsState: NormalizedCrossroadState[], roads: Road[]): Crossroad[] {
     return crossroadsState.map(state => {
-      const cross = new Crossroad(state);
-      cross.connections = cross.connections.map(connection => {
-        return {
-          road: roads.find(r => r.id === connection.road.id) as Road,
-          direction: connection.direction,
-        };
-      });
+      const linkedState: CrossroadState = {
+        position: state.position,
+        connections: state.connections.map(connection => {
+          return {
+            road: roads.find(r => r.id === connection.roadId) as Road,
+            direction: connection.direction,
+          };
+        })
+      };
 
-      return cross;
+      return new Crossroad(linkedState);
     });
   }
 

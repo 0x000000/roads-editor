@@ -28,6 +28,14 @@ export interface DistrictState {
   t3: DistrictTier;
 }
 
+export interface NormalizedDistrictState {
+  roadIds: number[];
+  type: DistrictType;
+  t1: DistrictTier;
+  t2: DistrictTier;
+  t3: DistrictTier;
+}
+
 export enum DistrictType {
   Residential = 'Residential',
   Commercial = 'Commercial',
@@ -72,13 +80,29 @@ export default class District implements DistrictState {
     return districts.some(d => d.id === districtId);
   }
 
-  public static restoreLinks(districtsState: DistrictState[], roads: Road[]): District[] {
-    return districtsState.map(state => {
-      state.roads = state.roads.map(sr => {
-        return roads.find(r => r.id === sr.id) as Road;
-      });
+  public static normalizeLinks(districts: DistrictState[]): NormalizedDistrictState[] {
+    return districts.map(district => {
+      return {
+        roadIds: district.roads.map(r => r.id),
+        type: district.type,
+        t1: district.t1,
+        t2: district.t2,
+        t3: district.t3,
+      };
+    });
+  }
 
-      return new District(state);
+  public static restoreLinks(districts: NormalizedDistrictState[], roads: Road[]): District[] {
+    return districts.map(state => {
+      const linkedState: DistrictState = {
+        roads: roads.filter(r => state.roadIds.includes(r.id)),
+        type: state.type,
+        t1: state.t1,
+        t2: state.t2,
+        t3: state.t3,
+      };
+
+      return new District(linkedState);
     });
   }
 
