@@ -203,15 +203,18 @@
       stroke-width: 10px;
     }
 
-    &.type-highway {
+    //highway
+    &.type-1 {
       stroke: black;
     }
 
-    &.type-street {
+    //street
+    &.type-2 {
       stroke: black;
     }
 
-    &.type-waterway {
+    //waterway
+    &.type-3 {
       stroke: #0c88ee;
     }
 
@@ -222,28 +225,34 @@
   }
 
   polygon {
-    &.district-wasteland {
-      fill: #e0e2e5;
-    }
-
-    &.district-industrial {
-      fill: #FA4C4A;
-    }
-
-    &.district-residential {
+    // residential
+    &.district-1 {
       fill: #FCC038;
     }
 
-    &.district-commercial {
+    // commercial
+    &.district-2 {
       fill: #9F89CF;
     }
 
-    &.district-forest {
+    // industrial
+    &.district-3 {
+      fill: #FA4C4A;
+    }
+
+    // forest
+    &.district-4 {
       fill: #22B860;
     }
 
-    &.district-water {
+    // water
+    &.district-5 {
       fill: #5ACAEE;
+    }
+
+    // wasteland
+    &.district-6 {
+      fill: #e0e2e5;
     }
 
     &.selected {

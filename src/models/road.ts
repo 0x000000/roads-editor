@@ -4,9 +4,9 @@ import {intersectionPoint, mergePaths, pointWeight} from './geometry';
 import Settings from '@/models/settings';
 
 export enum RoadType {
-  Highway = 'Highway',
-  Street = 'Street',
-  WaterWay = 'WaterWay',
+  Highway = 1,
+  Street = 2,
+  WaterWay = 3,
 }
 
 export interface RoadState {
@@ -135,7 +135,7 @@ export default class Road implements RoadState {
 
   public get classes(): string {
     return [
-      `type-${this.type.toString().toLowerCase()}`,
+      `type-${this.type}`,
       this.selected ? 'selected' : '',
     ].join(' ');
   }

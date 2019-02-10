@@ -37,12 +37,12 @@ export interface NormalizedDistrictState {
 }
 
 export enum DistrictType {
-  Residential = 'Residential',
-  Commercial = 'Commercial',
-  Industrial = 'Industrial',
-  Forest = 'Forest',
-  Wasteland = 'Wasteland',
-  Water = 'Water',
+  Residential = 1,
+  Commercial = 2,
+  Industrial = 3,
+  Forest = 4,
+  Water = 5,
+  Wasteland = 6,
 }
 
 
@@ -156,7 +156,7 @@ export default class District implements DistrictState {
 
   public get classes(): string {
     return [
-      `district-${this.type.toLowerCase()}`,
+      `district-${this.type}`,
       this.selected ? 'selected' : '',
     ].join(' ');
   }

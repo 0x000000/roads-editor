@@ -96,7 +96,7 @@ export default class Crossroad implements CrossroadState {
             road: roads.find(r => r.id === connection.roadId) as Road,
             direction: connection.direction,
           };
-        })
+        }),
       };
 
       return new Crossroad(linkedState);
