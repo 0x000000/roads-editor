@@ -46,7 +46,7 @@ import {ButtonType} from '../models/inputs';
     }
 
     get showRoadEditor(): boolean {
-      return this.toolbarState === ButtonType.BuildRoad && this.selectedRoads.length > 1;
+      return this.toolbarState === ButtonType.BuildRoad && this.selectedRoads.length > 0;
     }
 
     get selectedDistrict(): District | undefined {
