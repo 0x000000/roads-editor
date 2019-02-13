@@ -45,9 +45,9 @@ export class BuildRoadMode extends Mode {
   public selectRoad(nextRoad: Road): void {
     const selectedIndex = this.selectedRoads.indexOf(nextRoad);
 
-    if (selectedIndex > -1 && nextRoad.selected === true) {
+    if (selectedIndex > -1) {
       this.selectedRoads[selectedIndex].selected = false;
-      this.selectedRoads.splice(selectedIndex, 0);
+      this.selectedRoads = this.selectedRoads.filter(r => r.id !== nextRoad.id);
     } else {
       nextRoad.selected = true;
       this.selectedRoads.push(nextRoad);
