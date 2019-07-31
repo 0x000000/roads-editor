@@ -1,4 +1,5 @@
 import {FIELD_HEIGHT, FIELD_WIDTH} from '@/config';
+import {Dot} from '@/models/dot';
 
 export interface Point {
   readonly x: number;
@@ -72,4 +73,47 @@ export function mergePaths(path1: Path, path2: Path): Path {
   const end = pointWeight(path1.end) >= pointWeight(path2.end) ? path1.end : path2.end;
 
   return {start, end};
+}
+
+export function pointsFromPath(path: Path): Point[] {
+  path = normalizePath(path);
+  const points: Point[] = [];
+
+  const start: Point = path.start;
+  const end: Point = path.end;
+
+  switch (true) {
+    case start.x === end.x: { // -
+      const offset = end.y - start.y;
+      for (let i = 0; i <= offset; i++) {
+        points.push({x: start.x, y: start.y + i});
+      }
+    }
+    break;
+
+    case start.y === end.y: { // |
+      const offset = end.x - start.x;
+      for (let i = 0; i <= offset; i++) {
+        points.push({x: start.x + i, y: start.y});
+      }
+    }
+    break;
+
+    case start.x < end.x : { // \
+      const offset = end.x - start.x;
+      for (let i = 0; i <= offset; i++) {
+        points.push({x: start.x + i, y: start.y + i});
+      }
+    }
+    break;
+
+    default: { // /
+      const offset = start.x - end.x;
+      for (let i = 0; i <= offset; i++) {
+        points.push({x: start.x - i, y: start.y + i});
+      }
+    }
+  }
+
+  return points;
 }
