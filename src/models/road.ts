@@ -1,4 +1,4 @@
-import {belongsTo, comparePoints, normalizePath, Path, Point} from '@/models/geometry';
+import {belongsTo, comparePoints, normalizePath, Path, Point, pointsFromPath} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import {intersectionPoint, mergePaths, pointWeight} from './geometry';
 import Settings from '@/models/settings';
@@ -13,6 +13,7 @@ export interface RoadState {
   id: number;
   type: RoadType;
   path: Path;
+  points: Point[];
 }
 
 enum IntersectionResult {
@@ -34,6 +35,7 @@ export default class Road implements RoadState {
   public type: RoadType;
   public path: Path;
   public selected: boolean = false;
+  public points: Point[] = [];
 
   public static recalculateNetwork(newPath: Path, oldRoads: Road[]): Road[] {
     newPath = normalizePath(newPath);
@@ -124,13 +126,15 @@ export default class Road implements RoadState {
 
   public static build(path: Path, type: RoadType): Road {
     const id = Settings.getInstance().nextRoadId;
-    return new Road({path, type, id});
+    const points = pointsFromPath(path);
+    return new Road({path, type, id, points});
   }
 
   constructor(state: RoadState) {
     this.id = state.id;
     this.type = state.type;
     this.path = normalizePath(state.path);
+    this.points = state.points;
   }
 
   public get classes(): string {
