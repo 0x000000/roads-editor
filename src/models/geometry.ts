@@ -1,5 +1,4 @@
-import {FIELD_HEIGHT, FIELD_WIDTH} from '@/config';
-import {Dot} from '@/models/dot';
+import {FIELD_WIDTH} from '@/config';
 
 export interface Point {
   readonly x: number;
