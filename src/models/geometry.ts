@@ -101,7 +101,7 @@ export function pointsFromPath(path: Path): Point[] {
   const end: Point = path.end;
 
   switch (detectDirection(path)) {
-    case LineDirection.Horizontal: { // -
+    case LineDirection.Vertical: { // |
       const offset = end.y - start.y;
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x, y: start.y + i});
@@ -109,7 +109,7 @@ export function pointsFromPath(path: Path): Point[] {
     }
     break;
 
-    case LineDirection.Vertical: { // |
+    case LineDirection.Horizontal: { // -
       const offset = end.x - start.x;
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x + i, y: start.y});
