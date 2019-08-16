@@ -20,7 +20,7 @@
 
 <script lang="ts">
   import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import Crossroad from '@/models/crossroad';
+  import Crossroad, {Directions} from '@/models/crossroad';
 
   @Component
   export default class CrossroadEditor extends Vue {
@@ -31,35 +31,35 @@
     }
 
     get showNW(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'NW');
+      return this.crossroad.connections.some(c => c.direction === Directions.NW);
     }
 
     get showN(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'N');
+      return this.crossroad.connections.some(c => c.direction === Directions.N);
     }
 
     get showNE(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'NE');
+      return this.crossroad.connections.some(c => c.direction === Directions.NE);
     }
 
     get showW(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'W');
+      return this.crossroad.connections.some(c => c.direction === Directions.W);
     }
 
     get showE(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'E');
+      return this.crossroad.connections.some(c => c.direction === Directions.E);
     }
 
     get showSW(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'SW');
+      return this.crossroad.connections.some(c => c.direction === Directions.SW);
     }
 
     get showS(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'S');
+      return this.crossroad.connections.some(c => c.direction === Directions.S);
     }
 
     get showSE(): boolean {
-      return this.crossroad.connections.some(c => c.direction === 'SE');
+      return this.crossroad.connections.some(c => c.direction === Directions.SE);
     }
   }
 </script>

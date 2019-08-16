@@ -5,7 +5,16 @@ import {Dot} from '@/models/dot';
 // NW N NE
 // W  +  E
 // SW S SE
-export type Directions = 'N' | 'S' | 'W' | 'E' | 'NW' | 'NE' | 'SW' | 'SE';
+export enum Directions {
+  N = 1,
+  S = 2,
+  W = 3,
+  E = 4,
+  NW = 5,
+  NE = 6,
+  SW = 7,
+  SE = 8,
+}
 
 export interface Connection {
   road: Road;
@@ -125,25 +134,25 @@ export default class Crossroad implements CrossroadState {
     let direction: Directions;
     if (road.path.start.x === road.path.end.x) {
       if (this.position.y < otherEnd.y) {
-        direction = 'S';
+        direction = Directions.S;
       } else {
-        direction = 'N';
+        direction = Directions.N;
       }
     } else if (road.path.start.y === road.path.end.y) {
       if (this.position.x < otherEnd.x) {
-        direction = 'E';
+        direction = Directions.E;
       } else {
-        direction = 'W';
+        direction = Directions.W;
       }
     } else {
       if (this.position.x > otherEnd.x && this.position.y > otherEnd.y) {
-        direction = 'NW';
+        direction = Directions.NW;
       } else if (this.position.x < otherEnd.x && this.position.y < otherEnd.y) {
-        direction = 'SE';
+        direction = Directions.SE;
       } else if (this.position.x > otherEnd.x && this.position.y < otherEnd.y) {
-        direction = 'SW';
+        direction = Directions.SW;
       } else {
-        direction = 'NE';
+        direction = Directions.NE;
       }
     }
 
