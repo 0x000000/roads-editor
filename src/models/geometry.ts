@@ -15,6 +15,13 @@ export interface Path {
   readonly end: Point;
 }
 
+export enum LineDirection {
+  Vertical = 1,
+  Horizontal = 2,
+  Diagonal = 3,
+  DiagonalReverse = 4,
+}
+
 export function pointWeight(point: Point): number {
   return (point.y * FIELD_WIDTH) + point.x;
 }
@@ -74,6 +81,18 @@ export function mergePaths(path1: Path, path2: Path): Path {
   return {start, end};
 }
 
+export function detectDirection(path: Path): LineDirection {
+  const start: Point = path.start;
+  const end: Point = path.end;
+
+  switch (true) {
+    case start.x === end.x: return LineDirection.Vertical;
+    case start.y === end.y: return LineDirection.Horizontal;
+    case start.x < end.x :  return LineDirection.Diagonal;
+    default:                return LineDirection.DiagonalReverse;
+  }
+}
+
 export function pointsFromPath(path: Path): Point[] {
   path = normalizePath(path);
   const points: Point[] = [];
@@ -81,8 +100,8 @@ export function pointsFromPath(path: Path): Point[] {
   const start: Point = path.start;
   const end: Point = path.end;
 
-  switch (true) {
-    case start.x === end.x: { // -
+  switch (detectDirection(path)) {
+    case LineDirection.Horizontal: { // -
       const offset = end.y - start.y;
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x, y: start.y + i});
@@ -90,7 +109,7 @@ export function pointsFromPath(path: Path): Point[] {
     }
     break;
 
-    case start.y === end.y: { // |
+    case LineDirection.Vertical: { // |
       const offset = end.x - start.x;
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x + i, y: start.y});
@@ -98,7 +117,7 @@ export function pointsFromPath(path: Path): Point[] {
     }
     break;
 
-    case start.x < end.x : { // \
+    case LineDirection.Diagonal: { // \
       const offset = end.x - start.x;
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x + i, y: start.y + i});

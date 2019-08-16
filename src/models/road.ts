@@ -1,4 +1,13 @@
-import {belongsTo, comparePoints, normalizePath, Path, Point, pointsFromPath} from '@/models/geometry';
+import {
+  Path,
+  Point,
+  LineDirection,
+  belongsTo,
+  comparePoints,
+  normalizePath,
+  pointsFromPath,
+  detectDirection,
+} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import {intersectionPoint, mergePaths, pointWeight} from './geometry';
 import Settings from '@/models/settings';
@@ -14,6 +23,7 @@ export interface RoadState {
   type: RoadType;
   path: Path;
   points: Point[];
+  direction: LineDirection;
 }
 
 enum IntersectionResult {
@@ -36,6 +46,7 @@ export default class Road implements RoadState {
   public path: Path;
   public selected: boolean = false;
   public points: Point[] = [];
+  public direction: LineDirection;
 
   public static recalculateNetwork(newPath: Path, oldRoads: Road[]): Road[] {
     newPath = normalizePath(newPath);
@@ -127,7 +138,8 @@ export default class Road implements RoadState {
   public static build(path: Path, type: RoadType): Road {
     const id = Settings.getInstance().nextRoadId;
     const points = pointsFromPath(path);
-    return new Road({path, type, id, points});
+    const direction = detectDirection(path);
+    return new Road({path, type, id, points, direction});
   }
 
   constructor(state: RoadState) {
@@ -135,6 +147,7 @@ export default class Road implements RoadState {
     this.type = state.type;
     this.path = normalizePath(state.path);
     this.points = state.points;
+    this.direction = state.direction;
   }
 
   public get classes(): string {
