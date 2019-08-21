@@ -19,11 +19,7 @@ import Editor from '@/components/editor.vue';
     Editor,
   },
 })
-export default class Home extends Vue {
-  private mounted() {
-    new Audio('tick.mp3').play();
-  }
-}
+export default class Home extends Vue {}
 </script>
 
 <style scoped lang="scss">
