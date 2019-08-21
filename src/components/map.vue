@@ -12,6 +12,7 @@
       </polygon>
 
       <path v-for="road in roads"
+            :v-key="road.id"
             :d="road.d"
             :class="road.classes"
             :stroke-width="ROAD_WIDTH"
@@ -168,7 +169,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   $selectedColor: #FD783F;
   $hoverColor: black;
 
