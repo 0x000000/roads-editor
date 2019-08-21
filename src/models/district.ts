@@ -1,6 +1,11 @@
 import Road from '@/models/road';
-import {comparePoints, Path, Point, pointWeight} from '@/models/geometry';
+import {
+  Point,
+  comparePoints,
+  pointWeight
+} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
+import Block, {detectBlocks} from '@/models/block';
 
 export const RecommendedPopulationByDensity = {
   1: 5,
@@ -26,6 +31,7 @@ export interface DistrictState {
   t1: DistrictTier;
   t2: DistrictTier;
   t3: DistrictTier;
+  blocks: Block[];
 }
 
 export interface NormalizedDistrictState {
@@ -34,6 +40,7 @@ export interface NormalizedDistrictState {
   t1: DistrictTier;
   t2: DistrictTier;
   t3: DistrictTier;
+  blocks: Block[];
 }
 
 export enum DistrictType {
@@ -44,7 +51,6 @@ export enum DistrictType {
   Water = 5,
   Wasteland = 6,
 }
-
 
 export default class District implements DistrictState {
   public static detectNewDistrict(roads: Road[]): District | undefined {
@@ -63,13 +69,17 @@ export default class District implements DistrictState {
     const eachPointHasPair = [...pointsPairs.values()].every(v => v === 2);
 
     if (pointsEqualsRoads && eachPointHasPair) {
-      return new District({
+      const district = new District({
         roads,
         type: DistrictType.Wasteland,
         t1: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
         t2: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
         t3: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
+        blocks: [],
       });
+
+      district.blocks = detectBlocks(district);
+      return district;
     } else {
       return undefined;
     }
@@ -88,6 +98,7 @@ export default class District implements DistrictState {
         t1: district.t1,
         t2: district.t2,
         t3: district.t3,
+        blocks: district.blocks,
       };
     });
   }
@@ -100,6 +111,7 @@ export default class District implements DistrictState {
         t1: state.t1,
         t2: state.t2,
         t3: state.t3,
+        blocks: state.blocks,
       };
 
       return new District(linkedState);
@@ -125,6 +137,7 @@ export default class District implements DistrictState {
 
   public selected: boolean = false;
   public id: string;
+  public blocks: Block[];
 
   constructor(state: DistrictState) {
     this.roads = state.roads;
@@ -133,6 +146,7 @@ export default class District implements DistrictState {
     this.t1 = state.t1;
     this.t2 = state.t2;
     this.t3 = state.t3;
+    this.blocks = state.blocks;
 
     this.id = this.roads.map(r => r.id).sort().join(',');
   }
