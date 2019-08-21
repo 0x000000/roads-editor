@@ -1,4 +1,4 @@
-import {FIELD_WIDTH} from '@/config';
+import {FIELD_WIDTH, FIELD_HEIGHT} from '@/config';
 
 export interface Point {
   readonly x: number;
@@ -24,6 +24,10 @@ export enum LineDirection {
 
 export function pointWeight(point: Point): number {
   return (point.y * FIELD_WIDTH) + point.x;
+}
+
+export function pathWeight(path: Path): string {
+  return `${pointWeight(path.start)},${pointWeight(path.end)}`;
 }
 
 export function normalizePath(path: Path): Path {
@@ -88,11 +92,12 @@ export function detectDirection(path: Path): LineDirection {
   switch (true) {
     case start.x === end.x: return LineDirection.Vertical;
     case start.y === end.y: return LineDirection.Horizontal;
-    case start.x < end.x :  return LineDirection.Diagonal;
+    case start.x < end.x:   return LineDirection.Diagonal;
     default:                return LineDirection.DiagonalReverse;
   }
 }
 
+/* tslint:disable */
 export function pointsFromPath(path: Path): Point[] {
   path = normalizePath(path);
   const points: Point[] = [];
@@ -102,7 +107,7 @@ export function pointsFromPath(path: Path): Point[] {
 
   switch (detectDirection(path)) {
     case LineDirection.Vertical: { // |
-      const offset = end.y - start.y;
+      const offset = Math.abs(end.y - start.y);
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x, y: start.y + i});
       }
@@ -110,7 +115,7 @@ export function pointsFromPath(path: Path): Point[] {
     break;
 
     case LineDirection.Horizontal: { // -
-      const offset = end.x - start.x;
+      const offset = Math.abs(end.x - start.x);
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x + i, y: start.y});
       }
@@ -118,7 +123,7 @@ export function pointsFromPath(path: Path): Point[] {
     break;
 
     case LineDirection.Diagonal: { // \
-      const offset = end.x - start.x;
+      const offset = Math.abs(end.x - start.x);
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x + i, y: start.y + i});
       }
@@ -126,7 +131,7 @@ export function pointsFromPath(path: Path): Point[] {
     break;
 
     default: { // /
-      const offset = start.x - end.x;
+      const offset = Math.abs(start.x - end.x);
       for (let i = 0; i <= offset; i++) {
         points.push({x: start.x - i, y: start.y + i});
       }
@@ -134,4 +139,63 @@ export function pointsFromPath(path: Path): Point[] {
   }
 
   return points;
+}
+/* tslint:enable */
+
+
+export function createPathsFromPoints(points: Point[], paths: Path[]): Path[] {
+  const start: Point | undefined = points.shift();
+  const end: Point | undefined = points[0];
+
+  if (start != undefined && end != undefined) {
+    paths.push(normalizePath({start, end}));
+    return createPathsFromPoints(points, paths);
+  }
+
+  return paths;
+}
+
+function middlePoint(path: Path): Point {
+  if (path.start.x === path.end.x) {
+    return {
+      x: path.start.x,
+      y: path.start.y + (Math.abs(path.start.y - path.end.y) / 2),
+    };
+  } else {
+    return {
+      x: path.start.x + (Math.abs(path.start.x - path.end.x) / 2),
+      y: path.start.y,
+    };
+  }
+}
+
+function pointInsidePolygon(point: Point, paths: Path[]): boolean {
+  const intersections: boolean[] = [false, false, false, false];
+  const rays: Path[] = [
+    {start: point, end: {x: FIELD_WIDTH + 1, y: point.y}},
+    {start: {x: -1, y: point.y}, end: point},
+    {start: {x: point.x, y: -1}, end: point},
+    {start: point, end: {x: point.x, y: FIELD_HEIGHT + 1}},
+  ];
+
+  for (let i = 0; i < paths.length; i++) {
+    const polygonPath = paths[i];
+
+    for (let j = 0; j < rays.length; j++) {
+      const intersection = intersectionPoint(polygonPath, rays[j]);
+      const possibleCrossing = belongsTo(intersection, polygonPath) &&
+                               belongsTo(intersection, rays[j]);
+      if (possibleCrossing) {
+        intersections[j] = true;
+      }
+    }
+  }
+
+  return intersections.every(i => i);
+}
+
+export function pathInsidePolygon(path: Path, paths: Path[]): boolean {
+  return pointInsidePolygon(middlePoint(path), paths) &&
+         pointInsidePolygon(path.start, paths) &&
+         pointInsidePolygon(path.end, paths);
 }
