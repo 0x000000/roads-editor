@@ -24,4 +24,9 @@
   #nav {
     float: right;
   }
+
+  h1, h2, h3, h4 {
+    margin-top: 0;
+    padding-top: 0;
+  }
 </style>
