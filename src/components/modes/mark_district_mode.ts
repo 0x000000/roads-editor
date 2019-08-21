@@ -7,13 +7,15 @@ import {MutationName} from '@/mutations/mutations';
 export class MarkDistrictMode extends Mode {
   private selectedRoads: Road[] = [];
 
-  public selectRoad(nextRoad: Road): void {
+  public selectRoad(nextRoad: Road, ignoreSelected: boolean = false): void {
     if (!this.selectedRoads.includes(nextRoad)) {
       this.selectedRoads.push(nextRoad);
       nextRoad.selected = true;
     } else {
-      this.selectedRoads.splice(this.selectedRoads.indexOf(nextRoad), 1);
-      nextRoad.selected = false;
+      if (!ignoreSelected) {
+        this.selectedRoads.splice(this.selectedRoads.indexOf(nextRoad), 1);
+        nextRoad.selected = false;
+      }
     }
   }
 
@@ -35,6 +37,6 @@ export class MarkDistrictMode extends Mode {
   }
 
   public onRoadMouseover(road: Road): void {
-    this.selectRoad(road);
+    this.selectRoad(road, true);
   }
 }
