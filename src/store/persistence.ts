@@ -70,6 +70,8 @@ function deserializeState(rawState: string): RootState {
 function initState(): RootState {
   const settings: Settings = Settings.getInstance().initialize({
     roadId: 0,
+    districtId: 0,
+    blockId: 0,
   });
 
   const roads: Road[] = [];

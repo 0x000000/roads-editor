@@ -92,16 +92,15 @@
     }
 
     get districtsDetailedPops(): string {
-      let maxPop = 0;
-      let maxWork = 0;
-
-      this.state.districts.forEach(d => {
-        maxPop += d.t3.maxPopulation;
-        maxWork += d.t3.maxWorkspace;
-      });
+      // let maxPop = 0;
+      // let maxWork = 0;
+      // this.state.districts.forEach(d => {
+      //   maxPop += d.t3.maxPopulation;
+      //   maxWork += d.t3.maxWorkspace;
+      // });
 
       return [
-        maxPop, maxWork,
+        0, 0,
       ].join('/');
     }
 

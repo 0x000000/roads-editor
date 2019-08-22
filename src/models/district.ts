@@ -6,6 +6,7 @@ import {
 } from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import Block, {detectBlocks} from '@/models/block';
+import Settings from '@/models/settings';
 
 export const RecommendedPopulationByDensity = {
   1: 5,
@@ -26,20 +27,22 @@ export interface DistrictTier {
 }
 
 export interface DistrictState {
-  roads: Road[];
+  readonly id: number;
+  readonly roads: Road[];
   type: DistrictType;
-  t1: DistrictTier;
-  t2: DistrictTier;
-  t3: DistrictTier;
+  // t1: DistrictTier;
+  // t2: DistrictTier;
+  // t3: DistrictTier;
   blocks: Block[];
 }
 
 export interface NormalizedDistrictState {
-  roadIds: number[];
+  readonly id: number;
+  readonly roadIds: number[];
   type: DistrictType;
-  t1: DistrictTier;
-  t2: DistrictTier;
-  t3: DistrictTier;
+  // t1: DistrictTier;
+  // t2: DistrictTier;
+  // t3: DistrictTier;
   blocks: Block[];
 }
 
@@ -70,11 +73,12 @@ export default class District implements DistrictState {
 
     if (pointsEqualsRoads && eachPointHasPair) {
       const district = new District({
+        id: Settings.getInstance().nextDistrictId,
         roads,
         type: DistrictType.Wasteland,
-        t1: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
-        t2: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
-        t3: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
+        // t1: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
+        // t2: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
+        // t3: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
         blocks: [],
       });
 
@@ -86,18 +90,19 @@ export default class District implements DistrictState {
   }
 
   public static districtExists(roads: Road[], districts: District[]): boolean {
-    const districtId = roads.map(r => r.id).sort().join(',');
-    return districts.some(d => d.id === districtId);
+    const districtHash = roads.map(r => r.id).sort().join(',');
+    return districts.some(d => d.hash === districtHash);
   }
 
   public static normalizeLinks(districts: DistrictState[]): NormalizedDistrictState[] {
     return districts.map(district => {
       return {
+        id: district.id,
         roadIds: district.roads.map(r => r.id),
         type: district.type,
-        t1: district.t1,
-        t2: district.t2,
-        t3: district.t3,
+        // t1: district.t1,
+        // t2: district.t2,
+        // t3: district.t3,
         blocks: district.blocks,
       };
     });
@@ -106,11 +111,12 @@ export default class District implements DistrictState {
   public static restoreLinks(districts: NormalizedDistrictState[], roads: Road[]): District[] {
     return districts.map(state => {
       const linkedState: DistrictState = {
+        id: state.id,
         roads: roads.filter(r => state.roadIds.includes(r.id)),
         type: state.type,
-        t1: state.t1,
-        t2: state.t2,
-        t3: state.t3,
+        // t1: state.t1,
+        // t2: state.t2,
+        // t3: state.t3,
         blocks: state.blocks,
       };
 
@@ -128,27 +134,29 @@ export default class District implements DistrictState {
     return [...affectedDistricts.values()];
   }
 
+  public id: number;
   public roads: Road[];
   public points: Point[];
   public type: DistrictType;
-  public t1: DistrictTier;
-  public t2: DistrictTier;
-  public t3: DistrictTier;
+  // public t1: DistrictTier;
+  // public t2: DistrictTier;
+  // public t3: DistrictTier;
 
   public selected: boolean = false;
-  public id: string;
+  public hash: string;
   public blocks: Block[];
 
   constructor(state: DistrictState) {
+    this.id = state.id;
     this.roads = state.roads;
     this.type = state.type || DistrictType.Wasteland;
     this.points = this.orderedPoints(this.roads);
-    this.t1 = state.t1;
-    this.t2 = state.t2;
-    this.t3 = state.t3;
+    // this.t1 = state.t1;
+    // this.t2 = state.t2;
+    // this.t3 = state.t3;
     this.blocks = state.blocks;
 
-    this.id = this.roads.map(r => r.id).sort().join(',');
+    this.hash = this.roads.map(r => r.id).sort().join(',');
   }
 
   public hasRoad(road: Road): boolean {

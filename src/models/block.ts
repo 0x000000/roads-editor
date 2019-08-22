@@ -8,6 +8,7 @@ import {
 } from '@/models/geometry';
 import District from '@/models/district';
 import {cycledPairs} from '@/models/utils';
+import Settings from '@/models/settings';
 
 export enum BlockShape {
   Square = 1,
@@ -18,6 +19,7 @@ export enum BlockShape {
 }
 
 export default interface Block {
+  readonly id: number;
   readonly position: Point;
   readonly paths: Path[];
   readonly shape: BlockShape;
@@ -142,6 +144,7 @@ function detectBlock(vertices: Map<number, Point>, paths: Path[]): Block[] {
       const allPointsFound = points.every(pair => !!pathWeights.find(pp => pp[0] === pair[0] && pp[1] === pair[1]));
       if (allPointsFound) {
         blocks.push({
+          id: Settings.getInstance().nextBlockId,
           position: topPoint,
           shape: type,
           paths: points.map(pair => {
