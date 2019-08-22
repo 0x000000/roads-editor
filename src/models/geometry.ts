@@ -147,7 +147,7 @@ export function createPathsFromPoints(points: Point[], paths: Path[]): Path[] {
   const start: Point | undefined = points.shift();
   const end: Point | undefined = points[0];
 
-  if (start != undefined && end != undefined) {
+  if (start !== undefined && end !== undefined) {
     paths.push(normalizePath({start, end}));
     return createPathsFromPoints(points, paths);
   }
@@ -178,9 +178,7 @@ function pointInsidePolygon(point: Point, paths: Path[]): boolean {
     {start: point, end: {x: point.x, y: FIELD_HEIGHT + 1}},
   ];
 
-  for (let i = 0; i < paths.length; i++) {
-    const polygonPath = paths[i];
-
+  for (const polygonPath of paths) {
     for (let j = 0; j < rays.length; j++) {
       const intersection = intersectionPoint(polygonPath, rays[j]);
       const possibleCrossing = belongsTo(intersection, polygonPath) &&
