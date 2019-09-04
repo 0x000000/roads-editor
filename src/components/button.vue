@@ -23,8 +23,6 @@
   import {ButtonType} from '@/models/inputs';
   import {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
-  import {RoadType} from '@/models/road';
-  import {DistrictType} from '@/models/district';
 
   type IconMap = {[key in ButtonType]: string};
 
@@ -62,9 +60,10 @@
     }
 
     get districtsCount(): number {
-      return this.state.districts.filter(d => {
-        return !(d.type === DistrictType.Water || d.type === DistrictType.Wasteland);
-      }).length;
+      // return this.state.districts.filter(d => {
+      //   return !(d.type === DistrictType.Water || d.type === DistrictType.Wasteland);
+      // }).length;
+      return 0;
     }
 
     get wasteDistsCount(): number {
@@ -72,23 +71,24 @@
     }
 
     get districtsDetailedCount(): string {
-      const counter = {
-        [DistrictType.Residential]: 0,
-        [DistrictType.Commercial]: 0,
-        [DistrictType.Industrial]: 0,
-        [DistrictType.Forest]: 0,
-        [DistrictType.Wasteland]: 0,
-        [DistrictType.Water]: 0,
-      };
-
-      this.state.districts.forEach(d => counter[d.type]++);
-
-      return [
-        counter[DistrictType.Residential],
-        counter[DistrictType.Commercial],
-        counter[DistrictType.Industrial],
-        counter[DistrictType.Forest],
-      ].join(',');
+      // const counter = {
+      //   [DistrictType.Residential]: 0,
+      //   [DistrictType.Commercial]: 0,
+      //   [DistrictType.Industrial]: 0,
+      //   [DistrictType.Forest]: 0,
+      //   [DistrictType.Wasteland]: 0,
+      //   [DistrictType.Water]: 0,
+      // };
+      //
+      // this.state.districts.forEach(d => counter[d.type]++);
+      //
+      // return [
+      //   counter[DistrictType.Residential],
+      //   counter[DistrictType.Commercial],
+      //   counter[DistrictType.Industrial],
+      //   counter[DistrictType.Forest],
+      // ].join(',');
+      return '0,0,0,0,0';
     }
 
     get districtsDetailedPops(): string {
