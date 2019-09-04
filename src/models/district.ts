@@ -1,58 +1,29 @@
 import Road from '@/models/road';
 import {
   Point,
-  comparePoints,
-  pointWeight
+  pointWeight,
+  orderPointsByRoads
 } from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import Block, {detectBlocks} from '@/models/block';
 import Settings from '@/models/settings';
 
-export const RecommendedPopulationByDensity = {
-  1: 5,
-  2: 10,
-  3: 20,
-  4: 30,
-  5: 40,
-};
-
-export type Density = 1 | 2 | 3 | 4 | 5;
-export type Wealth  = 1 | 2 | 3;
-
-export interface DistrictTier {
-  density: Density;
-  wealth: Wealth;
-  maxPopulation: number;
-  maxWorkspace: number;
+export enum DistrictShape {
+  Linear,
 }
 
 export interface DistrictState {
   readonly id: number;
   readonly roads: Road[];
-  type: DistrictType;
-  // t1: DistrictTier;
-  // t2: DistrictTier;
-  // t3: DistrictTier;
   blocks: Block[];
+  shape: DistrictShape;
 }
 
 export interface NormalizedDistrictState {
   readonly id: number;
   readonly roadIds: number[];
-  type: DistrictType;
-  // t1: DistrictTier;
-  // t2: DistrictTier;
-  // t3: DistrictTier;
   blocks: Block[];
-}
-
-export enum DistrictType {
-  Residential = 1,
-  Commercial = 2,
-  Industrial = 3,
-  Forest = 4,
-  Water = 5,
-  Wasteland = 6,
+  shape: DistrictShape;
 }
 
 export default class District implements DistrictState {
@@ -75,11 +46,8 @@ export default class District implements DistrictState {
       const district = new District({
         id: Settings.getInstance().nextDistrictId,
         roads,
-        type: DistrictType.Wasteland,
-        // t1: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
-        // t2: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
-        // t3: {density: 1, wealth: 1, maxPopulation: 0, maxWorkspace: 0},
         blocks: [],
+        shape: DistrictShape.Linear,
       });
 
       district.blocks = detectBlocks(district);
@@ -99,11 +67,8 @@ export default class District implements DistrictState {
       return {
         id: district.id,
         roadIds: district.roads.map(r => r.id),
-        type: district.type,
-        // t1: district.t1,
-        // t2: district.t2,
-        // t3: district.t3,
-        blocks: district.blocks,
+        blocks: district.blocks.map(b => new Block(b)),
+        shape: district.shape,
       };
     });
   }
@@ -113,11 +78,8 @@ export default class District implements DistrictState {
       const linkedState: DistrictState = {
         id: state.id,
         roads: roads.filter(r => state.roadIds.includes(r.id)),
-        type: state.type,
-        // t1: state.t1,
-        // t2: state.t2,
-        // t3: state.t3,
-        blocks: state.blocks,
+        blocks: state.blocks.map(b => new Block(b)),
+        shape: state.shape,
       };
 
       return new District(linkedState);
@@ -137,10 +99,7 @@ export default class District implements DistrictState {
   public id: number;
   public roads: Road[];
   public points: Point[];
-  public type: DistrictType;
-  // public t1: DistrictTier;
-  // public t2: DistrictTier;
-  // public t3: DistrictTier;
+  public shape: DistrictShape;
 
   public selected: boolean = false;
   public hash: string;
@@ -149,12 +108,9 @@ export default class District implements DistrictState {
   constructor(state: DistrictState) {
     this.id = state.id;
     this.roads = state.roads;
-    this.type = state.type || DistrictType.Wasteland;
-    this.points = this.orderedPoints(this.roads);
-    // this.t1 = state.t1;
-    // this.t2 = state.t2;
-    // this.t3 = state.t3;
+    this.points = orderPointsByRoads(this.roads.map(r => r.path));
     this.blocks = state.blocks;
+    this.shape = state.shape;
 
     this.hash = this.roads.map(r => r.id).sort().join(',');
   }
@@ -176,49 +132,10 @@ export default class District implements DistrictState {
     return pointsCoordinates.join(' ');
   }
 
-  public get classes(): string {
+  public get classes(): string[] {
     return [
-      `district-${this.type}`,
+      `district-6`,
       this.selected ? 'selected' : '',
-    ].join(' ');
-  }
-
-  private orderedPoints(roads: Road[]): Point[] {
-    const sortedRoads: Road[] = [roads[0]];
-    const lastPoint = roads[0].path.start;
-    let nextPoint = roads[0].path.end;
-
-    const points: Point[] = [nextPoint];
-
-    while (comparePoints(nextPoint, lastPoint) !== 0) {
-      let nextRoad: Road | undefined;
-      roads.forEach(r => {
-        if (sortedRoads.includes(r)) {
-          return;
-        }
-
-        if (comparePoints(r.path.start, nextPoint) === 0) {
-          nextPoint = r.path.end;
-          points.push(nextPoint);
-
-          nextRoad = r;
-          return;
-        }
-
-        if (comparePoints(r.path.end, nextPoint) === 0) {
-          nextPoint = r.path.start;
-          points.push(nextPoint);
-
-          nextRoad = r;
-          return;
-        }
-      });
-
-      if (nextRoad) {
-        sortedRoads.push(nextRoad);
-      }
-    }
-
-    return points;
+    ];
   }
 }

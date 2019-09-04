@@ -18,11 +18,92 @@ export enum BlockShape {
   TriangleBottomRight = 5,
 }
 
-export default interface Block {
+export enum Density {
+  Rural = 1,
+  Suburban = 2,
+  Urban = 3,
+  UrbanCenter = 4,
+  UrbanCore = 5,
+}
+
+export enum Wealth {
+  Poor = 1,
+  Low = 2,
+  Mid = 3,
+  High = 4,
+}
+
+export enum BlockType {
+  Residential = 1,
+  Commercial = 2,
+  Industrial = 3,
+  Nature = 4,
+  Water = 5,
+  Wasteland = 6,
+}
+
+export enum NatureType {
+  None = 0,
+  Forest = 1,
+  Park = 2,
+  Agricultural = 3,
+}
+
+export enum BlockPattern {
+  Chaotic,
+}
+
+export enum BlockLevel {
+  Zero,
+  One,
+  Two,
+  Three,
+}
+
+export interface BlockState {
   readonly id: number;
   readonly position: Point;
   readonly paths: Path[];
   readonly shape: BlockShape;
+  type: BlockType;
+  density: Density;
+  wealth: Wealth;
+  natureType: NatureType;
+  level: BlockLevel;
+}
+
+export default class Block implements BlockState {
+  public id: number;
+  public position: Point;
+  public paths: Path[];
+  public shape: BlockShape;
+  public type: BlockType;
+  public density: Density;
+  public wealth: Wealth;
+  public natureType: NatureType;
+  public level: BlockLevel;
+
+  public selected: boolean = false;
+  public pattern: BlockPattern = BlockPattern.Chaotic;
+
+  constructor(state: BlockState) {
+    this.id = state.id;
+    this.position = state.position;
+    this.paths = state.paths;
+    this.shape = state.shape;
+    this.type = state.type;
+    this.density = state.density;
+    this.wealth = state.wealth;
+    this.natureType = state.natureType;
+    this.level = state.level;
+  }
+
+  public get classes(): string[] {
+    return [
+      `district-${this.type}`,
+      this.selected ? 'selected' : '',
+    ];
+  }
 }
 
 function findExistingPaths(district: District): Map<string, Path> {
@@ -128,29 +209,34 @@ function detectBlock(vertices: Map<number, Point>, paths: Path[]): Block[] {
   const pathWeights: number[][] = paths.map(path => [pointWeight(path.start), pointWeight(path.end)]);
 
   const shapes = [
-    {type: BlockShape.TriangleBottomRight, pattern: triangleBottomRightPattern, stop: false},
-    {type: BlockShape.TriangleTopLeft, pattern: triangleTopLeftPattern, stop: true},
-    {type: BlockShape.TriangleTopRight, pattern: triangleTopRightPattern, stop: true},
-    {type: BlockShape.TriangleBottomLeft, pattern: triangleBottomLeftPattern, stop: true},
-    {type: BlockShape.Square, pattern: squarePattern, stop: true},
+    {shape: BlockShape.TriangleBottomRight, pattern: triangleBottomRightPattern, stop: false},
+    {shape: BlockShape.TriangleTopLeft, pattern: triangleTopLeftPattern, stop: true},
+    {shape: BlockShape.TriangleTopRight, pattern: triangleTopRightPattern, stop: true},
+    {shape: BlockShape.TriangleBottomLeft, pattern: triangleBottomLeftPattern, stop: true},
+    {shape: BlockShape.Square, pattern: squarePattern, stop: true},
   ];
 
   sortedWeights.forEach(pWeight => {
     const topPoint = vertices.get(pWeight) as Point;
 
-    for (const {type, pattern, stop} of shapes) {
+    for (const {shape, pattern, stop} of shapes) {
       const points = pattern(topPoint);
 
       const allPointsFound = points.every(pair => !!pathWeights.find(pp => pp[0] === pair[0] && pp[1] === pair[1]));
       if (allPointsFound) {
-        blocks.push({
+        blocks.push(new Block({
           id: Settings.getInstance().nextBlockId,
           position: topPoint,
-          shape: type,
+          type: BlockType.Wasteland,
+          shape,
           paths: points.map(pair => {
             return ({start: vertices.get(pair[0]) as Point, end: vertices.get(pair[1])  as Point});
           }),
-        });
+          density: Density.Rural,
+          wealth: Wealth.Poor,
+          natureType: NatureType.None,
+          level: BlockLevel.Zero,
+        }));
 
         if (stop) {
           break;
