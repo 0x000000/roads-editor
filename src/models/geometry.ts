@@ -1,4 +1,5 @@
 import {FIELD_WIDTH, FIELD_HEIGHT} from '@/config';
+import Road from '@/models/road';
 
 export interface Point {
   readonly x: number;
@@ -196,4 +197,43 @@ export function pathInsidePolygon(path: Path, paths: Path[]): boolean {
   return pointInsidePolygon(middlePoint(path), paths) &&
          pointInsidePolygon(path.start, paths) &&
          pointInsidePolygon(path.end, paths);
+}
+
+export function orderPointsByRoads(paths: Path[]): Point[] {
+  const sortedPaths: Path[] = [paths[0]];
+  const lastPoint = paths[0].start;
+  let nextPoint = paths[0].end;
+
+  const points: Point[] = [nextPoint];
+
+  while (comparePoints(nextPoint, lastPoint) !== 0) {
+    let nextPath: Path | undefined;
+    paths.forEach(r => {
+      if (sortedPaths.includes(r)) {
+        return;
+      }
+
+      if (comparePoints(r.start, nextPoint) === 0) {
+        nextPoint = r.end;
+        points.push(nextPoint);
+
+        nextPath = r;
+        return;
+      }
+
+      if (comparePoints(r.end, nextPoint) === 0) {
+        nextPoint = r.start;
+        points.push(nextPoint);
+
+        nextPath = r;
+        return;
+      }
+    });
+
+    if (nextPath) {
+      sortedPaths.push(nextPath);
+    }
+  }
+
+  return points;
 }
