@@ -4,11 +4,12 @@ import {
   createPathsFromPoints,
   pathInsidePolygon,
   pathWeight,
-  pointsFromPath, pointWeight
+  pointsFromPath, pointWeight, orderPointsByRoads
 } from '@/models/geometry';
 import District from '@/models/district';
 import {cycledPairs} from '@/models/utils';
 import Settings from '@/models/settings';
+import {POINT_DISTANCE} from '@/config';
 
 export enum BlockShape {
   Square = 1,
@@ -19,11 +20,11 @@ export enum BlockShape {
 }
 
 export enum Density {
-  Rural = 1,
-  Suburban = 2,
-  Urban = 3,
-  UrbanCenter = 4,
-  UrbanCore = 5,
+  Lowest = 1, // Rural
+  Low,    // Suburban
+  Medium, // Urban
+  High,   // UrbanCenter
+  Highest, // UrbanCore
 }
 
 export enum Wealth {
@@ -104,6 +105,19 @@ export default class Block implements BlockState {
       this.selected ? 'selected' : '',
     ];
   }
+
+  public get svgPoints(): string {
+    const pointsCoordinates: string[] = [];
+
+    for (const point of orderPointsByRoads(this.paths)) {
+      const x = (point.x + 1) * POINT_DISTANCE;
+      const y = (point.y + 1) * POINT_DISTANCE;
+
+      pointsCoordinates.push(`${x},${y}`);
+    }
+
+    return pointsCoordinates.join(' ');
+  }
 }
 
 function findExistingPaths(district: District): Map<string, Path> {
@@ -167,7 +181,7 @@ function squarePattern(topLeftPoint: Point): number[][] {
     pointWeight(topLeftPoint),
     pointWeight({x: topLeftPoint.x + 1, y: topLeftPoint.y}),
     pointWeight({x: topLeftPoint.x + 1, y: topLeftPoint.y + 1}),
-    pointWeight({x: topLeftPoint.x,     y: topLeftPoint.y + 1}),
+    pointWeight({x: topLeftPoint.x, y: topLeftPoint.y + 1}),
   ]);
 }
 
@@ -175,7 +189,7 @@ function triangleTopLeftPattern(topLeftPoint: Point): number[][] {
   return inPairs([
     pointWeight(topLeftPoint),
     pointWeight({x: topLeftPoint.x + 1, y: topLeftPoint.y}),
-    pointWeight({x: topLeftPoint.x,     y: topLeftPoint.y + 1}),
+    pointWeight({x: topLeftPoint.x, y: topLeftPoint.y + 1}),
   ]);
 }
 
@@ -191,14 +205,14 @@ function triangleBottomLeftPattern(topLeftPoint: Point): number[][] {
   return inPairs([
     pointWeight(topLeftPoint),
     pointWeight({x: topLeftPoint.x + 1, y: topLeftPoint.y + 1}),
-    pointWeight({x: topLeftPoint.x,     y: topLeftPoint.y + 1}),
+    pointWeight({x: topLeftPoint.x, y: topLeftPoint.y + 1}),
   ]);
 }
 
 function triangleBottomRightPattern(topLeftPoint: Point): number[][] {
   return inPairs([
     pointWeight(topLeftPoint),
-    pointWeight({x: topLeftPoint.x,     y: topLeftPoint.y + 1}),
+    pointWeight({x: topLeftPoint.x, y: topLeftPoint.y + 1}),
     pointWeight({x: topLeftPoint.x - 1, y: topLeftPoint.y + 1}),
   ]);
 }
@@ -230,9 +244,9 @@ function detectBlock(vertices: Map<number, Point>, paths: Path[]): Block[] {
           type: BlockType.Wasteland,
           shape,
           paths: points.map(pair => {
-            return ({start: vertices.get(pair[0]) as Point, end: vertices.get(pair[1])  as Point});
+            return ({start: vertices.get(pair[0]) as Point, end: vertices.get(pair[1]) as Point});
           }),
-          density: Density.Rural,
+          density: Density.Lowest,
           wealth: Wealth.Poor,
           natureType: NatureType.None,
           level: BlockLevel.Zero,

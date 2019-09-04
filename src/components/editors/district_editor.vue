@@ -1,5 +1,3 @@
-import {BlockType} from '@/models/block';
-import {BlockType} from '@/models/block';
 <template>
   <div class="district-editor">
     <h3>Edit district</h3>
@@ -7,10 +5,6 @@ import {BlockType} from '@/models/block';
     <div class="tool-row">
       <div class="district-view">
         <svg width="250" height="250">
-          <polygon :points="svgPointsZeroDiff"
-                   :class="district.classes">
-          </polygon>
-
           <polygon v-for="block in district.blocks"
                    class="block"
                    :v-key="block.id"
@@ -29,6 +23,17 @@ import {BlockType} from '@/models/block';
           </select>
         </label>
 
+        <label>
+          Generator Type
+          <select v-model="generatorType">
+            <option :value="GeneratorType.Random">Random</option>
+            <option :value="GeneratorType.Rural">Rural</option>
+          </select>
+        </label>
+
+        <input type="button"
+               value="Generate Layout For All"
+               @click="generateLayoutAllBlocks"/>
       </div>
     </div>
 
@@ -61,11 +66,11 @@ import {BlockType} from '@/models/block';
         <label v-if="rci">
           Density
           <select v-model="selectedBlock.density">
-            <option :value="Density.Rural">1 - Rural</option>
-            <option :value="Density.Suburban">2 - Suburban</option>
-            <option :value="Density.Urban">3 - Urban</option>
-            <option :value="Density.UrbanCenter">4 - Urban Center</option>
-            <option :value="Density.UrbanCore">5 - Urban Core</option>
+            <option :value="Density.Lowest">1 - Rural</option>
+            <option :value="Density.Low">2 - Suburban</option>
+            <option :value="Density.Medium">3 - Urban</option>
+            <option :value="Density.High">4 - Urban Center</option>
+            <option :value="Density.Highest">5 - Urban Core</option>
           </select>
         </label>
 
@@ -124,6 +129,7 @@ import {BlockType} from '@/models/block';
   } from '@/models/block';
   import Button from '@/components/button.vue';
   import hotkeys from 'hotkeys-js';
+  import {generateBlocks, generateRuralBlock, GeneratorType} from '@/models/block_generator';
 
   const ZOOM_1 = 2;
   const ZOOM_2 = 18;
@@ -136,10 +142,12 @@ import {BlockType} from '@/models/block';
     @Prop() private district!: District;
     private prevDistrictId: number | undefined = undefined;
     private selectedBlock: Block | undefined;
+    private generatorType?: GeneratorType;
 
     @Watch('district', {deep: true})
     private onDistrictChanged() {
       if (this.district.id !== this.prevDistrictId && this.prevDistrictId !== undefined) {
+        if (this.selectedBlock !== undefined) { this.selectedBlock.selected = false; }
         this.selectedBlock = undefined;
       }
 
@@ -155,8 +163,10 @@ import {BlockType} from '@/models/block';
         DistrictShape,
         NatureType,
         BlockLevel,
+        GeneratorType,
         ROAD_WIDTH: ROAD_WIDTH * 2,
         selectedBlock: undefined,
+        generatorType: GeneratorType.Rural,
       };
     }
 
@@ -247,7 +257,18 @@ import {BlockType} from '@/models/block';
     }
 
     private generateLayoutCurrentBlock() {
+      console.log(generateRuralBlock());
+    }
 
+    private generateLayoutAllBlocks() {
+      generateBlocks(this.generatorType as GeneratorType, this.district.blocks.length).forEach((newBlock, index) => {
+        const block = this.district.blocks[index];
+
+        block.type = newBlock.type;
+        block.natureType = newBlock.natureType;
+        block.wealth = newBlock.wealth;
+        block.density = newBlock.density;
+      });
     }
 
     get svgPointsZeroDiff(): string {

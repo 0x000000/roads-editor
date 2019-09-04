@@ -5,11 +5,19 @@ import {
   orderPointsByRoads
 } from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
-import Block, {detectBlocks} from '@/models/block';
+import Block, {BlockState, detectBlocks} from '@/models/block';
 import Settings from '@/models/settings';
 
 export enum DistrictShape {
   Linear,
+}
+
+export enum LandValue {
+  Lowest = 1,
+  Low,
+  Medium,
+  High,
+  Highest,
 }
 
 export interface DistrictState {
@@ -17,6 +25,7 @@ export interface DistrictState {
   readonly roads: Road[];
   blocks: Block[];
   shape: DistrictShape;
+  landValue: LandValue;
 }
 
 export interface NormalizedDistrictState {
@@ -24,6 +33,7 @@ export interface NormalizedDistrictState {
   readonly roadIds: number[];
   blocks: Block[];
   shape: DistrictShape;
+  landValue: LandValue;
 }
 
 export default class District implements DistrictState {
@@ -48,6 +58,7 @@ export default class District implements DistrictState {
         roads,
         blocks: [],
         shape: DistrictShape.Linear,
+        landValue: LandValue.Lowest,
       });
 
       district.blocks = detectBlocks(district);
@@ -69,6 +80,7 @@ export default class District implements DistrictState {
         roadIds: district.roads.map(r => r.id),
         blocks: district.blocks.map(b => new Block(b)),
         shape: district.shape,
+        landValue: district.landValue,
       };
     });
   }
@@ -80,6 +92,7 @@ export default class District implements DistrictState {
         roads: roads.filter(r => state.roadIds.includes(r.id)),
         blocks: state.blocks.map(b => new Block(b)),
         shape: state.shape,
+        landValue: state.landValue,
       };
 
       return new District(linkedState);
@@ -100,6 +113,7 @@ export default class District implements DistrictState {
   public roads: Road[];
   public points: Point[];
   public shape: DistrictShape;
+  public landValue: LandValue;
 
   public selected: boolean = false;
   public hash: string;
@@ -111,6 +125,7 @@ export default class District implements DistrictState {
     this.points = orderPointsByRoads(this.roads.map(r => r.path));
     this.blocks = state.blocks;
     this.shape = state.shape;
+    this.landValue = state.landValue;
 
     this.hash = this.roads.map(r => r.id).sort().join(',');
   }

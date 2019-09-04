@@ -162,4 +162,8 @@ export default class Crossroad implements CrossroadState {
   public hasRoad(road: Road): boolean {
     return this.connections.map(c => c.road).includes(road);
   }
+
+  public get hash(): number {
+    return pointWeight(this.position);
+  }
 }

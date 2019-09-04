@@ -47,7 +47,6 @@ export abstract class Mode {
   }
 
   public selectCrossroad(nextCrossroad: Crossroad) {
-
   }
 
   public onEnterKey(): void {

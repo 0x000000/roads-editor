@@ -16,3 +16,16 @@ export function cycledPairs<T>(array: T[]): CycledPair<T>[] {
 
   return pairs;
 }
+/* tslint:enable */
+
+function random(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export function rand100() {
+  return random(0, 100);
+}
+
+export function inRange(value: number, min: number, max: number) {
+  return value >= min && value <= max;
+}

@@ -5,11 +5,19 @@
          :height="mapSize.height"
          :class="mapClasses">
 
-      <polygon v-for="district in districts"
-               :points="district.svgPoints"
-               :class="district.classes"
-               @click="selectDistrict(district)">
-      </polygon>
+      <template v-for="district in districts">
+        <polygon :points="district.svgPoints"
+                 :class="district.classes">
+        </polygon>
+
+        <polygon v-if="showBlocks"
+                 v-for="block in district.blocks"
+                 class="block"
+                 :points="block.svgPoints"
+                 :class="block.classes"
+                 @click="selectDistrict(district)">
+        </polygon>
+      </template>
 
       <path v-for="road in roads"
             :v-key="road.id"
@@ -64,10 +72,12 @@
   import District from '@/models/district';
   import {ButtonType} from '@/models/inputs';
   import Crossroad from '@/models/crossroad';
+  import crossroad from '@/models/crossroad';
 
   @Component
-  export default class Map extends Vue {
+  export default class MapComponent extends Vue {
     private dots: Dot[] = Dot.buildArray();
+    private selectedDistrict: District | undefined;
 
     private data() {
       return {
@@ -127,6 +137,10 @@
       Mode.getMode(oldVal).onEscKey();
     }
 
+    get showBlocks(): boolean {
+      return this.toolbarState === ButtonType.EditDistrict;
+    }
+
     get showDots(): boolean {
       return this.toolbarState === ButtonType.BuildRoad;
     }
@@ -153,6 +167,7 @@
 
     private selectDistrict(nextDistrict: District) {
       this.mode.selectDistrict(nextDistrict);
+      this.selectedDistrict = nextDistrict;
     }
 
     private selectCrossroad(nextCrossroad: Crossroad) {
@@ -164,6 +179,14 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+  polygon.block {
+    &.selected {
+      stroke: transparent;
+      stroke-width: 5px;
+    }
+  }
+</style>
 
 <style lang="scss">
   $selectedColor: #FD783F;
