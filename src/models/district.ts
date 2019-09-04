@@ -146,11 +146,4 @@ export default class District implements DistrictState {
 
     return pointsCoordinates.join(' ');
   }
-
-  public get classes(): string[] {
-    return [
-      `district-6`,
-      this.selected ? 'selected' : '',
-    ];
-  }
 }

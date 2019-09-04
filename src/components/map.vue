@@ -6,8 +6,7 @@
          :class="mapClasses">
 
       <template v-for="district in districts">
-        <polygon :points="district.svgPoints"
-                 :class="district.classes">
+        <polygon :points="district.svgPoints" class="district-6">
         </polygon>
 
         <polygon v-if="showBlocks"
