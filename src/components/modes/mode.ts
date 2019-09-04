@@ -59,9 +59,6 @@ export abstract class Mode {
   public onEscKey(): void {
   }
 
-  public onKey(key: string): void {
-  }
-
   public onRoadMouseover(road: Road): void {}
 
   protected get state(): RootState {

@@ -93,10 +93,6 @@
       hotkeys('enter', () => {
         this.mode.onEnterKey();
       });
-
-      hotkeys('shift+r, shift+c, shift+i, shift+f, shift+w', (_, handler) => {
-        this.mode.onKey(handler.key);
-      });
     }
 
     get state(): RootState {
@@ -241,7 +237,7 @@
       fill: #FA4C4A;
     }
 
-    // forest
+    // Nature
     &.district-4 {
       fill: #22B860;
     }

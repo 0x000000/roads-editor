@@ -72,7 +72,6 @@ import {ButtonType} from '../models/inputs';
     font-size: 15px;
   }
 
-
   /deep/ label,
   /deep/ input,
   /deep/ select {
