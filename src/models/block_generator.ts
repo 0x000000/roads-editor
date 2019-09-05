@@ -104,7 +104,6 @@ export function generateRuralBlock(): BlockState {
   );
 }
 
-
 export function generateBlocks(type: GeneratorType, count: number): BlockState[] {
   return times(count).map(_ => {
     switch (type) {

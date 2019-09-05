@@ -100,7 +100,7 @@
       </div>
 
       <div class="block-view">
-        <svg width="400" height="400">
+        <svg width="420" height="420">
           <polygon class="block"
                    v-if="selectedBlock"
                    :class="selectedBlock.classes"
@@ -132,7 +132,7 @@
   import {generateBlocks, generateRuralBlock, GeneratorType} from '@/models/block_generator';
 
   const ZOOM_1 = 2;
-  const ZOOM_2 = 18;
+  const ZOOM_2 = 20;
   const OFFSET = 10;
 
   @Component({
