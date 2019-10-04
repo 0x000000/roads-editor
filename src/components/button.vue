@@ -3,17 +3,7 @@
     <button class="mdi"
             :class="classes"
             @click="selectButton">
-      <span v-show="type === ButtonType.BuildRoad">Roads: <b>{{roadsCount}}</b></span>
-      <span v-show="type === ButtonType.BuildRoad">&nbsp;</span>
-
-      <span v-show="type === ButtonType.EditCrossroad">&nbsp;</span>
-      <span v-show="type === ButtonType.EditCrossroad">&nbsp;</span>
-
-      <span v-show="type === ButtonType.MarkDistrict">Dists: <b>{{districtsCount}}</b></span>
-      <span v-show="type === ButtonType.MarkDistrict">Waste: <b>{{wasteDistsCount}}</b></span>
-
-      <span v-show="type === ButtonType.EditDistrict"><b>{{districtsDetailedCount}}</b></span>
-      <span v-show="type === ButtonType.EditDistrict">P: <b>{{districtsDetailedPops}}</b></span>
+      <span>{{title}}</span>
     </button>
   </span>
 </template>
@@ -24,13 +14,22 @@
   import {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
 
-  type IconMap = {[key in ButtonType]: string};
+  type ButtonMap = {[key in ButtonType]: string};
 
-  const Icons: IconMap = {
+  const Icons: ButtonMap = {
     [ButtonType.BuildRoad]: 'mdi-road',
-    [ButtonType.MarkDistrict]: 'mdi-home-plus',
-    [ButtonType.EditDistrict]: 'mdi-home-city',
+    [ButtonType.MarkDistrict]: 'mdi-border-bottom',
+    [ButtonType.EditDistrict]: 'mdi-border-all',
     [ButtonType.EditCrossroad]: 'mdi-transit-connection-variant',
+    [ButtonType.BuildingsEditor]: 'mdi-home-city',
+  };
+
+  const Titles: ButtonMap = {
+    [ButtonType.BuildRoad]: 'Roads',
+    [ButtonType.EditCrossroad]: 'Crossroads',
+    [ButtonType.MarkDistrict]: 'Create District',
+    [ButtonType.EditDistrict]: 'Edit District',
+    [ButtonType.BuildingsEditor]: 'Buildings',
   };
 
   @Component
@@ -55,53 +54,8 @@
       return this.type === this.state.toolbarState ? 'active' : '';
     }
 
-    get roadsCount(): number {
-      return this.state.roads.length;
-    }
-
-    get districtsCount(): number {
-      // return this.state.districts.filter(d => {
-      //   return !(d.type === DistrictType.Water || d.type === DistrictType.Wasteland);
-      // }).length;
-      return 0;
-    }
-
-    get wasteDistsCount(): number {
-      return this.state.districts.length - this.districtsCount;
-    }
-
-    get districtsDetailedCount(): string {
-      // const counter = {
-      //   [DistrictType.Residential]: 0,
-      //   [DistrictType.Commercial]: 0,
-      //   [DistrictType.Industrial]: 0,
-      //   [DistrictType.Forest]: 0,
-      //   [DistrictType.Wasteland]: 0,
-      //   [DistrictType.Water]: 0,
-      // };
-      //
-      // this.state.districts.forEach(d => counter[d.type]++);
-      //
-      // return [
-      //   counter[DistrictType.Residential],
-      //   counter[DistrictType.Commercial],
-      //   counter[DistrictType.Industrial],
-      //   counter[DistrictType.Forest],
-      // ].join(',');
-      return '0,0,0,0,0';
-    }
-
-    get districtsDetailedPops(): string {
-      // let maxPop = 0;
-      // let maxWork = 0;
-      // this.state.districts.forEach(d => {
-      //   maxPop += d.t3.maxPopulation;
-      //   maxWork += d.t3.maxWorkspace;
-      // });
-
-      return [
-        0, 0,
-      ].join('/');
+    get title(): string {
+      return Titles[this.type];
     }
 
     private selectButton() {
