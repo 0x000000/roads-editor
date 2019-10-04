@@ -9,6 +9,7 @@
     ]
   },
   "rules": {
+    "max-line-length": [false],
     "quotemark": [
       true,
       "single"
