@@ -63,6 +63,13 @@
           </select>
         </label>
 
+        <label>
+          Layout Name
+          <select v-model="layoutName">
+            <option v-for="name in layoutNames" :value="name">{{name}}</option>
+          </select>
+        </label>
+
         <label v-if="rci">
           Density
           <select v-model="selectedBlock.density">
@@ -100,12 +107,20 @@
       </div>
 
       <div class="block-view">
-        <svg width="420" height="420">
+        <svg width="410" height="410" v-if="selectedBlock">
           <polygon class="block"
-                   v-if="selectedBlock"
                    :class="selectedBlock.classes"
                    :points="svgBlockPointsMaxZoom(selectedBlock)">
           </polygon>
+
+          <rect v-for="slot in selectedSlots()"
+                :transform="transform(slot)"
+                class="building-slot"
+                :width="28"
+                :height="28"
+                :x="slot.topLeftPosition.x"
+                :y="slot.topLeftPosition.y">
+          </rect>
         </svg>
       </div>
     </div>
@@ -129,7 +144,9 @@
   } from '@/models/block';
   import Button from '@/components/button.vue';
   import hotkeys from 'hotkeys-js';
-  import {generateBlocks, generateRuralBlock, GeneratorType} from '@/models/block_generator';
+  import {generateBlocks, GeneratorType} from '@/models/block_generator';
+  import {BuildingSlot, RuralLayouts} from '@/layouts/rural_residential';
+  import {Slot} from '@/models/building';
 
   const ZOOM_1 = 2;
   const ZOOM_2 = 20;
@@ -143,6 +160,7 @@
     private prevDistrictId: number | undefined = undefined;
     private selectedBlock: Block | undefined;
     private generatorType?: GeneratorType;
+    private layoutName: string | undefined;
 
     @Watch('district', {deep: true})
     private onDistrictChanged() {
@@ -153,6 +171,13 @@
 
       this.prevDistrictId = this.district.id;
       store.commit(MutationName.SaveState);
+    }
+
+    @Watch('layoutName')
+    private onLayoutChange(newVal: string) {
+      if (this.selectedBlock) {
+        this.selectedBlock.layout = RuralLayouts.find(l => l.name === newVal);
+      }
     }
 
     private data() {
@@ -167,6 +192,7 @@
         ROAD_WIDTH: ROAD_WIDTH * 2,
         selectedBlock: undefined,
         generatorType: GeneratorType.Rural,
+        layoutName: undefined,
       };
     }
 
@@ -179,9 +205,13 @@
     public selectBlock(nextBlock: Block) {
       if (this.selectedBlock) {
         this.selectedBlock.selected = false;
+        this.layoutName = undefined;
       }
 
       this.selectedBlock = nextBlock;
+      if (nextBlock.layout && nextBlock.layout) {
+        this.layoutName = nextBlock.layout.name;
+      }
       this.selectedBlock.selected = true;
     }
 
@@ -238,8 +268,8 @@
       }
 
       for (const point of orderedPoints) {
-        const x = (point.x - orderedPoints[0].x + diffX) * POINT_DISTANCE * ZOOM_2 + OFFSET;
-        const y = (point.y - orderedPoints[0].y + diffY) * POINT_DISTANCE * ZOOM_2 + OFFSET;
+        const x = (point.x - orderedPoints[0].x + diffX) * POINT_DISTANCE * ZOOM_2;
+        const y = (point.y - orderedPoints[0].y + diffY) * POINT_DISTANCE * ZOOM_2;
 
         pointsCoordinates.push(`${x},${y}`);
       }
@@ -307,6 +337,28 @@
     get nature(): boolean {
       return this.selectedBlock !== undefined && this.selectedBlock.type === BlockType.Nature;
     }
+
+    get layoutNames(): string[] {
+      if (this.selectedBlock === undefined) {
+        return [];
+      }
+
+      return RuralLayouts.filter(l => {
+        return l !== undefined && l.block.shape === (this.selectedBlock as Block).shape;
+      }).map(l => l.name);
+    }
+
+    private selectedSlots(): Slot[] {
+      if (this.selectedBlock && this.selectedBlock.layout) {
+        return this.selectedBlock.layout.sectors.map(s => s.slots).flat();
+      }
+
+      return [];
+    }
+
+    private transform(slot: Slot): string {
+      return `rotate(${slot.rotation}, ${slot.absolutePosition.x}, ${slot.absolutePosition.y})`;
+    }
   }
 </script>
 
@@ -334,12 +386,18 @@
 
   .block {
     stroke: darkgrey;
-    stroke-width: 5px;
+    stroke-width: 2px;
 
     &:hover, &.selected {
       stroke: #FD783F;
       cursor: pointer;
     }
+  }
+
+  .building-slot {
+    stroke: #0c88ee;
+    stroke-width: 1px;
+    fill: none;
   }
 
   .tool-row {

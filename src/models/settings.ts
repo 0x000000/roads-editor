@@ -2,6 +2,7 @@ export interface SettingsState {
   roadId: number;
   districtId: number;
   blockId: number;
+  buildingId: number;
 }
 
 export default class Settings implements SettingsState {
@@ -18,6 +19,7 @@ export default class Settings implements SettingsState {
   public roadId!: number;
   public districtId!: number;
   public blockId!: number;
+  public buildingId!: number;
 
   private constructor() {
   }
@@ -26,6 +28,8 @@ export default class Settings implements SettingsState {
     this.roadId = state.roadId;
     this.districtId = state.districtId;
     this.blockId = state.blockId;
+    this.buildingId = state.buildingId;
+
     return this;
   }
 
@@ -38,6 +42,10 @@ export default class Settings implements SettingsState {
   }
 
   get nextBlockId(): number {
+    return this.blockId++;
+  }
+
+  get nextBuildingId(): number {
     return this.blockId++;
   }
 }

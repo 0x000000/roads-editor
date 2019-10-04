@@ -72,6 +72,7 @@ function initState(): RootState {
     roadId: 0,
     districtId: 0,
     blockId: 0,
+    buildingId: 0,
   });
 
   const roads: Road[] = [];

@@ -10,6 +10,7 @@ import District from '@/models/district';
 import {cycledPairs} from '@/models/utils';
 import Settings from '@/models/settings';
 import {POINT_DISTANCE} from '@/config';
+import {BlockImport} from '@/layouts/rural_residential';
 
 export enum BlockShape {
   Square = 1,
@@ -85,7 +86,7 @@ export default class Block implements BlockState {
   public level: BlockLevel;
 
   public selected: boolean = false;
-  public pattern: BlockPattern = BlockPattern.Chaotic;
+  public layout: BlockImport | undefined;
 
   constructor(state: BlockState) {
     this.id = state.id;
