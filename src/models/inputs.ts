@@ -3,4 +3,5 @@ export enum ButtonType {
   EditCrossroad = 'EditCrossroad',
   MarkDistrict = 'MarkDistrict',
   EditDistrict = 'EditDistrict',
+  BuildingsEditor = 'BuildingsEditor',
 }
