@@ -1,6 +1,6 @@
 <template>
   <div class="road-editor">
-    <h4>Edit road</h4>
+    <h3>Edit road</h3>
 
     <label>
       Type

@@ -1,6 +1,6 @@
 <template>
   <div class="crossroad-editor">
-    <h4>Edit crossroad</h4>
+    <h3>Edit crossroad</h3>
 
     <svg width="220" height="220">
       <path d="M 10 10 L 110 110" v-if="showNW"></path>
