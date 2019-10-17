@@ -8,6 +8,7 @@ import Road from '@/models/road';
 import Settings from '@/models/settings';
 import District from '@/models/district';
 import Crossroad from '@/models/crossroad';
+import {IBuildingVariant} from '@/models/building';
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export interface RootState {
   settings: Settings;
   districts: District[];
   crossroads: Crossroad[];
+  buildingVariants: IBuildingVariant[];
 }
 
 const store: StoreOptions<RootState> = {

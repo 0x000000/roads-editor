@@ -6,6 +6,7 @@ import Road, {RoadState, RoadType} from '@/models/road';
 import Settings, {SettingsState} from '@/models/settings';
 import District, {NormalizedDistrictState} from '@/models/district';
 import Crossroad, {NormalizedCrossroadState} from '@/models/crossroad';
+import {IBuildingVariant} from '@/models/building';
 
 const PREFIX = 'RDE_';
 const UP_TO_DATE_KEY = `${PREFIX}${BUILD_VERSION}`;
@@ -19,6 +20,7 @@ interface SerializationState {
   settings: SettingsState;
   districts: NormalizedDistrictState[];
   crossroads: NormalizedCrossroadState[];
+  buildingVariants: IBuildingVariant[];
 }
 
 function cleanUpState() {
@@ -40,6 +42,7 @@ function serializeState(state: RootState): string {
     settings: state.settings,
     districts: District.normalizeLinks(state.districts),
     crossroads: Crossroad.normalizeLinks(state.crossroads),
+    buildingVariants: state.buildingVariants,
   };
 
   return JSON.stringify(serializationState);
@@ -64,6 +67,7 @@ function deserializeState(rawState: string): RootState {
     settings: Settings.getInstance().initialize(state.settings),
     districts,
     crossroads,
+    buildingVariants: state.buildingVariants,
   };
 }
 
@@ -75,17 +79,14 @@ function initState(): RootState {
     buildingId: 0,
   });
 
-  const roads: Road[] = [];
-  const districts: District[] = [];
-  const crossroads: Crossroad[] = [];
-
   return {
     city: new City({name: 'Test City'}),
     toolbarState: ButtonType.BuildRoad,
-    roads,
+    roads: [],
     settings,
-    districts,
-    crossroads,
+    districts: [],
+    crossroads: [],
+    buildingVariants: [],
   };
 }
 
