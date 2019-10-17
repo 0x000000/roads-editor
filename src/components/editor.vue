@@ -1,10 +1,10 @@
-import {ButtonType} from '../models/inputs';
 <template>
   <div class="editor">
     <div class="editor-content">
       <RoadEditor v-if="showRoadEditor" :roads="selectedRoads" />
       <DistrictEditor v-if="showDistrictEditor" :district="selectedDistrict" />
       <CrossroadEditor v-if="showCrossroadEditor" :crossroad="selectedCrossroad" />
+      <BuildingsEditor v-if="showBuildingsEditor"></BuildingsEditor>
     </div>
   </div>
 </template>
@@ -19,6 +19,7 @@ import {ButtonType} from '../models/inputs';
   import District from '@/models/district';
   import CrossroadEditor from '@/components/editors/crossroad_editor.vue';
   import Crossroad from '@/models/crossroad';
+  import BuildingsEditor from '@/components/editors/buildings_editor.vue';
 
 
   @Component({
@@ -26,6 +27,7 @@ import {ButtonType} from '../models/inputs';
       RoadEditor,
       DistrictEditor,
       CrossroadEditor,
+      BuildingsEditor,
     },
   })
   export default class Editor extends Vue {
@@ -59,6 +61,10 @@ import {ButtonType} from '../models/inputs';
 
     get showCrossroadEditor(): boolean {
       return this.toolbarState === ButtonType.EditCrossroad && this.selectedCrossroad !== undefined;
+    }
+
+    get showBuildingsEditor(): boolean {
+      return this.toolbarState === ButtonType.BuildingsEditor;
     }
   }
 </script>
