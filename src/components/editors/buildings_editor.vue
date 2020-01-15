@@ -53,6 +53,10 @@
       };
     }
 
+    private mounted() {
+      //todo: console.log(JSON.stringify(this.buildingVariants));
+    }
+
     get state(): RootState {
       return this.$store.state as RootState;
     }

@@ -1,6 +1,6 @@
 import {Point} from '@/models/geometry';
 import {BlockShape} from '@/models/block';
-import {Sector} from '@/models/building';
+import {ISector, Sector} from '@/models/building';
 
 export interface BuildingSlot {
   position: Point;
@@ -21,7 +21,7 @@ interface Block {
 
 export interface IBlockImport {
   block: Block;
-  sectors: Sector[];
+  sectors: ISector[];
 }
 
 let ID = 0;
@@ -29,7 +29,7 @@ let ID = 0;
 export class BlockImport implements IBlockImport {
   public id: number;
   public block: Block;
-  public sectors: Sector[];
+  public sectors: ISector[];
 
   public static fromJson(states: IBlockImport[]): BlockImport[] {
     return states.map(state => new BlockImport(state));
@@ -44,6 +44,7 @@ export class BlockImport implements IBlockImport {
   get name(): string {
     return `${this.block.type}_${this.block.density}_${this.block.position}${this.block.postfix}`;
   }
+
 }
 
 /* tslint:disable */

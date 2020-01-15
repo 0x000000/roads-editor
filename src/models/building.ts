@@ -6,6 +6,9 @@ export enum BuildingType {
   Residential = 1,
   Commercial,
   Industrial,
+  Agriculture,
+  Park,
+  Forest,
   HQ,
 }
 
@@ -40,7 +43,8 @@ export interface ISlot {
 export interface ISector {
   id: number;
   slots: ISlot[];
-  size: string;
+  size: BuildingSlotSize;
+  buildings?: Building[];
 }
 
 export class Slot implements ISlot {
@@ -61,8 +65,9 @@ export class Slot implements ISlot {
 
 export class Sector implements ISector {
   public id: number;
-  public size: string;
+  public size: BuildingSlotSize;
   public slots: Slot[];
+  public buildings: Building[];
 
   public static parse(sectors: ISector[]): Sector[] {
     return sectors.map(sector => {
@@ -70,6 +75,7 @@ export class Sector implements ISector {
         id: sector.id,
         size: sector.size,
         slots: sector.slots.map(slot => new Slot(slot)),
+        buildings: (sector.buildings || []).map(building => new Building(building)),
       });
     });
   }
@@ -78,6 +84,7 @@ export class Sector implements ISector {
     this.id = sector.id;
     this.size = sector.size;
     this.slots = sector.slots;
+    this.buildings = sector.buildings || [];
   }
 }
 
@@ -109,6 +116,5 @@ export class Building implements IBuilding {
     this.variant = state.variant;
     this.address = state.address;
   }
-
 }
 

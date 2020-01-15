@@ -44,8 +44,8 @@ export enum BlockType {
   Wasteland = 6,
 }
 
+//todo: MERGE with block type
 export enum NatureType {
-  None = 0,
   Forest = 1,
   Park = 2,
   Agricultural = 3,
@@ -249,7 +249,7 @@ function detectBlock(vertices: Map<number, Point>, paths: Path[]): Block[] {
           }),
           density: Density.Lowest,
           wealth: Wealth.Poor,
-          natureType: NatureType.None,
+          natureType: NatureType.Forest,
           level: BlockLevel.Zero,
         }));
 

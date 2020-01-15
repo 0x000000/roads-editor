@@ -94,7 +94,6 @@
         <label v-if="nature">
           Nature Type
           <select v-model="selectedBlock.natureType">
-            <option :value="NatureType.None">None</option>
             <option :value="NatureType.Forest">Forest</option>
             <option :value="NatureType.Park">Park</option>
             <option :value="NatureType.Agricultural">Agricultural</option>
@@ -121,6 +120,15 @@
                 :x="slot.topLeftPosition.x"
                 :y="slot.topLeftPosition.y">
           </rect>
+
+          <rect v-for="building in buildings"
+                class="building"
+                :transform="transformBuilding(building)"
+                :width="building.variant.width"
+                :height="building.variant.height"
+                :x="building.center.x"
+                :y="building.center.y">
+          </rect>
         </svg>
       </div>
     </div>
@@ -130,7 +138,7 @@
 <script lang="ts">
   import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
   import District, {DistrictShape} from '@/models/district';
-  import store from '@/store/store';
+  import store, {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
   import {POINT_DISTANCE, ROAD_WIDTH} from '@/config';
   import {orderPointsByRoads, Path} from '@/models/geometry';
@@ -145,8 +153,9 @@
   import Button from '@/components/button.vue';
   import hotkeys from 'hotkeys-js';
   import {generateBlocks, GeneratorType} from '@/models/block_generator';
-  import {BuildingSlot, RuralLayouts} from '@/layouts/rural_residential';
-  import {Slot} from '@/models/building';
+  import {BuildingSlot, IBlockImport, RuralLayouts} from '@/layouts/rural_residential';
+  import {Building, ISector, Slot} from '@/models/building';
+  import {generateBuildingsForBlock} from '@/models/building_generator';
 
   const ZOOM_1 = 2;
   const ZOOM_2 = 20;
@@ -161,6 +170,7 @@
     private selectedBlock: Block | undefined;
     private generatorType?: GeneratorType;
     private layoutName: string | undefined;
+    private buildings: Building[] = [];
 
     @Watch('district', {deep: true})
     private onDistrictChanged() {
@@ -180,6 +190,10 @@
       }
     }
 
+    get state(): RootState {
+      return this.$store.state as RootState;
+    }
+
     private data() {
       return {
         BlockType,
@@ -193,6 +207,7 @@
         selectedBlock: undefined,
         generatorType: GeneratorType.Rural,
         layoutName: undefined,
+        buildings: [],
       };
     }
 
@@ -206,6 +221,7 @@
       if (this.selectedBlock) {
         this.selectedBlock.selected = false;
         this.layoutName = undefined;
+        this.buildings = [];
       }
 
       this.selectedBlock = nextBlock;
@@ -287,13 +303,18 @@
     }
 
     private generateLayoutCurrentBlock() {
-      console.log(generateRuralBlock());
+      if (this.selectedBlock === undefined || this.selectedBlock.layout === undefined) {
+        return;
+      }
+
+      this.buildings = generateBuildingsForBlock(this.district, this.selectedBlock);
     }
 
     private generateLayoutAllBlocks() {
       generateBlocks(this.generatorType as GeneratorType, this.district.blocks.length).forEach((newBlock, index) => {
         const block = this.district.blocks[index];
 
+        //todo: generalize with generateLayoutCurrentBlock
         block.type = newBlock.type;
         block.natureType = newBlock.natureType;
         block.wealth = newBlock.wealth;
@@ -358,6 +379,10 @@
 
     private transform(slot: Slot): string {
       return `rotate(${slot.rotation}, ${slot.absolutePosition.x}, ${slot.absolutePosition.y})`;
+    }
+
+    private transformBuilding(building: Building): string {
+      return `rotate(${building.rotationAngle}, ${building.center.x + (building.variant.width / 2)}, ${building.center.y + (building.variant.height / 2)})`;
     }
   }
 </script>
