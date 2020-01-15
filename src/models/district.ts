@@ -1,11 +1,7 @@
 import Road from '@/models/road';
-import {
-  Point,
-  pointWeight,
-  orderPointsByRoads
-} from '@/models/geometry';
+import {orderPointsByRoads, Point, pointWeight} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
-import Block, {BlockState, detectBlocks} from '@/models/block';
+import Block, {detectBlocks} from '@/models/block';
 import Settings from '@/models/settings';
 
 export enum DistrictShape {

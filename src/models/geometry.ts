@@ -1,5 +1,4 @@
-import {FIELD_WIDTH, FIELD_HEIGHT} from '@/config';
-import Road from '@/models/road';
+import {FIELD_HEIGHT, FIELD_WIDTH} from '@/config';
 
 export interface Point {
   readonly x: number;

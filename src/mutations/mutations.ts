@@ -1,12 +1,12 @@
 import {RootState} from '@/store/store';
 import {MutationTree} from 'vuex';
 import {ButtonType} from '@/models/inputs';
-import {loadState, saveState} from '@/store/persistence';
+import {saveState} from '@/store/persistence';
 import {Path} from '@/models/geometry';
 import Road from '@/models/road';
 import District from '@/models/district';
 import difference from 'lodash/difference';
-import Crossroad, {CrossroadState} from '@/models/crossroad';
+import Crossroad from '@/models/crossroad';
 
 export enum MutationName {
   ChangeToolbarState = 'ChangeToolbarState',

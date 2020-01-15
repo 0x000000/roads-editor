@@ -20,8 +20,7 @@
   import {BuildingSize, BuildingType, IBuildingVariant} from '@/models/building';
   import {generateBuildingVariants} from '@/models/building_generator';
   import {SLOT_SIZE} from '@/config';
-  import {RootState} from '@/store/store';
-  import store from '@/store/store';
+  import store, {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
 
   const ZOOM = 3;

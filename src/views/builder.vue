@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Toolbar from '@/components/toolbar.vue';
-import Map from '@/components/map.vue';
-import Editor from '@/components/editor.vue';
+  import {Component, Vue} from 'vue-property-decorator';
+  import Toolbar from '@/components/toolbar.vue';
+  import Map from '@/components/map.vue';
+  import Editor from '@/components/editor.vue';
 
-@Component({
+  @Component({
   components: {
     Toolbar,
     Map,

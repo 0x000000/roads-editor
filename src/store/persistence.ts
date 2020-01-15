@@ -2,7 +2,7 @@ import {RootState} from '@/store/store';
 import {BUILD_VERSION, FIELD_HEIGHT, FIELD_WIDTH} from '@/config';
 import City, {CityState} from '@/models/city';
 import {ButtonType} from '@/models/inputs';
-import Road, {RoadState, RoadType} from '@/models/road';
+import Road, {RoadState} from '@/models/road';
 import Settings, {SettingsState} from '@/models/settings';
 import District, {NormalizedDistrictState} from '@/models/district';
 import Crossroad, {NormalizedCrossroadState} from '@/models/crossroad';

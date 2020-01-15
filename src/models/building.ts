@@ -1,4 +1,4 @@
-import {Path, Point} from '@/models/geometry';
+import {Point} from '@/models/geometry';
 
 export type BuildingSlotSize = '1x1' | '1x2' | '2x2' | '2x3' | '2x4' | '3x3' | '3x4' | '4x4';
 

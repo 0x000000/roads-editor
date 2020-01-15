@@ -9,8 +9,7 @@ import {
 import {Dot} from '@/models/dot';
 import Road from '@/models/road';
 import District from '@/models/district';
-import {RootState} from '@/store/store';
-import store from '@/store/store';
+import store, {RootState} from '@/store/store';
 import Crossroad from '@/models/crossroad';
 
 type ModeMap = { [key in ButtonType]: Mode };

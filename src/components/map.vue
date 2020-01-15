@@ -65,13 +65,12 @@
   import {RootState} from '@/store/store';
   import {Dot} from '@/models/dot';
   import {Rect} from '@/models/geometry';
-  import Road, {RoadType} from '@/models/road';
+  import Road from '@/models/road';
   import hotkeys from 'hotkeys-js';
   import {Mode} from './modes';
   import District from '@/models/district';
   import {ButtonType} from '@/models/inputs';
   import Crossroad from '@/models/crossroad';
-  import crossroad from '@/models/crossroad';
 
   @Component
   export default class MapComponent extends Vue {

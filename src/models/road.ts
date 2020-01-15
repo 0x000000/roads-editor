@@ -1,12 +1,12 @@
 import {
-  Path,
-  Point,
-  LineDirection,
   belongsTo,
   comparePoints,
-  normalizePath,
-  pointsFromPath,
   detectDirection,
+  LineDirection,
+  normalizePath,
+  Path,
+  Point,
+  pointsFromPath,
 } from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import {intersectionPoint, mergePaths, pointWeight} from './geometry';

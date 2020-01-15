@@ -1,10 +1,12 @@
 import {
-  Path,
-  Point,
   createPathsFromPoints,
+  orderPointsByRoads,
+  Path,
   pathInsidePolygon,
   pathWeight,
-  pointsFromPath, pointWeight, orderPointsByRoads
+  Point,
+  pointsFromPath,
+  pointWeight
 } from '@/models/geometry';
 import District from '@/models/district';
 import {cycledPairs} from '@/models/utils';

@@ -153,8 +153,8 @@
   import Button from '@/components/button.vue';
   import hotkeys from 'hotkeys-js';
   import {generateBlocks, GeneratorType} from '@/models/block_generator';
-  import {BuildingSlot, IBlockImport, RuralLayouts} from '@/layouts/rural_residential';
-  import {Building, ISector, Slot} from '@/models/building';
+  import {RuralLayouts} from '@/layouts/rural_residential';
+  import {Building, Slot} from '@/models/building';
   import {generateBuildingsForBlock} from '@/models/building_generator';
 
   const ZOOM_1 = 2;
