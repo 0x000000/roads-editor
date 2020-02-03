@@ -52,10 +52,6 @@
       };
     }
 
-    private mounted() {
-      //todo: console.log(JSON.stringify(this.buildingVariants));
-    }
-
     get state(): RootState {
       return this.$store.state as RootState;
     }
@@ -66,7 +62,8 @@
 
     private generate() {
       this.state.buildingVariants = generateBuildingVariants();
-      store.commit(MutationName.SaveState);
+      console.log(JSON.stringify(this.buildingVariants));
+      // store.commit(MutationName.SaveState); //todo: remove
     }
   }
 </script>

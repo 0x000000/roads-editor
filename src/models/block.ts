@@ -12,7 +12,8 @@ import District from '@/models/district';
 import {cycledPairs} from '@/models/utils';
 import Settings from '@/models/settings';
 import {POINT_DISTANCE} from '@/config';
-import {BlockImport} from '@/layouts/rural_residential';
+import {Building, ISector, Sector} from '@/models/building';
+import RuralLayoutsJson from '@/layouts/rural_residential.json';
 
 export enum BlockShape {
   Square = 1,
@@ -41,27 +42,46 @@ export enum BlockType {
   Residential = 1,
   Commercial = 2,
   Industrial = 3,
-  Nature = 4,
-  Water = 5,
-  Wasteland = 6,
-}
-
-//todo: MERGE with block type
-export enum NatureType {
-  Forest = 1,
-  Park = 2,
-  Agricultural = 3,
+  Forest = 4,
+  Park = 5,
+  Agricultural = 6,
+  Water = 7,
+  Wasteland = 8,
 }
 
 export enum BlockPattern {
   Chaotic,
 }
 
-export enum BlockLevel {
-  Zero,
-  One,
-  Two,
-  Three,
+interface IBlockInfo {
+  shape: BlockShape;
+  type: string;
+  density: string;
+  position: number;
+  postfix: string;
+}
+
+export interface ILayout {
+  block: IBlockInfo;
+  sectors: ISector[];
+}
+
+let ID = 0;
+
+export class Layout implements ILayout {
+  public id: number;
+  public block: IBlockInfo;
+  public sectors: ISector[];
+
+  constructor(state: ILayout) {
+    this.block = state.block;
+    this.sectors = Sector.parse(state.sectors);
+    this.id = ID++;
+  }
+
+  get name(): string {
+    return `${this.block.type}_${this.block.density}_${this.block.position}${this.block.postfix}`;
+  }
 }
 
 export interface BlockState {
@@ -72,8 +92,8 @@ export interface BlockState {
   type: BlockType;
   density: Density;
   wealth: Wealth;
-  natureType: NatureType;
-  level: BlockLevel;
+  buildings: Building[];
+  layoutId: number | undefined;
 }
 
 export default class Block implements BlockState {
@@ -84,11 +104,11 @@ export default class Block implements BlockState {
   public type: BlockType;
   public density: Density;
   public wealth: Wealth;
-  public natureType: NatureType;
-  public level: BlockLevel;
+  public buildings: Building[];
+  public layoutId: number | undefined;
 
   public selected: boolean = false;
-  public layout: BlockImport | undefined;
+  private _layout: Layout | undefined;
 
   constructor(state: BlockState) {
     this.id = state.id;
@@ -98,9 +118,28 @@ export default class Block implements BlockState {
     this.type = state.type;
     this.density = state.density;
     this.wealth = state.wealth;
-    this.natureType = state.natureType;
-    this.level = state.level;
+    this.buildings = state.buildings;
+    this.layoutId = state.layoutId;
   }
+
+  public get layout(): Layout | undefined {
+    if (this.layoutId !== undefined && this._layout === undefined) {
+      this._layout = LAYOUTS.find(l => l.id === this.layoutId);
+    }
+
+    return this._layout;
+  }
+
+  public set layout(newLayout) {
+    if (newLayout !== undefined) {
+      this.layoutId = newLayout.id;
+    } else {
+      this.layoutId = undefined;
+    }
+
+    this._layout = newLayout;
+  }
+
 
   public get classes(): string[] {
     return [
@@ -251,8 +290,8 @@ function detectBlock(vertices: Map<number, Point>, paths: Path[]): Block[] {
           }),
           density: Density.Lowest,
           wealth: Wealth.Poor,
-          natureType: NatureType.Forest,
-          level: BlockLevel.Zero,
+          buildings: [],
+          layoutId: undefined,
         }));
 
         if (stop) {
@@ -272,4 +311,9 @@ export function detectBlocks(district: District): Block[] {
   const vertices = fetchVertices(paths);
   return detectBlock(vertices, paths);
 }
+
+export var LAYOUTS: Layout[] = [];
+LAYOUTS = LAYOUTS.concat(
+  (RuralLayoutsJson as ILayout[]).map(l => new Layout(l))
+);
 

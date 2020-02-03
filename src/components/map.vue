@@ -258,18 +258,23 @@
       fill: #FA4C4A;
     }
 
+    // Forest / Park
+    &.district-4, &.district-5 {
+      fill: darkgreen;
+    }
+
     // Nature
-    &.district-4 {
+    &.district-6 {
       fill: #22B860;
     }
 
     // water
-    &.district-5 {
+    &.district-7 {
       fill: #5ACAEE;
     }
 
     // wasteland
-    &.district-6 {
+    &.district-8 {
       fill: #e0e2e5;
     }
 

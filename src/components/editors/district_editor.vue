@@ -31,6 +31,43 @@
           </select>
         </label>
 
+
+        <label>
+          District Wealth
+          <select v-model="districtWealth">
+            <option :value="DistrictWealth.Poor">Poor</option>
+            <option :value="DistrictWealth.PoorLow">Poor - Low</option>
+            <option :value="DistrictWealth.PoorMid">Poor - Mid</option>
+            <option :value="DistrictWealth.PoorHigh">Poor - High</option>
+            <option :value="DistrictWealth.Low">Low</option>
+            <option :value="DistrictWealth.LowMid">Low - Mid</option>
+            <option :value="DistrictWealth.LowHigh">Low - High</option>
+            <option :value="DistrictWealth.MidHigh">Mid - High</option>
+            <option :value="DistrictWealth.Mid">Mid</option>
+            <option :value="DistrictWealth.High">High</option>
+          </select>
+        </label>
+
+        <label>
+          Target Population
+          <select v-model="districtPopulation">
+            <option :value="TargetPopulation.VeryLow">Very Low</option>
+            <option :value="TargetPopulation.Low">Low</option>
+            <option :value="TargetPopulation.Medium">Medium</option>
+            <option :value="TargetPopulation.High">High</option>
+            <option :value="TargetPopulation.VeryHigh">Very High</option>
+          </select>
+        </label>
+
+        <label>
+          Level
+          <select v-model="district.level">
+            <option :value="DistrictLevel.One">1 Level</option>
+            <option :value="DistrictLevel.Two">2 Level</option>
+            <option :value="DistrictLevel.Three">3 Level</option>
+          </select>
+        </label>
+
         <input type="button"
                value="Generate Layout For All"
                @click="generateLayoutAllBlocks"/>
@@ -48,18 +85,10 @@
             <option :value="BlockType.Residential">Residential</option>
             <option :value="BlockType.Commercial">Commercial</option>
             <option :value="BlockType.Industrial">Industrial</option>
-            <option :value="BlockType.Nature">Nature</option>
+            <option :value="BlockType.Agricultural">Agricultural</option>
+            <option :value="BlockType.Forest">Forest</option>
+            <option :value="BlockType.Park">Park</option>
             <option :value="BlockType.Water">Water</option>
-          </select>
-        </label>
-
-        <label>
-          Level
-          <select v-model="selectedBlock.level">
-            <option :value="BlockLevel.Zero">Disabled</option>
-            <option :value="BlockLevel.One">1 Level</option>
-            <option :value="BlockLevel.Two">2 Level</option>
-            <option :value="BlockLevel.Three">3 Level</option>
           </select>
         </label>
 
@@ -70,7 +99,7 @@
           </select>
         </label>
 
-        <label v-if="rci">
+        <label>
           Density
           <select v-model="selectedBlock.density">
             <option :value="Density.Lowest">1 - Rural</option>
@@ -81,22 +110,13 @@
           </select>
         </label>
 
-        <label v-if="rci">
+        <label>
           Wealth
           <select v-model="selectedBlock.wealth">
             <option :value="Wealth.Poor">1 - Poor</option>
             <option :value="Wealth.Low">2 - Working class</option>
             <option :value="Wealth.Mid">3 - Middle class</option>
             <option :value="Wealth.High">4 - Upper class</option>
-          </select>
-        </label>
-
-        <label v-if="nature">
-          Nature Type
-          <select v-model="selectedBlock.natureType">
-            <option :value="NatureType.Forest">Forest</option>
-            <option :value="NatureType.Park">Park</option>
-            <option :value="NatureType.Agricultural">Agricultural</option>
           </select>
         </label>
 
@@ -112,7 +132,7 @@
                    :points="svgBlockPointsMaxZoom(selectedBlock)">
           </polygon>
 
-          <rect v-for="slot in selectedSlots()"
+          <rect v-for="slot in selectedSlots"
                 :transform="transform(slot)"
                 class="building-slot"
                 :width="28"
@@ -121,7 +141,8 @@
                 :y="slot.topLeftPosition.y">
           </rect>
 
-          <rect v-for="building in buildings"
+          <rect v-for="building in selectedBuildings"
+                :key="building.id"
                 class="building"
                 :transform="transformBuilding(building)"
                 :width="building.variant.width"
@@ -137,23 +158,21 @@
 
 <script lang="ts">
   import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import District, {DistrictShape} from '@/models/district';
+  import District, {DistrictLevel} from '@/models/district';
   import store, {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
   import {POINT_DISTANCE, ROAD_WIDTH} from '@/config';
   import {orderPointsByRoads, Path} from '@/models/geometry';
-  import Block, {
-    BlockLevel,
-    BlockShape,
-    BlockType,
-    Density,
-    NatureType,
-    Wealth
-  } from '@/models/block';
+  import Block, {BlockShape, BlockType, Density, LAYOUTS, Wealth} from '@/models/block';
   import Button from '@/components/button.vue';
   import hotkeys from 'hotkeys-js';
-  import {generateBlocks, GeneratorType} from '@/models/block_generator';
-  import {RuralLayouts} from '@/layouts/rural_residential';
+  import {
+    DistrictShape,
+    DistrictWealth,
+    generateBlocks,
+    GeneratorType,
+    TargetPopulation
+  } from '@/models/block_generator';
   import {Building, Slot} from '@/models/building';
   import {generateBuildingsForBlock} from '@/models/building_generator';
 
@@ -168,9 +187,10 @@
     @Prop() private district!: District;
     private prevDistrictId: number | undefined = undefined;
     private selectedBlock: Block | undefined;
-    private generatorType?: GeneratorType;
+    private generatorType: GeneratorType = GeneratorType.Rural;
+    private districtWealth: DistrictWealth = DistrictWealth.LowMid;
+    private districtPopulation: TargetPopulation = TargetPopulation.VeryLow;
     private layoutName: string | undefined;
-    private buildings: Building[] = [];
 
     @Watch('district', {deep: true})
     private onDistrictChanged() {
@@ -184,9 +204,9 @@
     }
 
     @Watch('layoutName')
-    private onLayoutChange(newVal: string) {
+    private onLayoutChange(choosenName: string) {
       if (this.selectedBlock) {
-        this.selectedBlock.layout = RuralLayouts.find(l => l.name === newVal);
+        this.selectedBlock.layout = LAYOUTS.find(l => l.name === choosenName);
       }
     }
 
@@ -200,14 +220,16 @@
         Wealth,
         Density,
         DistrictShape,
-        NatureType,
-        BlockLevel,
+        DistrictLevel,
         GeneratorType,
+        DistrictWealth,
+        TargetPopulation,
         ROAD_WIDTH: ROAD_WIDTH * 2,
         selectedBlock: undefined,
         generatorType: GeneratorType.Rural,
+        districtWealth: DistrictWealth.LowMid,
+        districtPopulation: TargetPopulation.VeryLow,
         layoutName: undefined,
-        buildings: [],
       };
     }
 
@@ -221,7 +243,6 @@
       if (this.selectedBlock) {
         this.selectedBlock.selected = false;
         this.layoutName = undefined;
-        this.buildings = [];
       }
 
       this.selectedBlock = nextBlock;
@@ -246,8 +267,14 @@
         case 'shift+i':
           this.selectedBlock.type = BlockType.Industrial;
           break;
-        case 'shift+n':
-          this.selectedBlock.type = BlockType.Nature;
+        case 'shift+a':
+          this.selectedBlock.type = BlockType.Agricultural;
+          break;
+        case 'shift+f':
+          this.selectedBlock.type = BlockType.Forest;
+          break;
+        case 'shift+p':
+          this.selectedBlock.type = BlockType.Park;
           break;
         case 'shift+w':
           this.selectedBlock.type = BlockType.Water;
@@ -307,18 +334,27 @@
         return;
       }
 
-      this.buildings = generateBuildingsForBlock(this.district, this.selectedBlock);
+      generateBuildingsForBlock(this.district, this.selectedBlock);
     }
 
     private generateLayoutAllBlocks() {
-      generateBlocks(this.generatorType as GeneratorType, this.district.blocks.length).forEach((newBlock, index) => {
+      this.selectedBlock = undefined;
+
+      generateBlocks({
+        type: this.generatorType,
+        shape: this.district.shape,
+        wealth: this.districtWealth,
+        population: this.districtPopulation,
+      }, this.district.blocks.length).forEach((newBlock, index) => {
         const block = this.district.blocks[index];
 
-        //todo: generalize with generateLayoutCurrentBlock
         block.type = newBlock.type;
-        block.natureType = newBlock.natureType;
         block.wealth = newBlock.wealth;
         block.density = newBlock.density;
+        block.layout = LAYOUTS[0]; //todo:1111111111111
+        block.buildings = generateBuildingsForBlock(this.district, block);
+
+        Vue.set(this.district.blocks, index, block);
       });
     }
 
@@ -343,35 +379,28 @@
       return Math.min(...this.district.points.map(p => p.y));
     }
 
-    get rci(): boolean {
-      if (this.selectedBlock) {
-        return [
-          BlockType.Residential,
-          BlockType.Commercial,
-          BlockType.Industrial,
-        ].includes(this.selectedBlock.type);
-      } else {
-        return false;
-      }
-    }
-
-    get nature(): boolean {
-      return this.selectedBlock !== undefined && this.selectedBlock.type === BlockType.Nature;
-    }
-
     get layoutNames(): string[] {
       if (this.selectedBlock === undefined) {
         return [];
       }
 
-      return RuralLayouts.filter(l => {
-        return l !== undefined && l.block.shape === (this.selectedBlock as Block).shape;
+      const selectedBlockShape = this.selectedBlock.shape;
+      return LAYOUTS.filter(l => {
+        return l.block.shape === selectedBlockShape;
       }).map(l => l.name);
     }
 
-    private selectedSlots(): Slot[] {
+    get selectedSlots(): Slot[] {
       if (this.selectedBlock && this.selectedBlock.layout) {
         return this.selectedBlock.layout.sectors.map(s => s.slots).flat();
+      }
+
+      return [];
+    }
+
+    get selectedBuildings(): Building[] {
+      if (this.selectedBlock) {
+        return this.selectedBlock.buildings;
       }
 
       return [];

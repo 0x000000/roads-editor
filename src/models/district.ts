@@ -3,10 +3,7 @@ import {orderPointsByRoads, Point, pointWeight} from '@/models/geometry';
 import {POINT_DISTANCE} from '@/config';
 import Block, {detectBlocks} from '@/models/block';
 import Settings from '@/models/settings';
-
-export enum DistrictShape {
-  Linear,
-}
+import {DistrictShape} from '@/models/block_generator';
 
 export enum LandValue {
   Lowest = 1,
@@ -16,12 +13,19 @@ export enum LandValue {
   Highest,
 }
 
+export enum DistrictLevel {
+  One,
+  Two,
+  Three,
+}
+
 export interface DistrictState {
   readonly id: number;
   readonly roads: Road[];
   blocks: Block[];
   shape: DistrictShape;
   landValue: LandValue;
+  level: DistrictLevel;
 }
 
 export interface NormalizedDistrictState {
@@ -30,6 +34,7 @@ export interface NormalizedDistrictState {
   blocks: Block[];
   shape: DistrictShape;
   landValue: LandValue;
+  level: DistrictLevel;
 }
 
 export default class District implements DistrictState {
@@ -55,6 +60,7 @@ export default class District implements DistrictState {
         blocks: [],
         shape: DistrictShape.Linear,
         landValue: LandValue.Lowest,
+        level: DistrictLevel.One,
       });
 
       district.blocks = detectBlocks(district);
@@ -77,6 +83,7 @@ export default class District implements DistrictState {
         blocks: district.blocks.map(b => new Block(b)),
         shape: district.shape,
         landValue: district.landValue,
+        level: district.level,
       };
     });
   }
@@ -89,6 +96,7 @@ export default class District implements DistrictState {
         blocks: state.blocks.map(b => new Block(b)),
         shape: state.shape,
         landValue: state.landValue,
+        level: state.level,
       };
 
       return new District(linkedState);
@@ -110,6 +118,7 @@ export default class District implements DistrictState {
   public points: Point[];
   public shape: DistrictShape;
   public landValue: LandValue;
+  public level: DistrictLevel;
 
   public selected: boolean = false;
   public hash: string;
@@ -122,6 +131,7 @@ export default class District implements DistrictState {
     this.blocks = state.blocks;
     this.shape = state.shape;
     this.landValue = state.landValue;
+    this.level = state.level;
 
     this.hash = this.roads.map(r => r.id).sort().join(',');
   }

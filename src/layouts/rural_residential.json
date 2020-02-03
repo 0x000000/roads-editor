@@ -1,0 +1,143 @@
+[
+  {
+    "block": {
+      "shape": 1,
+      "type": "Res",
+      "density": "Low",
+      "position": 11,
+      "postfix": "a"
+    },
+    "sectors": [
+      {
+        "id": 0,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 53,
+              "y": 53
+            },
+            "topLeftPosition": {
+              "x": 39,
+              "y": 39
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "1x1"
+      },
+      {
+        "id": 1,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 95,
+              "y": 53
+            },
+            "topLeftPosition": {
+              "x": 81,
+              "y": 39
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 95,
+              "y": 81
+            },
+            "topLeftPosition": {
+              "x": 81,
+              "y": 67
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "1x2"
+      },
+      {
+        "id": 2,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 137,
+              "y": 53
+            },
+            "topLeftPosition": {
+              "x": 123,
+              "y": 39
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 137,
+              "y": 81
+            },
+            "topLeftPosition": {
+              "x": 123,
+              "y": 67
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 165,
+              "y": 53
+            },
+            "topLeftPosition": {
+              "x": 151,
+              "y": 39
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 165,
+              "y": 81
+            },
+            "topLeftPosition": {
+              "x": 151,
+              "y": 67
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "2x2"
+      }
+    ]
+  }
+]
