@@ -94,6 +94,7 @@ export interface Address {
 export interface IBuilding {
   readonly id: number;
   center: Point;
+  centerDiff: Point;
   rotationAngle: number;
   variant: IBuildingVariant;
   address: Address;
@@ -105,6 +106,7 @@ export class Building implements IBuilding {
   public rotationAngle: number;
   public variant: IBuildingVariant;
   public address: Address;
+  public centerDiff: Point;
 
   constructor(state: IBuilding) {
     this.id = state.id;
@@ -112,6 +114,7 @@ export class Building implements IBuilding {
     this.rotationAngle = state.rotationAngle;
     this.variant = state.variant;
     this.address = state.address;
+    this.centerDiff = state.centerDiff;
   }
 }
 

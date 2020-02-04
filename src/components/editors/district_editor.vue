@@ -411,7 +411,10 @@
     }
 
     private transformBuilding(building: Building): string {
-      return `rotate(${building.rotationAngle}, ${building.center.x + (building.variant.width / 2)}, ${building.center.y + (building.variant.height / 2)})`;
+      const x = building.center.x + (building.variant.width / 2) + building.centerDiff.x;
+      const y = building.center.y + (building.variant.height / 2) + building.centerDiff.y;
+
+      return `rotate(${building.rotationAngle}, ${x}, ${y})`;
     }
   }
 </script>

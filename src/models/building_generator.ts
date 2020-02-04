@@ -13,6 +13,7 @@ import Block from '@/models/block';
 import {VARIANTS} from '@/models/building_variants';
 import District from '@/models/district';
 import {DistrictShape} from '@/models/block_generator';
+import {Point} from '@/models/geometry';
 
 const SizeWidth = {
   [BuildingSize.S]: r(6, 9), // 1-2 floors
@@ -92,9 +93,10 @@ function splitSlots(sector: ISector, strategy: SplitStrategy): TargetSlot[] {
   });
 }
 
-const ANGLE_CHANCE = calculateChances('35,30,35', 0, 45, 90);
+const ANGLE_CHANCE = calculateChances('50,15,35', 0, 45, 90);
 const ADDITIONAL_ANGLE_CHANCE = calculateChances('30,30,25,10,5', 0, 1, 2, 3, 4);
 const ADDITIONAL_ANGLE_SIGN = calculateChances('50,50', -1, +1);
+const LINEAR_CHANGE_DIRECTION = calculateChances('85,15', false, true);
 
 function calcRotation(districtShape: DistrictShape, slotSize: BuildingSlotSize, prevValue: number | undefined): number {
   switch (districtShape) {
@@ -102,12 +104,34 @@ function calcRotation(districtShape: DistrictShape, slotSize: BuildingSlotSize, 
        if (prevValue === undefined) {
          return selectByChance(ANGLE_CHANCE);
        } else {
+         if (selectByChance(LINEAR_CHANGE_DIRECTION)) {
+           prevValue = selectByChance(ANGLE_CHANCE);
+         }
+
          return prevValue + (selectByChance(ADDITIONAL_ANGLE_CHANCE) * selectByChance(ADDITIONAL_ANGLE_SIGN));
        }
     } break;
 
     default: return 0;
   }
+}
+
+const ADDITIONAL_MOVE_CHANCE = calculateChances('35,35,25,5', 0, 1, 2, 3);
+
+function calcCenterDiff(): Point {
+  return {
+    x: selectByChance(ADDITIONAL_MOVE_CHANCE) * selectByChance(ADDITIONAL_ANGLE_SIGN),
+    y: selectByChance(ADDITIONAL_MOVE_CHANCE) * selectByChance(ADDITIONAL_ANGLE_SIGN),
+  };
+}
+
+function calcCenter(targetSlot: TargetSlot, variant: IBuildingVariant): Point {
+  const topLeftSlot = targetSlot.relatedSlots[0];
+
+  return {
+    x: topLeftSlot.absolutePosition.x - Math.floor(variant.width / 2),
+    y: topLeftSlot.absolutePosition.y - Math.floor(variant.height / 2),
+  };
 }
 
 let ID = 0;
@@ -127,11 +151,8 @@ function calcResidentialBlock(district: District, block: Block, sectors: ISector
       }
 
       const variant = sample(variants);
-      const topLeftSlot = targetSlot.relatedSlots[0];
-      const center = {
-        x: topLeftSlot.absolutePosition.x - Math.floor(variant.width / 2),
-        y: topLeftSlot.absolutePosition.y - Math.floor(variant.height / 2),
-      };
+      const center = calcCenter(targetSlot, variant);
+      const centerDiff = calcCenterDiff();
       rotationAngle = calcRotation(district.shape, variant.slotSize, rotationAngle);
 
       buildings.push(new Building({
@@ -145,6 +166,7 @@ function calcResidentialBlock(district: District, block: Block, sectors: ISector
         rotationAngle,
         variant,
         center,
+        centerDiff,
       }));
     });
   });
