@@ -335,7 +335,7 @@
         return;
       }
 
-      generateBuildingsForBlock(this.district, this.selectedBlock);
+      this.selectedBlock.buildings = generateBuildingsForBlock(this.district, this.selectedBlock);
     }
 
     private generateLayoutAllBlocks() {
