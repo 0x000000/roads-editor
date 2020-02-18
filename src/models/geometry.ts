@@ -143,13 +143,13 @@ export function pointsFromPath(path: Path): Point[] {
 /* tslint:enable */
 
 
-export function createPathsFromPoints(points: Point[], paths: Path[]): Path[] {
+export function pathsFromPoints(points: Point[], paths: Path[]): Path[] {
   const start: Point | undefined = points.shift();
   const end: Point | undefined = points[0];
 
   if (start !== undefined && end !== undefined) {
     paths.push(normalizePath({start, end}));
-    return createPathsFromPoints(points, paths);
+    return pathsFromPoints(points, paths);
   }
 
   return paths;

@@ -1,5 +1,5 @@
 import {
-  createPathsFromPoints,
+  pathsFromPoints,
   orderPointsByRoads,
   Path,
   pathInsidePolygon,
@@ -172,7 +172,7 @@ function findExistingPaths(district: District): Map<string, Path> {
 
   district.roads.forEach(road => {
     const points = pointsFromPath(road.path);
-    createPathsFromPoints(points, []).map(path => paths.set(pathWeight(path), path));
+    pathsFromPoints(points, []).map(path => paths.set(pathWeight(path), path));
   });
 
   return paths;
@@ -184,9 +184,9 @@ function findPossibleInternalPaths(paths: Map<string, Path>, polygon: Path[]): P
       if (key !== otherKey) {
         let newPaths: Path[] = [];
         if (path.start.x === otherPath.start.x || path.start.y === otherPath.start.y) {
-          newPaths = createPathsFromPoints(pointsFromPath({start: path.start, end: otherPath.start}), []);
+          newPaths = pathsFromPoints(pointsFromPath({start: path.start, end: otherPath.start}), []);
         } else if (path.start.x === otherPath.end.x || path.start.y === otherPath.end.y) {
-          newPaths = createPathsFromPoints(pointsFromPath({start: path.start, end: otherPath.end}), []);
+          newPaths = pathsFromPoints(pointsFromPath({start: path.start, end: otherPath.end}), []);
         }
 
         newPaths.map(newPath => {
