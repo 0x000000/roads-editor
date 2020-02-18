@@ -1,8 +1,997 @@
 [
   {
+    "id": 0,
     "block": {
       "shape": 1,
-      "type": "Res",
+      "type": 1,
+      "density": "Low",
+      "position": 12,
+      "postfix": "a"
+    },
+    "sectors": [
+      {
+        "id": 0,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 44,
+              "y": 43
+            },
+            "topLeftPosition": {
+              "x": 30,
+              "y": 29
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "1x1"
+      },
+      {
+        "id": 1,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 85
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 71
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 113
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 99
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "1x2"
+      },
+      {
+        "id": 2,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 172
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 158
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 200
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 186
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 71,
+              "y": 172
+            },
+            "topLeftPosition": {
+              "x": 57,
+              "y": 158
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 71,
+              "y": 200
+            },
+            "topLeftPosition": {
+              "x": 57,
+              "y": 186
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "2x2"
+      },
+      {
+        "id": 3,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 158
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 144
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 186
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 172
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 0,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 214
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 200
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 158
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 144
+            },
+            "rotation": 0
+          },
+          {
+            "id": 4,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 186
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 172
+            },
+            "rotation": 0
+          },
+          {
+            "id": 5,
+            "relativePosition": {
+              "x": 1,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 214
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 200
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "2x3"
+      },
+      {
+        "id": 4,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 43
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 29
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 71
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 57
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 0,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 99
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 85
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 43
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 29
+            },
+            "rotation": 0
+          },
+          {
+            "id": 4,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 71
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 57
+            },
+            "rotation": 0
+          },
+          {
+            "id": 5,
+            "relativePosition": {
+              "x": 1,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 99
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 85
+            },
+            "rotation": 0
+          },
+          {
+            "id": 6,
+            "relativePosition": {
+              "x": 2,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 43
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 29
+            },
+            "rotation": 0
+          },
+          {
+            "id": 7,
+            "relativePosition": {
+              "x": 2,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 71
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 57
+            },
+            "rotation": 0
+          },
+          {
+            "id": 8,
+            "relativePosition": {
+              "x": 2,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 99
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 85
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "3x3"
+      },
+      {
+        "id": 5,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 171,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 157,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 171,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 157,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 0,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 171,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 157,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 0,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 171,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 157,
+              "y": 343
+            },
+            "rotation": 0
+          },
+          {
+            "id": 4,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 199,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 185,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 5,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 199,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 185,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 6,
+            "relativePosition": {
+              "x": 1,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 199,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 185,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 7,
+            "relativePosition": {
+              "x": 1,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 199,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 185,
+              "y": 343
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "2x4"
+      },
+      {
+        "id": 6,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 0,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 0,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 43,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 29,
+              "y": 343
+            },
+            "rotation": 0
+          },
+          {
+            "id": 4,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 71,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 57,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 5,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 71,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 57,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 6,
+            "relativePosition": {
+              "x": 1,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 71,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 57,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 7,
+            "relativePosition": {
+              "x": 1,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 71,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 57,
+              "y": 343
+            },
+            "rotation": 0
+          },
+          {
+            "id": 8,
+            "relativePosition": {
+              "x": 2,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 99,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 85,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 9,
+            "relativePosition": {
+              "x": 2,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 99,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 85,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 10,
+            "relativePosition": {
+              "x": 2,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 99,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 85,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 11,
+            "relativePosition": {
+              "x": 2,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 99,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 85,
+              "y": 343
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "3x4"
+      },
+      {
+        "id": 7,
+        "slots": [
+          {
+            "id": 0,
+            "relativePosition": {
+              "x": 0,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 273,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 259,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 1,
+            "relativePosition": {
+              "x": 0,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 273,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 259,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 2,
+            "relativePosition": {
+              "x": 0,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 273,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 259,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 3,
+            "relativePosition": {
+              "x": 0,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 273,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 259,
+              "y": 343
+            },
+            "rotation": 0
+          },
+          {
+            "id": 4,
+            "relativePosition": {
+              "x": 1,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 5,
+            "relativePosition": {
+              "x": 1,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 6,
+            "relativePosition": {
+              "x": 1,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 7,
+            "relativePosition": {
+              "x": 1,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 301,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 287,
+              "y": 343
+            },
+            "rotation": 0
+          },
+          {
+            "id": 8,
+            "relativePosition": {
+              "x": 2,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 9,
+            "relativePosition": {
+              "x": 2,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 10,
+            "relativePosition": {
+              "x": 2,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 11,
+            "relativePosition": {
+              "x": 2,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 329,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 315,
+              "y": 343
+            },
+            "rotation": 0
+          },
+          {
+            "id": 12,
+            "relativePosition": {
+              "x": 3,
+              "y": 0
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 273
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 259
+            },
+            "rotation": 0
+          },
+          {
+            "id": 13,
+            "relativePosition": {
+              "x": 3,
+              "y": 1
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 301
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 287
+            },
+            "rotation": 0
+          },
+          {
+            "id": 14,
+            "relativePosition": {
+              "x": 3,
+              "y": 2
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 329
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 315
+            },
+            "rotation": 0
+          },
+          {
+            "id": 15,
+            "relativePosition": {
+              "x": 3,
+              "y": 3
+            },
+            "absolutePosition": {
+              "x": 357,
+              "y": 357
+            },
+            "topLeftPosition": {
+              "x": 343,
+              "y": 343
+            },
+            "rotation": 0
+          }
+        ],
+        "size": "4x4"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "block": {
+      "shape": 1,
+      "type": 6,
       "density": "Low",
       "position": 11,
       "postfix": "a"

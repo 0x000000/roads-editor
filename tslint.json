@@ -5,11 +5,15 @@
   ],
   "linterOptions": {
     "exclude": [
-      "node_modules/**"
+      "node_modules/**",
+      "*.json",
+      "**/*.json"
     ]
   },
   "rules": {
-    "max-line-length": [false],
+    "max-line-length": [
+      false
+    ],
     "quotemark": [
       true,
       "single"
@@ -60,6 +64,14 @@
         "property-declaration": "onespace",
         "variable-declaration": "onespace"
       }
-    ]
+    ],
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    }
   }
 }

@@ -55,32 +55,37 @@ export enum BlockPattern {
 
 interface IBlockInfo {
   shape: BlockShape;
-  type: string;
+  type: BlockType;
   density: string;
   position: number;
   postfix: string;
 }
 
 export interface ILayout {
+  id: number;
   block: IBlockInfo;
   sectors: ISector[];
 }
-
-let ID = 0;
 
 export class Layout implements ILayout {
   public id: number;
   public block: IBlockInfo;
   public sectors: ISector[];
 
+  private _name: string | undefined;
+
   constructor(state: ILayout) {
+    this.id = state.id;
     this.block = state.block;
     this.sectors = Sector.parse(state.sectors);
-    this.id = ID++;
   }
 
   get name(): string {
-    return `${this.block.type}_${this.block.density}_${this.block.position}${this.block.postfix}`;
+    if (this._name === undefined) {
+      this._name = `${this.block.type}_${this.block.density}_${this.block.position}${this.block.postfix}`;
+    }
+
+    return this._name;
   }
 }
 
@@ -312,7 +317,7 @@ export function detectBlocks(district: District): Block[] {
   return detectBlock(vertices, paths);
 }
 
-export var LAYOUTS: Layout[] = [];
+export let LAYOUTS: Layout[] = [];
 LAYOUTS = LAYOUTS.concat(
   (RuralLayoutsJson as ILayout[]).map(l => new Layout(l))
 );

@@ -20,6 +20,7 @@
           District Shape
           <select v-model="district.shape">
             <option :value="DistrictShape.Linear">Linear</option>
+            <option :value="DistrictShape.Ussr">USSR</option>
           </select>
         </label>
 
