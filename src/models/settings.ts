@@ -46,6 +46,6 @@ export default class Settings implements SettingsState {
   }
 
   get nextBuildingId(): number {
-    return this.blockId++;
+    return this.buildingId++;
   }
 }

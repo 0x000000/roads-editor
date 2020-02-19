@@ -14,6 +14,7 @@ import {VARIANTS} from '@/models/building_variants';
 import District from '@/models/district';
 import {DistrictShape} from '@/models/block_generator';
 import {Point} from '@/models/geometry';
+import Settings from '@/models/settings';
 
 const SizeWidth = {
   [BuildingSize.S]: r(6, 9), // 1-2 floors
@@ -146,8 +147,6 @@ function calcCenter(targetSlot: TargetSlot, variant: IBuildingVariant): Point {
   };
 }
 
-let ID = 0;
-
 function calcResidentialBlock(district: District, block: Block, sectors: ISector[]): Building[] {
   const buildings: Building[] = [];
   let rotationAngle: number | undefined;
@@ -168,7 +167,7 @@ function calcResidentialBlock(district: District, block: Block, sectors: ISector
       rotationAngle = calcRotation(district.shape, variant.slotSize, rotationAngle);
 
       buildings.push(new Building({
-        id: ID++, //todo: <<<<<<<<<<<<<<<<
+        id: Settings.getInstance().nextBuildingId,
         address: {
           districtId: district.id,
           blockId: block.id,
