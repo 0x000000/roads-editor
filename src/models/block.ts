@@ -123,7 +123,7 @@ export default class Block implements BlockState {
     this.type = state.type;
     this.density = state.density;
     this.wealth = state.wealth;
-    this.buildings = state.buildings;
+    this.buildings = state.buildings.map(bs => new Building(bs));
     this.layoutId = state.layoutId;
   }
 

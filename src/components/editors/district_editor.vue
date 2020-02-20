@@ -63,9 +63,20 @@
         <label>
           Level
           <select v-model="district.level">
+            <option :value="DistrictLevel.Zero">- Disabled -</option>
             <option :value="DistrictLevel.One">1 Level</option>
             <option :value="DistrictLevel.Two">2 Level</option>
             <option :value="DistrictLevel.Three">3 Level</option>
+          </select>
+        </label>
+
+        <label>
+          Special Ability
+          <select v-model="district.specialAbility">
+            <option :value="DistrictAbilityType.None">- None -</option>
+            <option :value="DistrictAbilityType.SpecialSoil">Soil</option>
+            <option :value="DistrictAbilityType.SpecialChemicals">Chemicals</option>
+            <option :value="DistrictAbilityType.SpecialMinerals">Minerals</option>
           </select>
         </label>
 
@@ -143,8 +154,9 @@
           </rect>
 
           <rect v-for="building in selectedBuildings"
+                @click="selectBuilding(building)"
                 :key="building.id"
-                class="building"
+                :class="building.classes"
                 :transform="transformBuilding(building)"
                 :width="building.variant.width"
                 :height="building.variant.height"
@@ -154,12 +166,85 @@
         </svg>
       </div>
     </div>
+
+    <div class="tool-row">
+      <div v-if="selectedBuilding" class="block-toolbar">
+        <h4>Edit Building #{{selectedBuilding.id}}</h4>
+
+        <label>
+          Center
+
+          <br>
+          <input class="point" type="number" v-model.number="selectedBuilding.center.x"/>,
+          <input class="point" type="number" v-model.number="selectedBuilding.center.y"/>
+        </label>
+
+        <label>
+          Center Diff
+
+          <br>
+          <input class="point" type="number" v-model.number="selectedBuilding.centerDiff.x"/>,
+          <input class="point" type="number" v-model.number="selectedBuilding.centerDiff.y"/>
+        </label>
+
+        <label>
+          Rotation Angle
+
+          <input type="number" v-model.number="selectedBuilding.rotationAngle"/>
+        </label>
+
+        <label>
+          Max Residents
+
+          <input type="number" v-model.number="selectedBuilding.maxResidents"/>
+        </label>
+
+        <label>
+          Max Jobs
+
+          <input type="number" v-model.number="selectedBuilding.maxJobs"/>
+        </label>
+
+        <label>
+          Product Type
+          <select v-model="selectedBuilding.productType">
+            <option :value="ProductType.None">- None -</option>
+
+            <optgroup label="Raw Materials">
+              <option :value="ProductType.Biomass">Biomass</option>
+              <option :value="ProductType.Chemicals">Chemicals</option>
+              <option :value="ProductType.Minerals">Minerals</option>
+              <option :value="ProductType.Water">Water</option>
+            </optgroup>
+
+            <optgroup label="Industrial Production">
+              <option :value="ProductType.Food">Food</option>
+              <option :value="ProductType.Technics">Technics</option>
+              <option :value="ProductType.GeneralGoods">General Goods</option>
+              <option :value="ProductType.Energy">Energy</option>
+            </optgroup>
+
+            <optgroup label="Services">
+              <option :value="ProductType.Entertainment">Entertainment</option>
+              <option :value="ProductType.Support">Support</option>
+              <option :value="ProductType.Research">Research</option>
+              <option :value="ProductType.SewageDisposal">Sewage Disposal</option>
+              <option :value="ProductType.WasteDisposal">Waste Disposal</option>
+              <option :value="ProductType.FireFighting">Fire Fighting</option>
+              <option :value="ProductType.Security">Security</option>
+              <option :value="ProductType.Health">Health</option>
+              <option :value="ProductType.Education">Education</option>
+            </optgroup>
+          </select>
+        </label>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-  import District, {DistrictLevel} from '@/models/district';
+  import District, {DistrictAbilityType, DistrictLevel} from '@/models/district';
   import store, {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
   import {POINT_DISTANCE, ROAD_WIDTH} from '@/config';
@@ -176,6 +261,7 @@
   } from '@/models/block_generator';
   import {Building, Slot} from '@/models/building';
   import {generateBuildingsForBlock} from '@/models/building_generator';
+  import {ProductType} from '@/models/production';
 
   const ZOOM_1 = 2;
   const ZOOM_2 = 20;
@@ -188,6 +274,7 @@
     @Prop() private district!: District;
     private prevDistrictId: number | undefined = undefined;
     private selectedBlock: Block | undefined;
+    private selectedBuilding: Building | undefined;
     private generatorType: GeneratorType = GeneratorType.Rural;
     private districtWealth: DistrictWealth = DistrictWealth.LowMid;
     private districtPopulation: TargetPopulation = TargetPopulation.VeryLow;
@@ -196,8 +283,7 @@
     @Watch('district', {deep: true})
     private onDistrictChanged() {
       if (this.district.id !== this.prevDistrictId && this.prevDistrictId !== undefined) {
-        if (this.selectedBlock !== undefined) { this.selectedBlock.selected = false; }
-        this.selectedBlock = undefined;
+        this.resetState();
       }
 
       this.prevDistrictId = this.district.id;
@@ -205,14 +291,26 @@
     }
 
     @Watch('layoutName')
-    private onLayoutChange(choosenName: string) {
+    private onLayoutChange(chosenName: string) {
       if (this.selectedBlock) {
-        this.selectedBlock.layout = LAYOUTS.find(l => l.name === choosenName);
+        this.selectedBlock.layout = LAYOUTS.find(l => l.name === chosenName);
       }
     }
 
     get state(): RootState {
       return this.$store.state as RootState;
+    }
+
+    private resetState() {
+      if (this.selectedBlock !== undefined) {
+        this.selectedBlock.selected = false;
+      }
+      this.selectedBlock = undefined;
+
+      if (this.selectedBuilding !== undefined) {
+        this.selectedBuilding.selected = false;
+      }
+      this.selectedBuilding = undefined;
     }
 
     private data() {
@@ -225,8 +323,11 @@
         GeneratorType,
         DistrictWealth,
         TargetPopulation,
+        DistrictAbilityType,
+        ProductType,
         ROAD_WIDTH: ROAD_WIDTH * 2,
         selectedBlock: undefined,
+        selectedBuilding: undefined,
         generatorType: GeneratorType.Rural,
         districtWealth: DistrictWealth.LowMid,
         districtPopulation: TargetPopulation.VeryLow,
@@ -238,6 +339,15 @@
       hotkeys('shift+r, shift+c, shift+i, shift+f, shift+n, shift+w', (_, handler) => {
         this.onKey(handler.key);
       });
+    }
+
+    public selectBuilding(building: Building) {
+      if (this.selectedBuilding) {
+        this.selectedBuilding.selected = false;
+      }
+
+      this.selectedBuilding = building;
+      this.selectedBuilding.selected = true;
     }
 
     public selectBlock(nextBlock: Block) {
@@ -335,6 +445,10 @@
         return;
       }
 
+      if (this.selectedBuilding !== undefined) {
+        this.selectedBuilding.selected = false;
+      }
+      this.selectedBuilding = undefined;
       this.selectedBlock.buildings = generateBuildingsForBlock(this.district, this.selectedBlock);
     }
 
@@ -357,6 +471,8 @@
 
         Vue.set(this.district.blocks, index, block);
       });
+
+      this.resetState();
     }
 
     get svgPointsZeroDiff(): string {
@@ -452,6 +568,16 @@
     }
   }
 
+  .building {
+    stroke: darkgrey;
+    stroke-width: 2px;
+
+    &:hover, &.selected {
+      stroke: #FD783F;
+      cursor: pointer;
+    }
+  }
+
   .building-slot {
     stroke: #0c88ee;
     stroke-width: 1px;
@@ -470,4 +596,9 @@
     min-width: 300px;
   }
 
+  input.point {
+    min-width: 50px;
+    width: 50px;
+    display: inline;
+  }
 </style>

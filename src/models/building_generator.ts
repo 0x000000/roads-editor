@@ -6,7 +6,7 @@ import {
   BuildingType,
   IBuildingVariant,
   ISector,
-  ISlot
+  ISlot,
 } from '@/models/building';
 import {calculateChances, decide, r, Range, sample, selectByChance} from '@/models/utils';
 import Block from '@/models/block';
@@ -15,6 +15,7 @@ import District from '@/models/district';
 import {DistrictShape} from '@/models/block_generator';
 import {Point} from '@/models/geometry';
 import Settings from '@/models/settings';
+import {ProductType} from '@/models/production';
 
 const SizeWidth = {
   [BuildingSize.S]: r(6, 9), // 1-2 floors
@@ -116,14 +117,13 @@ function calcRotation(districtShape: DistrictShape, slotSize: BuildingSlotSize, 
 
   switch (districtShape) {
     case DistrictShape.Linear:
-    case DistrictShape.Ussr: {
+    case DistrictShape.Ussr:
       if (prevValue === undefined || selectByChance(placement.angleDirectionChangeChances)) {
         prevValue = selectByChance(placement.angleChances) * selectByChance(SIGN);
       }
 
       prevValue += (selectByChance(placement.angleAdditionalChances) * selectByChance(SIGN));
-    }
-    break;
+      break;
   }
 
   return prevValue || 0;
@@ -178,6 +178,11 @@ function calcResidentialBlock(district: District, block: Block, sectors: ISector
         variant,
         center,
         centerDiff,
+        currentJobs: 0,
+        maxJobs: 0,
+        currentResidents: 0,
+        maxResidents: 0,
+        productType: ProductType.None,
       }));
     });
   });

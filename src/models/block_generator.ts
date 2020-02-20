@@ -8,7 +8,7 @@ export enum GeneratorType {
 
 export enum DistrictShape {
   Linear,
-  Ussr
+  Ussr,
 }
 
 export enum DistrictWealth {

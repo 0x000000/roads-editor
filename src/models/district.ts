@@ -14,9 +14,18 @@ export enum LandValue {
 }
 
 export enum DistrictLevel {
+  Zero,
   One,
   Two,
   Three,
+}
+
+export enum DistrictAbilityType {
+  None,
+  SpecialWater,
+  SpecialSoil,
+  SpecialMinerals,
+  SpecialChemicals,
 }
 
 export interface DistrictState {
@@ -26,6 +35,7 @@ export interface DistrictState {
   shape: DistrictShape;
   landValue: LandValue;
   level: DistrictLevel;
+  specialAbility: DistrictAbilityType;
 }
 
 export interface NormalizedDistrictState {
@@ -35,6 +45,7 @@ export interface NormalizedDistrictState {
   shape: DistrictShape;
   landValue: LandValue;
   level: DistrictLevel;
+  specialAbility: DistrictAbilityType;
 }
 
 export default class District implements DistrictState {
@@ -60,7 +71,8 @@ export default class District implements DistrictState {
         blocks: [],
         shape: DistrictShape.Linear,
         landValue: LandValue.Lowest,
-        level: DistrictLevel.One,
+        level: DistrictLevel.Zero,
+        specialAbility: DistrictAbilityType.None,
       });
 
       district.blocks = detectBlocks(district);
@@ -84,6 +96,7 @@ export default class District implements DistrictState {
         shape: district.shape,
         landValue: district.landValue,
         level: district.level,
+        specialAbility: district.specialAbility,
       };
     });
   }
@@ -97,6 +110,7 @@ export default class District implements DistrictState {
         shape: state.shape,
         landValue: state.landValue,
         level: state.level,
+        specialAbility: state.specialAbility,
       };
 
       return new District(linkedState);
@@ -119,6 +133,7 @@ export default class District implements DistrictState {
   public shape: DistrictShape;
   public landValue: LandValue;
   public level: DistrictLevel;
+  public specialAbility: DistrictAbilityType;
 
   public selected: boolean = false;
   public hash: string;
@@ -132,6 +147,7 @@ export default class District implements DistrictState {
     this.shape = state.shape;
     this.landValue = state.landValue;
     this.level = state.level;
+    this.specialAbility = state.specialAbility;
 
     this.hash = this.roads.map(r => r.id).sort().join(',');
   }

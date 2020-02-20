@@ -1,4 +1,5 @@
 import {Point} from '@/models/geometry';
+import {ProductType} from '@/models/production';
 
 export type BuildingSlotSize = '1x1' | '1x2' | '2x2' | '2x3' | '2x4' | '3x3' | '3x4' | '4x4';
 
@@ -91,6 +92,7 @@ export interface Address {
   slotIds: number[];
 }
 
+
 export interface IBuilding {
   readonly id: number;
   center: Point;
@@ -98,6 +100,11 @@ export interface IBuilding {
   rotationAngle: number;
   variant: IBuildingVariant;
   address: Address;
+  currentResidents: number;
+  maxResidents: number;
+  currentJobs: number;
+  maxJobs: number;
+  productType: ProductType;
 }
 
 export class Building implements IBuilding {
@@ -107,6 +114,13 @@ export class Building implements IBuilding {
   public variant: IBuildingVariant;
   public address: Address;
   public centerDiff: Point;
+  public currentResidents: number;
+  public maxResidents: number;
+  public currentJobs: number;
+  public maxJobs: number;
+  public productType: ProductType;
+
+  public selected: boolean = false;
 
   constructor(state: IBuilding) {
     this.id = state.id;
@@ -115,6 +129,15 @@ export class Building implements IBuilding {
     this.variant = state.variant;
     this.address = state.address;
     this.centerDiff = state.centerDiff;
+    this.currentResidents = state.currentResidents;
+    this.maxResidents = state.maxResidents;
+    this.currentJobs = state.currentJobs;
+    this.maxJobs = state.maxJobs;
+    this.productType = state.productType;
+  }
+
+  public get classes(): string[] {
+    return ['building', this.selected ? 'selected' : ''];
   }
 }
 
