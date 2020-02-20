@@ -17,15 +17,6 @@ import {Point} from '@/models/geometry';
 import Settings from '@/models/settings';
 import {ProductType} from '@/models/production';
 
-const SizeWidth = {
-  [BuildingSize.S]: r(6, 9), // 1-2 floors
-  [BuildingSize.M]: r(6, 9), // 2-5 floors
-  [BuildingSize.L]: r(6, 9), // 5-10 floors
-  [BuildingSize.XL]: r(6, 9), // 10-25 floors
-  [BuildingSize.XXL]: r(6, 9), // 25-70 floors
-  [BuildingSize.XXXL]: r(6, 9), // 70-150 floors
-};
-
 interface BuildingTemplate {
   count: number;
   slotSize: BuildingSlotSize;
@@ -39,47 +30,6 @@ interface BuildingTemplate {
 interface TargetSlot {
   size: BuildingSlotSize;
   relatedSlots: ISlot[];
-}
-
-const Templates: BuildingTemplate[] = [
-  {
-    count: 5,
-    slotSize: '1x1',
-    type: BuildingType.Residential,
-    size: BuildingSize.S,
-    width: r(18, 22),
-    height: r(13, 17),
-    maxAngle: 179,
-  },
-  // {todo:
-  //   count: 5,
-  //   slotSize: '2x2',
-  //   type: BuildingType.Agriculture,
-  //   size: BuildingSize.S,
-  //
-  // }
-];
-
-export function generateBuildingVariants(): IBuildingVariant[] {
-  const variants: IBuildingVariant[] = [];
-  let index = 0;
-
-  Templates.map(template => {
-    times(template.count).forEach(() => {
-      variants.push({
-        name: `${index++}`,
-        type: template.type,
-        slotSize: template.slotSize,
-        maxAngle: template.maxAngle,
-        size: template.size,
-        length: decide(SizeWidth[template.size]),
-        width: decide(template.width),
-        height: decide(template.height),
-      });
-    });
-  });
-
-  return variants;
 }
 
 enum SplitStrategy {
@@ -178,10 +128,6 @@ function calcResidentialBlock(district: District, block: Block, sectors: ISector
         variant,
         center,
         centerDiff,
-        currentJobs: 0,
-        maxJobs: 0,
-        currentResidents: 0,
-        maxResidents: 0,
         productType: ProductType.None,
       }));
     });

@@ -1,7 +1,6 @@
 import {ButtonType} from '@/models/inputs';
 import {
   BuildCrossroadMode,
-  BuildingsEditorMode,
   BuildRoadMode,
   EditDistrictMode,
   MarkDistrictMode
@@ -27,7 +26,6 @@ export abstract class Mode {
       [ButtonType.MarkDistrict]: new MarkDistrictMode(map),
       [ButtonType.EditDistrict]: new EditDistrictMode(map),
       [ButtonType.EditCrossroad]: new BuildCrossroadMode(map),
-      [ButtonType.BuildingsEditor]: new BuildingsEditorMode(map),
     };
   }
 

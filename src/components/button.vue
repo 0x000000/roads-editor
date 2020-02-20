@@ -21,7 +21,6 @@
     [ButtonType.MarkDistrict]: 'mdi-border-bottom',
     [ButtonType.EditDistrict]: 'mdi-border-all',
     [ButtonType.EditCrossroad]: 'mdi-transit-connection-variant',
-    [ButtonType.BuildingsEditor]: 'mdi-home-city',
   };
 
   const Titles: ButtonMap = {
@@ -29,7 +28,6 @@
     [ButtonType.EditCrossroad]: 'Crossroads',
     [ButtonType.MarkDistrict]: 'Create District',
     [ButtonType.EditDistrict]: 'Edit District',
-    [ButtonType.BuildingsEditor]: 'Buildings',
   };
 
   @Component

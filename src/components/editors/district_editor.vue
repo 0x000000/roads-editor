@@ -194,18 +194,6 @@
         </label>
 
         <label>
-          Max Residents
-
-          <input type="number" v-model.number="selectedBuilding.maxResidents"/>
-        </label>
-
-        <label>
-          Max Jobs
-
-          <input type="number" v-model.number="selectedBuilding.maxJobs"/>
-        </label>
-
-        <label>
           Product Type
           <select v-model="selectedBuilding.productType">
             <option :value="ProductType.None">- None -</option>
