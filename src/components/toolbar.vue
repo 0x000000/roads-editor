@@ -4,14 +4,13 @@
     <Button :type="ButtonType.EditCrossroad"></Button>
     <Button :type="ButtonType.MarkDistrict"></Button>
     <Button :type="ButtonType.EditDistrict"></Button>
-    <Button :type="ButtonType.BuildingsEditor"></Button>
   </div>
 </template>
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import Button from '@/components/button.vue';
-  import {ButtonType} from '../models/inputs';
+  import {ButtonType} from '@/models/inputs';
 
   @Component({
     components: {

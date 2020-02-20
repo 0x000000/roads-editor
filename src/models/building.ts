@@ -26,7 +26,7 @@ export interface IBuildingVariant {
   name: string;
   slotSize: BuildingSlotSize;
   type: BuildingType;
-  size: number;
+  size: BuildingSize;
   length: number;
   width: number;
   height: number;

@@ -6,3 +6,4 @@ export const DOT_RADIUS = 2;
 export const CROSSROAD_DOT_RADIUS = DOT_RADIUS + 3;
 export const ROAD_WIDTH = 4;
 export const SLOT_SIZE = 28;
+export const POP_SIZE = 1000;

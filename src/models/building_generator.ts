@@ -17,16 +17,6 @@ import {Point} from '@/models/geometry';
 import Settings from '@/models/settings';
 import {ProductType} from '@/models/production';
 
-interface BuildingTemplate {
-  count: number;
-  slotSize: BuildingSlotSize;
-  type: BuildingType;
-  size: BuildingSize;
-  width: Range;
-  height: Range;
-  maxAngle: number;
-}
-
 interface TargetSlot {
   size: BuildingSlotSize;
   relatedSlots: ISlot[];

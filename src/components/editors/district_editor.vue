@@ -84,6 +84,13 @@
                value="Generate Layout For All"
                @click="generateLayoutAllBlocks"/>
       </div>
+
+      <div class="district-toolbar">
+        <h5>Buildings: {{allBuildings.length}}</h5>
+        <h5>Residents: {{allResidents}}</h5>
+        <h5>Jobs: {{allJobs}}</h5>
+      </div>
+
     </div>
 
     <div class="tool-row">
@@ -235,7 +242,7 @@
   import District, {DistrictAbilityType, DistrictLevel} from '@/models/district';
   import store, {RootState} from '@/store/store';
   import {MutationName} from '@/mutations/mutations';
-  import {POINT_DISTANCE, ROAD_WIDTH} from '@/config';
+  import {POINT_DISTANCE, POP_SIZE, ROAD_WIDTH} from '@/config';
   import {orderPointsByRoads, Path} from '@/models/geometry';
   import Block, {BlockShape, BlockType, Density, LAYOUTS, Wealth} from '@/models/block';
   import Button from '@/components/button.vue';
@@ -463,6 +470,18 @@
       this.resetState();
     }
 
+    get allBuildings(): Building[] {
+      return this.district.blocks.map(b => b.buildings).flat();
+    }
+
+    get allResidents() {
+      return this.allBuildings.map(b => b.variant.residents).reduce((total, r) => total + r, 0) / POP_SIZE;
+    }
+
+    get allJobs() {
+      return this.allBuildings.map(b => b.variant.jobs).reduce((total, r) => total + r, 0) / POP_SIZE;
+    }
+
     get svgPointsZeroDiff(): string {
       const pointsCoordinates: string[] = [];
 
@@ -578,6 +597,7 @@
 
   .district-view, .block-view, .district-toolbar, .block-toolbar {
     float: left;
+    padding-right: 10px;
   }
 
   .district-view, .block-toolbar {
